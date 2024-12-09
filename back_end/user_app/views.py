@@ -21,7 +21,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
-class SignupView(APIView):
+class Signup(APIView):
     def post(self, request):
         # Validate incoming data
         serializer = SignupSerializer(data=request.data)
@@ -51,15 +51,15 @@ class SignupView(APIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-class SignIn(APIView):
-    def post(self, request):
-        data = request.data
+# class SignIn(APIView):
+#     def post(self, request):
+#         data = request.data
 
-        email = data.get('email')
-        password = data.get('password')
+#         email = data.get('email')
+#         password = data.get('password')
 
-        user = authenticate(username=email, password=password)
-        if user:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, 'user': user.email})
+#         user = authenticate(username=email, password=password)
+#         if user:
+#             token, created = Token.objects.get_or_create(user=user)
+#             return Response({"token": token.key, 'user': user.email})
 
