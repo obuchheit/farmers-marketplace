@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import FindForm from './components/FindForm'
+import FindForm from './components/FindForm.jsx'
 import CarouselComponent from './components/CarouselComponent.jsx'
 import axios from "axios"
 import 'bootstrap/dist/css/bootstrap.min.css';

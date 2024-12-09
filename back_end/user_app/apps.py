@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AddressesAppConfig(AppConfig):
+class UserAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'addresses_app'
+    name = 'user_app'
