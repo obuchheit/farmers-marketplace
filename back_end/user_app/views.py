@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from .models import AppUser
-from .serializers import SignupSerializer
+from .serializers import SignupSerializer, UserProfileSerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,53 +13,86 @@ class TokenReq(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-from django.contrib.auth import authenticate
-from .models import AppUser
-from .serializers import SignupSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.authtoken.models import Token
 
 class Signup(APIView):
     def post(self, request):
-        # Validate incoming data
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
-            # Create user
             user = serializer.save()
-
-            # Generate Token for the user
             token, created = Token.objects.get_or_create(user=user)
-
-            # Authenticate the user
-            authenticate_user = authenticate(username=user.email, password=request.data['password'])
-
-            # Return token and user info (email) in response
+            
             return Response(
                 {
                     'message': 'User created successfully!',
                     'token': token.key,
-                    'user': user.email,  
+                    'user': user.email,
                 },
                 status=status.HTTP_201_CREATED,
             )
 
-        # If serializer is not valid, return errors
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-# class SignIn(APIView):
-#     def post(self, request):
-#         data = request.data
+class SignIn(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
 
-#         email = data.get('email')
-#         password = data.get('password')
+        user = authenticate(username=email, password=password)
 
-#         user = authenticate(username=email, password=password)
-#         if user:
-#             token, created = Token.objects.get_or_create(user=user)
-#             return Response({"token": token.key, 'user': user.email})
+        if not email or not password:
+            return Response(
+                {"detail": "Email and password are required."},
+                status=HTTP_400_BAD_REQUEST,
+            )
 
+        user = authenticate(username=email, password=password)
+
+        if user:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                "token": token.key,
+                'user': user.email
+            })
+
+        return Response(
+            {"detail": "Invalid credentials"},
+            status=HTTP_400_BAD_REQUEST,
+        )
+        
+        
+class SignOut(TokenReq):
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+    
+
+
+class UserProfile(TokenReq):
+    def get(self, request):
+        user = request.user
+
+        profile_data = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "profile_picture": user.profile_picture.url if user.profile_picture else None,
+            "location": user.location,
+            "bio": user.bio,
+        }
+
+        return Response(profile_data)
+
+
+class UpdateUserProfile(TokenReq):
+    def put(self, request):
+        user = request.user
+        data = request.data
+
+        serializer = UserProfileSerializer(user, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

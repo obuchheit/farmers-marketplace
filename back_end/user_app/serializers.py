@@ -21,3 +21,20 @@ class SignupSerializer(serializers.ModelSerializer):
             bio=validated_data.get('bio'),
         )
         return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: AppUser
+        fields = ['first_name', 'last_name', 'profile_picture', 'location', 'bio']
+        extra_kwargs = {
+            'profile_picture': {'required': False, 'allow_null': True},
+            'bio': {'required': False, 'allow_blank': True},
+            'location': {'required': False},
+        }
+
+        def update(self, instance, validated_data):
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+
+            instance.save()
+            return instance
