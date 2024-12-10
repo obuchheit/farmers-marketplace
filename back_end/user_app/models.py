@@ -56,7 +56,7 @@ class User(AbstractUser):
 
 class AdminProfile(models.Model):
     """
-    Admin model with one-to-one Relationship with AppUser model
+    Admin model with one-to-one Relationship with User model
     """
     user = models.OneToOneField(
         User,
@@ -77,21 +77,21 @@ class AdminProfile(models.Model):
     def __str__(self):
         return f"{self.admin_role} - {self.user.email}"
     
+"""TODO: Figure out where and how to implement BusinessUser Model."""
+# class BusinessUser(models.Model):
 
-class BusinessUser(models.Model):
-
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name='business_profile'
-    )
-    business_type = models.CharField(
-        verbose_name=_('Business Type')
-    )
-    permissions = models.JSONField(
-        verbose_name=_('Permissions'),
-        blank=True,
-        null=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
+#     user = models.OneToOneField(
+#         User,
+#         on_delete=models.CASCADE,
+#         related_name='business_profile'
+#     )
+#     business_type = models.CharField(
+#         verbose_name=_('Business Type')
+#     )
+#     permissions = models.JSONField(
+#         verbose_name=_('Permissions'),
+#         blank=True,
+#         null=True
+#     )
+#     created_at = models.DateTimeField(auto_now_add=True)
     

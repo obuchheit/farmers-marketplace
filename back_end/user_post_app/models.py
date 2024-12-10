@@ -1,8 +1,8 @@
 from django.db import models
-from user_app.models import AppUser
+from user_app.models import User
 
 class UserPosts(models.Model):
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='user_posts', default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts', default=1)
     image = models.ImageField(blank=True, null=True)
     title = models.CharField(blank=False, null=True)
     seller_name = models.CharField(blank=False)
@@ -13,7 +13,7 @@ class UserPosts(models.Model):
     is_public = models.BooleanField(default=True, null=True)
 
 class UserSavedPosts(models.Model):
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='saved_posts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved_posts')
     post = models.ForeignKey(UserPosts, on_delete=models.CASCADE, related_name='saved_by_users')
     saved_at = models.DateTimeField(auto_now_add=True)
 

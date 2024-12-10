@@ -1,37 +1,36 @@
 from rest_framework import serializers
-from .models import AppUser, AdminProfile
+from .models import User, AdminProfile
 
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AppUser
+        model = User
         fields = ['email', 'first_name', 'last_name', 'password', 'profile_picture', 'location', 'bio']
-        extra_kwargs = {'password': {'write_only': True, 'required': True}}
+        extra_kwargs = {
+            'password': {'write_only': True, 'required': True},
+            'profile_picture': {'required': False, 'allow_null': True},
+            'location': {'required': False},
+            'bio': {'required': False, 'allow_blank': True}
+        }
 
     def create(self, validated_data):
-        user = AppUser.objects.create_user(
+        user = User.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name')
         )
         user.profile_picture = validated_data.get('profile_picture')
         user.location = validated_data.get('location', '92039')
         user.bio = validated_data.get('bio')
         user.save()
         return user
-    
-
-
-class AdminProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AdminProfile
-        fields = ['admin_role', 'permissions']
-
-        
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user profile management.
+    """
     class Meta:
-        model: AppUser
+        model = User
         fields = ['first_name', 'last_name', 'profile_picture', 'location', 'bio']
         extra_kwargs = {
             'profile_picture': {'required': False, 'allow_null': True},
@@ -39,9 +38,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'location': {'required': False},
         }
 
-        def update(self, instance, validated_data):
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
+class AdminProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for admin-specific profile.
+    """
+    class Meta:
+        model = AdminProfile
+        fields = ['admin_role', 'permissions']
 
-            instance.save()
-            return instance
+
+    
