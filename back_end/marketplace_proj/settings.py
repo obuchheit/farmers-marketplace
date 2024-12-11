@@ -1,8 +1,8 @@
-
+from decouple import config
 from pathlib import Path
-from dotenv import dotenv_values
 
-env = dotenv_values(".env")
+USDA_API_KEY = config("USDA_API_KEY")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_app',
     'user_post_app',
+    'group_app', 
+    'map_app',
 ]
 
 MIDDLEWARE = [
