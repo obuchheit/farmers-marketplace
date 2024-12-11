@@ -9,14 +9,14 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CR
 from .serializers import UserPostSerializer, AllUserSavedPostsSerializer, UserSavedPostSerializer
 from .models import UserPosts, UserSavedPosts
 
-"""Retrieves all of a users posts"""
+"""Retrieves all of a users  posts"""
 class AllUserPostsView(ListAPIView, TokenReq):
     serializer_class = UserPostSerializer
 
     def get_queryset(self):
         return UserPosts.objects.filter(user=self.request.user)
     
-"""Allows users to CRUD a post based on it's id"""
+"""Allows users to CRUD one of their posts based on it's id"""
 class ManageUserPostView(TokenReq):
     
     def post(self, request):

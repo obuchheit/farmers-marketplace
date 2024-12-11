@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'user_app',
     'user_post_app',
     'group_app', 
+    'posts_app',
     'map_app',
     'garden_app',
 ]

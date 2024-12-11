@@ -4,14 +4,13 @@ from user_app.models import User
 from user_app.serializers import UserProfileSerializer
 
 
-"""Serializer for Users' own posts."""
+"""Serializer for Users  posts."""
 class UserPostSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = UserPosts
         fields = "__all__"
-
 
 
 
