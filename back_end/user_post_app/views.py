@@ -9,6 +9,13 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_204_NO
 from .serializers import UserPostSerializer, AllUserSavedPostsSerializer, UserSavedPostSerializer
 from .models import UserPosts, UserSavedPosts
 
+class AllUserPostsView(ListAPIView, TokenReq):
+    serializer_class = UserPostSerializer
+
+    def get_queryset(self):
+        pass
+
+
 """Returns all of a User's Saved Posts"""
 class AllUserSavedPostsView(ListAPIView, TokenReq):
     serializer_class = AllUserSavedPostsSerializer
