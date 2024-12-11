@@ -16,7 +16,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
         model = UserPosts
         fields = ['image', 'title', 'location', 'is_available', 'description', 'time_posted']
 
-# Serializer for All User Saved Posts (showing User B saving posts by others)
+# Serializer for All User Saved Posts // This post will be a post made by another user
 class AllUserSavedPostsSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)  # User B, who saved the post
     post_details = PostDetailSerializer(source='post', read_only=True)  # Details of the post saved by User B
@@ -25,7 +25,7 @@ class AllUserSavedPostsSerializer(serializers.ModelSerializer):
         model = UserSavedPosts
         fields = ['id', 'user', 'post_details', 'saved_at']
 
-# Serializer for Individual User Saved Post (showing User B saving others' posts)
+# Serializer for Individual User Saved Post // This post will be a post made by another user
 class UserSavedPostSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)  # User B, who saved the post
     post_details = PostDetailSerializer(source='post', read_only=True)  # Details of the post saved by User B
