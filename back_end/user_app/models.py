@@ -78,20 +78,29 @@ class AdminProfile(models.Model):
         return f"{self.admin_role} - {self.user.email}"
     
 """TODO: Figure out where and how to implement BusinessUser Model."""
-# class BusinessUser(models.Model):
+class BusinessUser(models.Model):
 
-#     user = models.OneToOneField(
-#         User,
-#         on_delete=models.CASCADE,
-#         related_name='business_profile'
-#     )
-#     business_type = models.CharField(
-#         verbose_name=_('Business Type')
-#     )
-#     permissions = models.JSONField(
-#         verbose_name=_('Permissions'),
-#         blank=True,
-#         null=True
-#     )
-#     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='business_user'
+    )
+    business_type = models.CharField(
+        verbose_name=_('Business Type')
+    )
+    permissions = models.JSONField(
+        verbose_name=_('Permissions'),
+        blank=True,
+        null=True
+    )
+    business_name = models.CharField(max_length=100, blank=True, null=True)
+    connected_to_directory = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def email(self):
+        return self.user.email
+
+    def __str__(self):
+        return f"{self.business_name} ({self.email})"
     
