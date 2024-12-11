@@ -3,6 +3,18 @@ from .models import UserPosts, UserSavedPosts
 from user_app.models import User
 from user_app.serializers import UserProfileSerializer
 
+
+"""Serializer for Users' own posts."""
+class UserPostSerializer(serializers.ModelSerializer):
+    user = UserProfileSerializer(read_only=True)
+
+    class Meta:
+        model = UserPosts
+        fields = "__all__"
+
+
+
+
 # Serializer for common post-related fields
 class PostDetailSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(read_only=True)
@@ -27,7 +39,7 @@ class AllUserSavedPostsSerializer(serializers.ModelSerializer):
 
 # Serializer for Individual User Saved Post // This post will be a post made by another user
 class UserSavedPostSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)  # User B, who saved the post
+    user = UserProfileSerializer(read_only=True)  
     post_details = PostDetailSerializer(source='post', read_only=True)  # Details of the post saved by User B
 
     class Meta:
