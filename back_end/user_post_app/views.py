@@ -5,15 +5,54 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, create
 from rest_framework.response import Response
 from user_app.views import TokenReq
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from .serializers import UserPostSerializer, AllUserSavedPostsSerializer, UserSavedPostSerializer
 from .models import UserPosts, UserSavedPosts
 
+"""Retrieves all of a users posts"""
 class AllUserPostsView(ListAPIView, TokenReq):
     serializer_class = UserPostSerializer
 
     def get_queryset(self):
-        pass
+        return UserPosts.objects.filter(user=self.request.user)
+    
+"""Allows users to CRUD a post based on it's id"""
+class ManageUserPostView(TokenReq):
+    
+    def post(self, request):
+        data = request.data.copy()
+        data['user'] = request.user.id
+
+        serializer = UserPostSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        
+
+    def put(self, request, post_id):
+        try:
+            post = UserPosts.objects.get(pk=post_id, user=request.user)
+        except UserPosts.DoesNotExist:
+            return Response({"error": "Post not found."}, status=HTTP_404_NOT_FOUND)
+        
+        serializer = UserPostSerializer(post, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        
+
+    def delete(self, request, post_id):
+        try:
+            post = get_object_or_404(UserPosts, pk=post_id, user=request.user)
+        except UserPosts.DoesNotExist:
+            return Response({"error": "Post not found."}, status=HTTP_404_NOT_FOUND)
+        
+        post.delete()
+
+        return Response({"message": "Post deleted successfully."}, status=HTTP_200_OK)
 
 
 """Returns all of a User's Saved Posts"""
