@@ -5,7 +5,6 @@ class UserPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts', default=1)
     image = models.ImageField(blank=True, null=True)
     title = models.CharField(blank=False, null=True)
-    seller_name = models.CharField(blank=False)
     description = models.TextField(blank=False, null=True)
     location = models.CharField(blank=False, null=True)
     time_posted = models.DateTimeField(auto_now_add=True)

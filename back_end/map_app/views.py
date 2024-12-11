@@ -16,6 +16,7 @@ class Markets(APIView):
             response.raise_for_status()
 
         except requests.exceptions.RequestException as e: 
+            print(f"Request error: {e}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(response.json(), status=response.status_code)

@@ -3,14 +3,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR
 import requests
-from .utils import format_request_string
 
-"""Search for crop information."""
+"""Search for crop information.
+TODO: When implementing on the front end ensure the argument takes proper format ie. lower-case-with-dashes
+"""
 
 class Crop(APIView): 
-    def get(self, request):
-        formatted_request = format_request_string(request)
-        endpoint = f"https://www.openfarm.cc/api/v1/crops/?filter={formatted_request}"
+    def get(self, request, value):
+        endpoint = f"https://openfarm.cc/api/v1/crops/?filter={value}"
 
         try:
             response = requests.get(endpoint)
