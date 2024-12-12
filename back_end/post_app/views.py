@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import RetrieveAPIView, ListAPIView
@@ -17,19 +17,53 @@ from .serializers import (
     PostDetailSerializer
     )
 
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
+
+
+
 """
 Public-view of UserPosts Views
 """
 
 #View to list all UserPosts based on location.
 class AllPostsByLocationView(ListAPIView):
-    queryset = UserPosts.objects.filter(is_public=True, is_available=True) 
     serializer_class = PostSerializer
-    filter_backends = [SearchFilter]
-    search_fields = ['location']  # Allow filtering by location
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the distance and user location from the request
+        try:
+            distance = float(self.request.query_params.get('distance', 10))  # Default to 10 km
+        except ValueError:
+            raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
+        
+        user = self.request.user
+        if not user.location:
+            raise ValidationError({"error": "User location is not set."})
+
+        # Ensure user location is a Point
+        if not isinstance(user.location, Point):
+            raise ValidationError({"error": "User location is invalid."})
+
+        # Filter posts within the specified distance
+        user_location = user.location
+        return UserPosts.objects.filter(
+            is_public=True,
+            is_available=True
+        ).annotate(
+            distance=Distance('location', user_location)
+        ).filter(
+            distance__lte=distance * 1000  # Convert km to meters
+        ).order_by('distance')
+  
 
 #View to retrieve a single UserPost by ID.
 class SingleUserPostView(RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset = UserPosts.objects.filter(is_public=True)  
     serializer_class = PostDetailSerializer
 

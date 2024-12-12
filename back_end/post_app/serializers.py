@@ -20,7 +20,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserPosts
-        fields = ['id', 'user', 'image', 'title', 'description', 'location', 'time_posted']
+        fields = ['id', 'user', 'image', 'title', 'description', 'address', 'time_posted', 'location']
 
     def get_user(self, obj):
         # Expose only limited user information (e.g., name and profile picture)

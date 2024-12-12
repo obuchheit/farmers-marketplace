@@ -25,7 +25,7 @@ class User(AbstractUser):
         blank=False,
         null=True
     )
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     profile_picture = models.ImageField(
@@ -38,7 +38,7 @@ class User(AbstractUser):
     address = models.CharField(
         verbose_name=_('Location Address'),
         max_length=100,
-        blank=True,
+        blank=False,
         null=True,
         default='92039'
     )

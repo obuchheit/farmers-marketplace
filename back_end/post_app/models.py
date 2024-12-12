@@ -9,7 +9,7 @@ class UserPosts(models.Model):
     image = models.ImageField(blank=True, null=True)
     title = models.CharField(blank=False, null=True)
     description = models.TextField(blank=False, null=True)
-    location = gis_models.PointField(blank=True, null=True)
+    location = gis_models.PointField(blank=True, null=True, default='92039')
     address = models.CharField(blank=False, null=True)
     time_posted = models.DateTimeField(auto_now_add=True)
     is_available = models.BooleanField(default=True, null=True)
