@@ -2,6 +2,7 @@ from decouple import config
 from pathlib import Path
 
 USDA_API_KEY = config("USDA_API_KEY")
+MAPBOX_ACCESS_TOKEN = config("MAPBOX_ACCESS_TOKEN")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'marketplace_proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'farmers_marketplace_db',
     }
 }
