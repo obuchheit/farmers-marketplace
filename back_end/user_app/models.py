@@ -2,11 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
-"""TODO:
-Figure out how to implement permissions and what permissions the Admin
-and Business models will have. Business models will be more feature centered
-and Admin will be admin.
-"""
 
 class User(AbstractUser):
     email = models.EmailField(
@@ -54,10 +49,8 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+
 class AdminProfile(models.Model):
-    """
-    Admin model with one-to-one Relationship with User model
-    """
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
