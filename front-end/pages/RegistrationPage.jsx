@@ -1,67 +1,37 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { useOutletContext } from 'react-router-dom';
+import { userRegistration } from "../utilities";
+
 
 const RegistrationPage = () => {
+  const { setUser } = useOutletContext();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     first_name: '',
     last_name: '',
     address: '',
-    bio: '',
   });
 
-  const [profilePicture, setProfilePicture] = useState(null);
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({});
+  const [isReady, setIsReady] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    setProfilePicture(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const form = new FormData();
-    Object.keys(formData).forEach((key) => form.append(key, formData[key]));
-    if (profilePicture) {
-      form.append('profile_picture', profilePicture);
+    if (isReady) {
+      setUser(await userRegistration(formData));
     }
-
-    try {
-      const response = await fetch('/api/signup/', {
-        method: 'POST',
-        body: form,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setMessage(data.message);
-        setErrors({});
-        setFormData({
-          email: '',
-          password: '',
-          first_name: '',
-          last_name: '',
-          address: '',
-          bio: '',
-        });
-        setProfilePicture(null);
-      } else {
-        const errorData = await response.json();
-        setErrors(errorData);
-        setMessage('');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-      setMessage('An error occurred. Please try again later.');
-    }
-  };
+    else {
+      alert("You must check the box before submitting.")
+    }  
+  }
 
   return (
     <div className="registration-page container mt-5">
@@ -131,23 +101,12 @@ const RegistrationPage = () => {
             required
           />
         </Form.Group>
-
-        <Form.Group className="mb-3" controlId="bio">
-          <Form.Label>Bio</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="profile_picture">
-          <Form.Label>Profile Picture</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={handleFileChange}
-          />
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check 
+          value={isReady}
+          onChange={(e) => setIsReady(e.target.checked)}
+          type="checkbox" 
+          label="All the info is correct" />
         </Form.Group>
 
         <Button variant="primary" type="submit">

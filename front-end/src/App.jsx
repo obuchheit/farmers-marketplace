@@ -6,7 +6,8 @@ function App() {
   
   return (
     <>
-      <Outlet />
+      
+      <Outlet context={{user, setUser}}/>
     </>
   )
 }
