@@ -47,7 +47,7 @@ export const getInfo = async() => {
     let token = localStorage.getItem('token')
     if (token){
         api.defaults.headers.common['Authorization'] = `Token ${token}`
-        let response = await api.get("profile/")
+        let response = await api.get("users/profile/")
         if (response.status === 200) {
             return response.data.email
         }

@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
-const router = ([
+const router = createBrowserRouter([
     {
         path: "/",
         element: <App/>, 

@@ -9,7 +9,7 @@ function App() {
   const location = useLocation();
 
   useEffect(()=> {
-    let nullUserUrl = ['/signin']
+    let nullUserUrl = ['/signin', '/register']
     let isAllowed = nullUserUrl.includes(location.pathname)
     if(user && isAllowed) {
       navigate('/')
@@ -17,7 +17,7 @@ function App() {
     else if (!user && !isAllowed) {
       navigate('/signin')
     }
-  }, [location.pathname, user])
+  }, [location.pathname, user, navigate])
   
   return (
     <>
