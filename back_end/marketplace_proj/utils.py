@@ -1,12 +1,11 @@
 import requests
-import settings
+from .settings import MAPBOX_ACCESS_TOKEN
 from urllib.parse import quote
 
 
 def get_coordinates_from_address(address):
     encoded_address = quote(address)  
        
-    MAPBOX_ACCESS_TOKEN = settings.MAPBOX_ACCESS_TOKEN
     url = f"https://api.mapbox.com/search/geocode/v6/forward?q={encoded_address}"
     params = {
         "access_token": MAPBOX_ACCESS_TOKEN,

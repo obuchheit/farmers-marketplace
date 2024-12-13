@@ -50,7 +50,7 @@ class User(AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = []
 
      # Use Mapbox Geocoding API to fetch latitude and longitude
     def save(self, *args, **kwargs):

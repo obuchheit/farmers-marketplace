@@ -31,7 +31,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'profile_picture', 'location', 'bio']
+        fields = ['username', 'first_name', 'last_name', 'profile_picture', 'location', 'bio']
         extra_kwargs = {
             'profile_picture': {'required': False, 'allow_null': True},
             'bio': {'required': False, 'allow_blank': True},
