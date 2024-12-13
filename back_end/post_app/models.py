@@ -3,13 +3,15 @@ from user_app.models import User
 from django.conf import settings
 import requests
 from django.contrib.gis.db import models as gis_models
+from marketplace_proj.utils import get_coordinates_from_address
+
 
 class UserPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts', default=1)
     image = models.ImageField(blank=True, null=True)
     title = models.CharField(blank=False, null=True)
     description = models.TextField(blank=False, null=True)
-    location = gis_models.PointField(blank=True, null=True)
+    location = gis_models.PointField(blank=True, null=True, default='92039')
     address = models.CharField(blank=False, null=True)
     time_posted = models.DateTimeField(auto_now_add=True)
     is_available = models.BooleanField(default=True, null=True)
@@ -27,21 +29,8 @@ class UserPosts(models.Model):
  
     #Uses Mapbox Geocoding API to convert an address into latitude and longitude.
     @staticmethod
-    def get_coordinates_from_address(address):
-       
-        MAPBOX_ACCESS_TOKEN = settings.MAPBOX_ACCESS_TOKEN
-        url = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
-        params = {
-            "access_token": MAPBOX_ACCESS_TOKEN,
-            "limit": 1
-        }
-        response = requests.get(url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if data['features']:
-                coords = data['features'][0]['geometry']['coordinates']
-                return coords[1], coords[0]  # Latitude, Longitude
-        return None, None
+    def get_coordinates(address):
+        return get_coordinates_from_address(address)
 
 
 class UserSavedPosts(models.Model):

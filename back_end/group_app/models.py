@@ -1,11 +1,66 @@
 from django.db import models
 from user_app.models import User
-from user_app.views import TokenReq
+from django.conf import settings
+import requests
+from django.contrib.gis.db import models as gis_models
+from marketplace_proj.utils import get_coordinates_from_address
+
 
 
 class Group(models.Model):
-    group_name = models.CharField(null=True)
-    group_description = models.TextField(blank=True, null=True)
+    name = models.CharField(null=True)
+    description = models.TextField(blank=True, null=True)
     group_image = models.ImageField(blank=True, null=True)
-    location = models.CharField(max_length=5)
-    group_user = models.ManyToManyField(User, related_name='group')
+    address = models.CharField(blank=False, null=True, default='92039')
+    location = gis_models.PointField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='created_groups'
+    )
+
+
+     # Use Mapbox Geocoding API to fetch latitude and longitude
+    def save(self, *args, **kwargs):
+        if self.address:
+            latitude, longitude = self.get_coordinates_from_address(self.address)
+            if latitude and longitude:
+                self.location = gis_models.Point(longitude, latitude)
+        super().save(*args, **kwargs)
+ 
+    #Uses Mapbox Geocoding API to convert an address into latitude and longitude.
+    @staticmethod
+    def get_coordinates(address):
+        return get_coordinates_from_address(address)
+        
+    
+
+
+class GroupMember(models.Model):
+    ROLE_CHOICES = (
+        ('admin', 'Admin'),
+        ('member', 'Member'),
+    )
+
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="members")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="groups_members")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='member')
+    joined_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('group', 'user')
+
+    def __str__(self):
+        return f"{self.user} - {self.group} - {self.role}"
+
+
+class JoinRequest(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="join_requests")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="join_requests")
+    request_date = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Request by {self.user} to join {self.group} - Approved: {self.is_approved}"

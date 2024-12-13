@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 import requests
 from django.contrib.gis.db import models as gis_models
+from marketplace_proj.utils import get_coordinates_from_address
 
 
 
@@ -25,7 +26,7 @@ class User(AbstractUser):
         blank=False,
         null=True
     )
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     profile_picture = models.ImageField(
@@ -38,7 +39,7 @@ class User(AbstractUser):
     address = models.CharField(
         verbose_name=_('Location Address'),
         max_length=100,
-        blank=True,
+        blank=False,
         null=True,
         default='92039'
     )
@@ -61,23 +62,9 @@ class User(AbstractUser):
 
 
  
-    #Uses Mapbox Geocoding API to convert an address into latitude and longitude.
     @staticmethod
-    def get_coordinates_from_address(address):
-       
-        MAPBOX_ACCESS_TOKEN = settings.MAPBOX_ACCESS_TOKEN
-        url = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
-        params = {
-            "access_token": MAPBOX_ACCESS_TOKEN,
-            "limit": 1
-        }
-        response = requests.get(url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if data['features']:
-                coords = data['features'][0]['geometry']['coordinates']
-                return coords[1], coords[0]  # Latitude, Longitude
-        return None, None
+    def get_coordinates(address):
+        return get_coordinates_from_address(address)
 
     def __str__(self):
         return self.email
