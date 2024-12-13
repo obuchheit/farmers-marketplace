@@ -5,7 +5,7 @@ import { signOut } from "../utilities";
 
 
 
-const NavBar = ({user}) => {
+const NavBar = ({ user, setUser }) => {
     const signOut = async() => {
         setUser(await signOut(user))
     }
