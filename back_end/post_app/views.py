@@ -19,6 +19,7 @@ from .serializers import (
 
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
+from group_app.models import GroupMember
 
 
 
@@ -41,7 +42,7 @@ class AllPostsByLocationView(ListAPIView):
         
         user = self.request.user
         if not user.location:
-            raise ValidationError({"error": "User location is not set."})
+            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
 
         # Ensure user location is a Point
         if not isinstance(user.location, Point):
@@ -148,21 +149,17 @@ class UserSavedPostView(APIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    """
-    Handles retrieving, adding, and removing saved posts for the authenticated user.
-    """
+
+    #Retrieve a saved post
     def get(self, request, post_id):
-        """
-        Retrieve a saved post detail for the authenticated user.
-        """
+
         saved_post = get_object_or_404(UserSavedPosts, pk=post_id, user=request.user)
         serializer = UserSavedPostSerializer(saved_post)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
+    #Add a post to the user's saved posts.
     def post(self, request, post_id):
-        """
-        Add a post to the user's saved posts.
-        """
         try:
             post = UserPosts.objects.get(pk=post_id)
             saved_post, created = UserSavedPosts.objects.get_or_create(
@@ -185,10 +182,8 @@ class UserSavedPostView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+    #Remove a post from the user's saved posts.
     def delete(self, request, post_id):
-        """
-        Remove a post from the user's saved posts.
-        """
         try:
             post = UserPosts.objects.get(pk=post_id)
             saved_post = UserSavedPosts.objects.get(user=request.user, post=post)
@@ -207,6 +202,21 @@ class UserSavedPostView(APIView):
                 {"error": "Post is not in your saved posts."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+"""
+Group Posts
+"""
+
+class AllGroupMemberUserPostsView(ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        group_id = self.kwargs.get('pk')
+
+        group_members = GroupMember.objects.filter(group_id=group_id.values_list('user_id', flat=True))
+
+        return UserPosts.objects.filter(user_id__in=group_members)
 
 
 
