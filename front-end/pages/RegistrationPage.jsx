@@ -7,7 +7,7 @@ import { userRegistration } from "../utilities";
 const RegistrationPage = () => {
   const { setUser } = useOutletContext();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
     first_name: '',
     last_name: '',
@@ -52,7 +52,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="email"
             name="email"
-            value={formData.email}
+            value={formData.username}
             onChange={handleChange}
             required
           />

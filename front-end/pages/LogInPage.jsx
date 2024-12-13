@@ -12,10 +12,10 @@ const LogInPage = () => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         let formData = {
-            'email': email,
+            'username': email,
             'password': password,
         }
-        setUser(await userLogin(formData))
+        setUser(await userLogIn(formData))
     }
 
   return (
