@@ -3,6 +3,7 @@ from user_app.models import User
 from django.conf import settings
 import requests
 from django.contrib.gis.db import models as gis_models
+from marketplace_proj.utils import get_coordinates_from_address
 
 
 
@@ -19,7 +20,7 @@ class Group(models.Model):
         related_name='created_groups'
     )
 
-    
+
      # Use Mapbox Geocoding API to fetch latitude and longitude
     def save(self, *args, **kwargs):
         if self.address:
@@ -27,26 +28,12 @@ class Group(models.Model):
             if latitude and longitude:
                 self.location = gis_models.Point(longitude, latitude)
         super().save(*args, **kwargs)
-
-
  
     #Uses Mapbox Geocoding API to convert an address into latitude and longitude.
     @staticmethod
-    def get_coordinates_from_address(address):
-       
-        MAPBOX_ACCESS_TOKEN = settings.MAPBOX_ACCESS_TOKEN
-        url = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
-        params = {
-            "access_token": MAPBOX_ACCESS_TOKEN,
-            "limit": 1
-        }
-        response = requests.get(url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if data['features']:
-                coords = data['features'][0]['geometry']['coordinates']
-                return coords[1], coords[0]  # Latitude, Longitude
-        return None, None
+    def get_coordinates(address):
+        return get_coordinates_from_address(address)
+        
     
 
 
