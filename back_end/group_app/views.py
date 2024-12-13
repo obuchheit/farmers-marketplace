@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from .models import Group, GroupMember, JoinRequest
+from rest_framework.exceptions import ValidationError
 from user_app.models import User
 from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer
 from rest_framework.generics import RetrieveAPIView, ListAPIView
@@ -9,6 +10,9 @@ from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN, HTTP_204_NO_CONTENT
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db.models.functions import Distance
+
 
 
 """
@@ -114,8 +118,31 @@ Group Public Views
 """
 #List of all Groups
 class GroupListView(ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+    def get_queryset(self):
+        try: 
+            distance = float(self.request.queryparams.get('distance', 10))
+        except ValueError:
+            raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
+
+        user = self.request.user
+        if not user.location:
+            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
+
+        if not isinstance(user.location, Point):
+            raise ValidationError({"error": "User location is invalid."})
+        
+        user_location = user.location
+
+        return Group.objects.filter().annotate(
+            distance=Distance('location', user_location)
+        ).filter(
+            distance__lte=distance * 1000
+        ).order_by('distance')
 
 #Detailed View of group for non group members
 class GroupDetailPublicView(RetrieveAPIView):
