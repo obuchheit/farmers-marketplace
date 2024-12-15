@@ -17,12 +17,12 @@ function App() {
     else if (!user && !isAllowed) {
       navigate('/signin')
     }
-  }, [location.pathname, user, navigate])
+  }, [location.pathname, user])
   
   return (
     <>
       <NavBar user={user} setUser={setUser}/>
-      <Outlet context={{user, setUser}}/>
+      <Outlet context={{ user, setUser }}/>
     </>
   )
 }
