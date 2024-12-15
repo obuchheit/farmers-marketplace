@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -47,8 +47,8 @@ class SignInView(APIView):
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name
-                }
-            })
+                },
+            }, status=HTTP_201_CREATED)
         return Response({"detail": "Invalid credentials."}, status=HTTP_400_BAD_REQUEST)
 
 class SignOutView(TokenReq):
@@ -56,15 +56,16 @@ class SignOutView(TokenReq):
         request.user.auth_token.delete()
         return Response({"message": "Logged out successfully."}, status=HTTP_204_NO_CONTENT)
 
+
 class UserProfileView(TokenReq):
     def get(self, request):
-        user = request.user
-        serializer = UserProfileSerializer(user)
-        return Response(serializer.data)
+        return Response({"email": request.user.email})
+
 
 class UpdateUserProfileView(RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_object(self):
         return self.request.user

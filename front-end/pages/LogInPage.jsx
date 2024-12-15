@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useOutletContext } from 'react-router-dom';
-import {Form, Button } from 'react-bootstrap/Form';
+import { Form } from 'react-bootstrap';
+import Button from "react-bootstrap/Button";
 import { userLogIn } from '../utilities'
 
 
