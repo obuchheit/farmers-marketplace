@@ -8,6 +8,7 @@ import GardenPage from "../pages/GardenPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
 import SavedPostPage from "../pages/SavedPostPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortalPage.jsx";
+import SinglePostPage from "../pages/SinglePostPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: '/user-post-portal',
                 element: <UserPostPortalPage />
+            },
+            {
+                path: '/post/:postId',
+                element: <SinglePostPage />
             }
         ],
         errorElement: <Error404Page />

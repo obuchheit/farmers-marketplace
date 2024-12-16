@@ -16,7 +16,7 @@ const HomePage = ({ user }) => {
 
     try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:8000/', {
+        const response = await axios.get('http://localhost:8000/posts/', {
             headers: {
                 Authorization: `Token ${token}`,
             },
