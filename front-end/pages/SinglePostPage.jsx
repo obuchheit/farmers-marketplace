@@ -11,8 +11,8 @@ const SinglePostPage = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const token = localStorage.getItem('authToken');
-                const response = await axios.get(`http://localhost:8000/posts/${postId}/`, {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`http://localhost:8000/api/v1/posts/${postId}/`, {
                     headers: {
                         Authorization: `Token ${token}`,
                     },

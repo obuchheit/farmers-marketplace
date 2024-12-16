@@ -4,6 +4,8 @@ from django.conf import settings
 import requests
 from django.contrib.gis.db import models as gis_models
 from marketplace_proj.utils import get_coordinates_from_address
+from django.contrib.gis.geos import Point
+
 
 
 class UserPosts(models.Model):
@@ -20,9 +22,9 @@ class UserPosts(models.Model):
     # Use Mapbox Geocoding API to fetch latitude and longitude
     def save(self, *args, **kwargs):
         if self.address:
-            latitude, longitude = self.get_coordinates_from_address(self.address)
+            latitude, longitude = self.get_coordinates(self.address)
             if latitude and longitude:
-                self.location = gis_models.Point(longitude, latitude)
+                self.location = Point(longitude, latitude)
         super().save(*args, **kwargs)
 
     #Uses Mapbox Geocoding API to convert an address into latitude and longitude.

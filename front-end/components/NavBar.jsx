@@ -10,9 +10,24 @@ const NavBar = ({ user, setUser }) => {
         setUser(await signOut(user))
     }
   return (
-    <>
-        <ul style={{display:"flex", justifyContent:'space-around'}}>
-            <li><Link to='/'>Home</Link></li>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand as={Link} to='/'>Farmers Marketplace</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to='/user-post-portal'>Your Posts</Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
             {user ? (
                 <>
                     <Button onClick={logOut}>Sign Out</Button>
@@ -20,8 +35,11 @@ const NavBar = ({ user, setUser }) => {
             ) : (
                 <li><Link to='/signin'>Sign In/Sign Up</Link></li>
             )}
-        </ul>
-    </>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+
   )
 }
 

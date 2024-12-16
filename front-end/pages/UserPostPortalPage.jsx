@@ -18,7 +18,7 @@ const UserPostPortalPage = ({ user }) => {
         is_public: true,
         image: null,
     });
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
 
 
 
@@ -27,7 +27,7 @@ const UserPostPortalPage = ({ user }) => {
         setError(null);
 
         try {
-            const response = await axios.get('http://localhost:8000/posts/user-posts/', {
+            const response = await axios.get('http://localhost:8000/api/v1/posts/user-posts/', {
                 headers: { Authorization: `Token ${token}` },
             });
             setPosts(response.data);
@@ -47,7 +47,7 @@ const UserPostPortalPage = ({ user }) => {
             const form = new FormData();
             Object.keys(formData).forEach(key => form.append(key, formData[key]));
 
-            await axios.post('http://localhost:8000/posts/user-posts/', form, {
+            await axios.post('http://localhost:8000/api/v1/posts/user-posts/', form, {
                 headers: {
                     Authorization: `Token ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -65,11 +65,30 @@ const UserPostPortalPage = ({ user }) => {
         setShowCreateModal(true);
     };
 
+    const handleEditPost = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const form = new FormData();
+            Object.keys(formData).forEach(key => form.append(key, formData[key]));
+
+            await axios.put(`http://localhost:8000/user-posts/${selectedPost.id}/`, form, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setShowEditModal(false);
+            fetchUserPosts(); // Refresh posts
+        } catch (err) {
+            alert('Error updating post. Please try again.');
+        }
+    };
+
     const handleDeletePost = async (postId) => {
         if (!window.confirm('Are you sure you want to delete this post?')) return;
 
         try {
-            await axios.delete(`http://localhost:8000/posts/user-posts/${postId}/`, {
+            await axios.delete(`http://localhost:8000/api/v1/posts/user-posts/${postId}/`, {
                 headers: { Authorization: `Token ${token}` },
             });
             fetchUserPosts(); // Refresh posts
@@ -105,7 +124,6 @@ const UserPostPortalPage = ({ user }) => {
 
   return (
     <div>
-            <h1>{user.name}'s Posts</h1>
 
             <Button onClick={openCreateModal} variant="primary" className="mb-3">
                 Create New Post
