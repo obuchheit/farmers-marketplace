@@ -25,8 +25,6 @@ class UserPosts(models.Model):
                 self.location = gis_models.Point(longitude, latitude)
         super().save(*args, **kwargs)
 
-
- 
     #Uses Mapbox Geocoding API to convert an address into latitude and longitude.
     @staticmethod
     def get_coordinates(address):
