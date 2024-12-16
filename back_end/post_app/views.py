@@ -36,7 +36,7 @@ class AllPostsByLocationView(ListAPIView):
     def get_queryset(self):
         # Get the distance and user location from the request
         try:
-            distance = float(self.request.query_params.get('distance', 10))  # Default to 10 km
+            distance = float(self.request.query_params.get('distance', 50))  # Default to 50 km
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
         
