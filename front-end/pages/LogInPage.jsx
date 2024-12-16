@@ -13,14 +13,14 @@ const LogInPage = () => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         let formData = {
-            'username': email,
+            'email': email,
             'password': password,
         }
         setUser(await userLogIn(formData))
     }
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control 

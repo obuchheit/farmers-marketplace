@@ -6,7 +6,7 @@ import { signOut } from "../utilities";
 
 
 const NavBar = ({ user, setUser }) => {
-    const signOut = async() => {
+    const logOut = async() => {
         setUser(await signOut(user))
     }
   return (
@@ -15,7 +15,7 @@ const NavBar = ({ user, setUser }) => {
             <li><Link to='/'>Home</Link></li>
             {user ? (
                 <>
-                    <Button onClick={signOut}>Sign Out</Button>
+                    <Button onClick={logOut}>Sign Out</Button>
                 </>
             ) : (
                 <li><Link to='/signin'>Sign In/Sign Up</Link></li>

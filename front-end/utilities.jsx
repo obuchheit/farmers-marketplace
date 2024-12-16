@@ -4,7 +4,8 @@ export const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api/v1/"
 });
 
-export const userRegistration = async(formData) => {
+export const userRegistration = async (formData) => {
+    print(formData)
     let response = await api.post('users/auth/signup/', formData)
     if (response === 201) {
         let {token, user} = response.data 
@@ -17,9 +18,10 @@ export const userRegistration = async(formData) => {
 }
 
 
-export const userLogIn = async(formData) => {
-    let response = await api.post("users/auth/signin/ ", formData)
-    if (response.status === 200) {
+export const userLogIn = async (formData) => {
+    print(formData)
+    let response = await api.post("users/auth/signin/", formData)
+    if (response.status === 201) {
         let {token, user} = response.data
         localStorage.setItem("token", token)
         api.defaults.headers.common['Authorization'] = `Token ${token}`
@@ -39,6 +41,7 @@ export const signOut = async(user) => {
         return null
     }
     alert("Failure to log out.")
+    return user
 }
 
 
