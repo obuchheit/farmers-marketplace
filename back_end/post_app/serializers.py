@@ -1,22 +1,26 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, ImageField, SerializerMethodField
 from .models import UserPosts, UserSavedPosts
 from user_app.models import User
 from user_app.serializers import UserProfileSerializer
 
 
 """Serializer for Users to view or CRUD their own posts."""
-class UserPostSerializer(serializers.ModelSerializer):
+class UserPostSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
+    image = ImageField(use_url=True) # Ensures the full URL is included in the response
 
     class Meta:
         model = UserPosts
         fields = "__all__"
+        extra_kwargs = {
+            'image': {'required': False},
+        }
 
 
 
 """Serializer for public view."""
-class PostSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()  # Customize what user data is exposed
+class PostSerializer(ModelSerializer):
+    user = SerializerMethodField()  # Customize what user data is exposed
 
     class Meta:
         model = UserPosts
@@ -30,8 +34,8 @@ class PostSerializer(serializers.ModelSerializer):
             "profile_picture": obj.user.profile_picture.url if obj.user.profile_picture else None
         }
     
-class AllPostSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()  
+class AllPostSerializer(ModelSerializer):
+    user = SerializerMethodField()  
     
     class Meta:
         model = UserPosts
@@ -45,12 +49,12 @@ class AllPostSerializer(serializers.ModelSerializer):
         }
 
 # Serializer for common post-related fields
-class PostDetailSerializer(serializers.ModelSerializer):
+class PostDetailSerializer(ModelSerializer):
     class Meta:
         model = UserPosts
         fields = ['image', 'title', 'location']  # Limited fields for saved posts
 
-class AllUserSavedPostsSerializer(serializers.ModelSerializer):
+class AllUserSavedPostsSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     post_details = PostDetailSerializer(source='post', read_only=True)
 
@@ -59,7 +63,7 @@ class AllUserSavedPostsSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'post_details', 'saved_at']
 
 
-class UserSavedPostSerializer(serializers.ModelSerializer):
+class UserSavedPostSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     post_details = PostDetailSerializer(source='post', read_only=True)
 

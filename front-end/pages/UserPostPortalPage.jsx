@@ -67,11 +67,16 @@ const UserPostPortalPage = ({ user }) => {
 
     const handleEditPost = async () => {
         try {
-            const token = localStorage.getItem('authToken');
             const form = new FormData();
-            Object.keys(formData).forEach(key => form.append(key, formData[key]));
 
-            await axios.put(`http://localhost:8000/user-posts/${selectedPost.id}/`, form, {
+            //Append all form fields
+            Object.keys(formData).forEach(key => {
+                if (formData[key] !== null) {
+                    form.append(key, formData[key]);
+                }
+            });
+
+            await axios.put(`http://localhost:8000/api/v1/posts/user-posts/${selectedPost.id}/`, form, {
                 headers: {
                     Authorization: `Token ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -81,6 +86,7 @@ const UserPostPortalPage = ({ user }) => {
             fetchUserPosts(); // Refresh posts
         } catch (err) {
             alert('Error updating post. Please try again.');
+            console.error(err.response?.data || err.message);
         }
     };
 
