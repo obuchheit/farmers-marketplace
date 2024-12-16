@@ -72,6 +72,7 @@ const HomePage = ({ user }) => {
       {posts && Array.isArray(posts) && posts.length > 0 ? (
             posts.map(post => (
                 <li key={post.id} onClick={() => handlePostClick(post.id)} style={{ cursor: 'pointer' }}>
+                    <img src={post.image} alt={post.title} />
                     <h2>{post.title}</h2>
                     <p>{post.description}</p>
                     <p><strong>Distance:</strong> {Math.round(post.distance / 1000)} km</p>

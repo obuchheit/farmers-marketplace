@@ -34,6 +34,7 @@ const SinglePostPage = () => {
     return (
         <div>
             <h1>{post.title}</h1>
+            <img src={post.image} alt="" />
             <p>{post.description}</p>
             <p><strong>Location:</strong> {post.location}</p>
             <p><strong>Posted At:</strong> {new Date(post.time_posted).toLocaleString()}</p>

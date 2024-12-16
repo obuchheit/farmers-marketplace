@@ -64,7 +64,7 @@ class User(AbstractUser):
         max_length=100,
         blank=False,
         null=True,
-        default='92039'
+        default="Union, MO"
     )
     bio = models.TextField(
         verbose_name=_('Biography'),

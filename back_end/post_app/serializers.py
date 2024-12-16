@@ -36,11 +36,14 @@ class PostSerializer(ModelSerializer):
     
 class AllPostSerializer(ModelSerializer):
     user = SerializerMethodField()  
-    
+    image = ImageField(use_url=True) # Ensures the full URL is included in the response
+
     class Meta:
         model = UserPosts
         fields = ['user', 'image', 'title', 'location']
-
+        extra_kwargs = {
+            'image': {'required': False},
+        }
     def get_user(self, obj):
         # Return limited user information for public access
         return {
