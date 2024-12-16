@@ -31,6 +31,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(
         verbose_name=_('Email Address'),
         max_length=255,
@@ -110,6 +111,7 @@ class AdminProfile(models.Model):
 
     def __str__(self):
         return f"{self.admin_role} - {self.user.email}"
+    
     
 """TODO: Figure out where and how to implement BusinessUser Model."""
 class BusinessUser(models.Model):

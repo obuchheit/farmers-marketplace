@@ -15,20 +15,25 @@ const HomePage = ({ user }) => {
     setError(null);
 
     try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:8000/posts/', {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError("Authentication token not found. Please log in.");
+            return;
+        }
+
+        const response = await axios.get('http://localhost:8000/api/v1/posts/', {
             headers: {
                 Authorization: `Token ${token}`,
             },
             params: { distance },
         });
-    setPosts(response.data);
+        setPosts(response.data);
     } catch (err) {
-        setError(err.response ? err.response.data : 'An error occurred');
+        setError(err.response?.data || 'An unexpected error occurred');
     } finally {
         setLoading(false);
     }
-  };
+};
 
   // Fetch posts on initial render
   useEffect(() => {
@@ -46,8 +51,7 @@ const HomePage = ({ user }) => {
 
   return (
     <div>
-      <h1>Welcome, {user.name || 'User'}!</h1>
-
+        <h1>Welcome User</h1>
       <div>
           <label htmlFor="distance-slider">Search Radius: {distance} km</label>
           <input
@@ -65,13 +69,17 @@ const HomePage = ({ user }) => {
       {error && <p>Error: {error}</p>}
 
       <ul>
-          {posts.map(post => (
-              <li key={post.id} onClick={() => handlePostClick(post.id)} style={{ cursor: 'pointer' }}>
-                  <h2>{post.title}</h2>
-                  <p>{post.description}</p>
-                  <p><strong>Distance:</strong> {Math.round(post.distance / 1000)} km</p>
-              </li>
-          ))}
+      {posts && Array.isArray(posts) && posts.length > 0 ? (
+            posts.map(post => (
+                <li key={post.id} onClick={() => handlePostClick(post.id)} style={{ cursor: 'pointer' }}>
+                    <h2>{post.title}</h2>
+                    <p>{post.description}</p>
+                    <p><strong>Distance:</strong> {Math.round(post.distance / 1000)} km</p>
+                </li>
+            ))
+            ) : (
+            <p>No posts available.</p>
+        )}
       </ul>
     </div>
   )
