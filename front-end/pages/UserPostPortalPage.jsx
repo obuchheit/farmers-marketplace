@@ -118,8 +118,13 @@ const UserPostPortalPage = ({ user }) => {
         });
     };
 
-
-
+    const handleSwitchChange = (e) => {
+        const { name, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: checked, // Use the `checked` property for boolean values
+        });
+    };
 
 
   return (
@@ -177,6 +182,27 @@ const UserPostPortalPage = ({ user }) => {
                             <Form.Label>Image</Form.Label>
                             <Form.Control type="file" name="image" onChange={handleChange} />
                         </Form.Group>
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-available-switch"
+                                name="is_available"
+                                label="Is Available"
+                                checked={formData.is_available}
+                                onChange={handleSwitchChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-public-switch"
+                                name="is_public"
+                                label="Is Public"
+                                checked={formData.is_public}
+                                onChange={handleSwitchChange}
+                            />
+                        </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -217,6 +243,27 @@ const UserPostPortalPage = ({ user }) => {
                         <Form.Group>
                             <Form.Label>Image</Form.Label>
                             <Form.Control type="file" name="image" onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-available-switch"
+                                name="is_available"
+                                label="Is Available"
+                                checked={formData.is_available}
+                                onChange={handleSwitchChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-public-switch"
+                                name="is_public"
+                                label="Is Public"
+                                checked={formData.is_public}
+                                onChange={handleSwitchChange}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
