@@ -13,10 +13,11 @@ const ProfilePage = () => {
     profile_picture: null, // Profile picture URL or file
   });
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [editingField, setEditingField] = useState(null); // Track which field is being edited
   const [passwordData, setPasswordData] = useState({ current_password: '', new_password: '' }); // For password change
 
-  const baseUrl = 'http://localhost:8000/api/v1/users/profile/';
+  const baseUrl = 'http://localhost:8000/api/v1/users/profile/update/';
   const token = localStorage.getItem('token');
 
   const fetchProfile = async () => {
@@ -73,6 +74,7 @@ const ProfilePage = () => {
     }
   };
 
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -84,7 +86,7 @@ const ProfilePage = () => {
       {/* Display Profile Picture */}
       {formData.profile_picture ? (
         <img
-          src={`http://localhost:8000${formData.profile_picture}`}
+          src={formData.profile_picture}
           alt="Profile"
           style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem' }}
         />
@@ -94,7 +96,7 @@ const ProfilePage = () => {
 
       {/* Upload Profile Picture */}
       <div style={{ marginBottom: '1rem' }}>
-        <label>Upload New Profile Picture:</label>
+        <label>Change Profile Picture:</label>
         <input type="file" onChange={handleProfilePictureUpload} />
       </div>
 

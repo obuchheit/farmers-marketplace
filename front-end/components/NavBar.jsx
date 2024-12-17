@@ -30,6 +30,7 @@ const NavBar = ({ user, setUser }) => {
             </NavDropdown>
             {user ? (
                 <>
+                    <li><Link to='/profile'>Profile</Link></li>
                     <Button onClick={logOut}>Sign Out</Button>
                 </>
             ) : (
