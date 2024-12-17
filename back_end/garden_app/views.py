@@ -20,3 +20,17 @@ class Crop(APIView):
             return Response({"error": str(e)}, status=HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(response.json(), status=response.status_code)
+    
+
+class SingleCrop(APIView):
+    def get(self, request, id):
+        endpoint = f"https://openfarm.cc/api/v1/crops/{id}"
+
+        try:
+            response = requests.get(endpoint)
+            response.raise_for_status()
+
+        except requests.exceptions.RequestException as e:
+            return Response({"error": str(e)}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response(response.json(), status=response.status_code)
