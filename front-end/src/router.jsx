@@ -5,6 +5,7 @@ import LogInPage from "../pages/LogInPage.jsx";
 import HomePage from "../pages/HomePage.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
 import GardenPage from "../pages/GardenPage.jsx";
+import CropDetailPage from "../pages/CropDetailPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
 import SavedPostPage from "../pages/SavedPostPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortalPage.jsx";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: '/garden',
                 element: <GardenPage />
+            },
+            {
+                path: '/garden/:cropId',
+                element: <CropDetailPage />
             },
             {
                 path: '/saved-posts',
