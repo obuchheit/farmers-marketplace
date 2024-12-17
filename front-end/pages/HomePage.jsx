@@ -27,6 +27,7 @@ const HomePage = ({ user }) => {
             },
             params: { distance },
         });
+        console.log(response.data)
         setPosts(response.data);
     } catch (err) {
         setError(err.response?.data || 'An unexpected error occurred');

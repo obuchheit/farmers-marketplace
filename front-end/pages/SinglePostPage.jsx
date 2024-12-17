@@ -17,6 +17,7 @@ const SinglePostPage = () => {
                         Authorization: `Token ${token}`,
                     },
                 });
+                console.log(response.data)
                 setPost(response.data);
             } catch (err) {
                 setError(err.response ? err.response.data : 'An error occurred');
@@ -36,8 +37,8 @@ const SinglePostPage = () => {
             <h1>{post.title}</h1>
             <img src={post.image} alt="" />
             <p>{post.description}</p>
-            <p><strong>Location:</strong> {post.location}</p>
-            <p><strong>Posted At:</strong> {new Date(post.time_posted).toLocaleString()}</p>
+            <p><strong>Location:</strong> {post.address}</p>
+            <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
             <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
         </div>
     );

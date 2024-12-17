@@ -58,13 +58,12 @@ class User(AbstractUser):
         blank=True,
         null=True
     )
-    location = gis_models.PointField(blank=True, null=True)
+    location = gis_models.PointField(blank=True, null=True, default="San Diego, CA")
     address = models.CharField(
         verbose_name=_('Location Address'),
         max_length=100,
         blank=False,
         null=True,
-        default="Union, MO"
     )
     bio = models.TextField(
         verbose_name=_('Biography'),

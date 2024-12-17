@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, ImageField, SerializerMethodField
 from .models import UserPosts, UserSavedPosts
 from user_app.models import User
+from user_app.views import TokenReq
 from user_app.serializers import UserProfileSerializer
 
 
@@ -13,18 +14,24 @@ class UserPostSerializer(ModelSerializer):
         model = UserPosts
         fields = "__all__"
         extra_kwargs = {
+            'user': {'required': False}, # Allow the view to set this field programmatically
             'image': {'required': False},
         }
 
+    def create(self, validated_data):
+        # Ensure the user is set during post creation
+        user = self.context['request'].user
+        return UserPosts.objects.create(user=user, **validated_data)
 
 
 """Serializer for public view."""
 class PostSerializer(ModelSerializer):
+
     user = SerializerMethodField()  # Customize what user data is exposed
 
     class Meta:
         model = UserPosts
-        fields = ['id', 'user', 'image', 'title', 'description', 'address', 'time_posted', 'location']
+        fields = ['id', 'user', 'image', 'title', 'description', 'address', 'time_posted', 'location', 'is_available', 'is_public']
 
     def get_user(self, obj):
         # Expose only limited user information (e.g., name and profile picture)
@@ -51,6 +58,8 @@ class AllPostSerializer(ModelSerializer):
             "last_name": obj.user.last_name,
         }
 
+
+'''Saved Post Serializers'''
 # Serializer for common post-related fields
 class PostDetailSerializer(ModelSerializer):
     class Meta:

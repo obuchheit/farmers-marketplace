@@ -66,7 +66,7 @@ class SingleUserPostView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     
     queryset = UserPosts.objects.filter(is_public=True)  
-    serializer_class = PostDetailSerializer
+    serializer_class = PostSerializer
 
 
 """
@@ -83,15 +83,12 @@ class AllUserPostsView(ListAPIView):
         return UserPosts.objects.filter(user=self.request.user)
     
     def post(self, request):
-        data = request.data.copy()
-        data['user'] = request.user.id
-
-        serializer = UserPostSerializer(data=data)
+        serializer = UserPostSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
+            # Explicitly associate the post with the authenticated user
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-    
 
 #Allows users to get, update, or delete one of their posts based on it's id
 class ManageUserPostView(TokenReq): 
