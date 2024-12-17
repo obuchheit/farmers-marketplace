@@ -5,7 +5,6 @@ export const api = axios.create({
 });
 
 export const userRegistration = async (formData) => {
-    print(formData)
     let response = await api.post('users/auth/signup/', formData)
     if (response === 201) {
         let {token, user} = response.data 
@@ -19,7 +18,6 @@ export const userRegistration = async (formData) => {
 
 
 export const userLogIn = async (formData) => {
-    print(formData)
     let response = await api.post("users/auth/signin/", formData)
     if (response.status === 201) {
         let {token, user} = response.data

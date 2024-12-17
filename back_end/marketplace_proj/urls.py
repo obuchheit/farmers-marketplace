@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
+from django.conf.urls.static import static
+from .settings import MEDIA_URL, MEDIA_ROOT
 from django.contrib import admin
 
 urlpatterns = [
@@ -25,4 +27,4 @@ urlpatterns = [
     path('api/v1/groups/', include('group_app.urls')),
     path('api/v1/map/', include('map_app.urls')),
     path('api/v1/garden/', include('garden_app.urls')),
-]
+] + static(MEDIA_URL, document_root=MEDIA_ROOT)

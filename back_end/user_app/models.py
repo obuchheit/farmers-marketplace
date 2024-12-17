@@ -31,6 +31,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(
         verbose_name=_('Email Address'),
         max_length=255,
@@ -57,13 +58,12 @@ class User(AbstractUser):
         blank=True,
         null=True
     )
-    location = gis_models.PointField(blank=True, null=True)
+    location = gis_models.PointField(blank=True, null=True, default="San Diego, CA")
     address = models.CharField(
         verbose_name=_('Location Address'),
         max_length=100,
         blank=False,
         null=True,
-        default='92039'
     )
     bio = models.TextField(
         verbose_name=_('Biography'),
@@ -110,6 +110,7 @@ class AdminProfile(models.Model):
 
     def __str__(self):
         return f"{self.admin_role} - {self.user.email}"
+    
     
 """TODO: Figure out where and how to implement BusinessUser Model."""
 class BusinessUser(models.Model):

@@ -1,5 +1,8 @@
 from decouple import config
 from pathlib import Path
+import os 
+
+
 
 USDA_API_KEY = config("USDA_API_KEY")
 MAPBOX_ACCESS_TOKEN = config("MAPBOX_ACCESS_TOKEN")
@@ -39,6 +42,13 @@ INSTALLED_APPS = [
     'map_app',
     'garden_app',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,6 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'  # The URL prefix for accessing media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The directory where uploaded files are stored
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
