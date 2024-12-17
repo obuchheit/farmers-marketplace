@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.permissions import IsAuthenticated
@@ -62,13 +62,18 @@ class UserProfileView(TokenReq):
         return Response({"email": request.user.email})
 
 
-class UpdateUserProfileView(RetrieveUpdateAPIView):
+class UpdateUserProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
     def get_object(self):
         return self.request.user
+    
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.delete()
+        return Response({"message": "User Profile deleted successfully."}, status=HTTP_204_NO_CONTENT)
 
 
 
@@ -81,9 +86,10 @@ class AdminProfileView(TokenReq):
         except AdminProfile.DoesNotExist:
             return Response({"detail": "Admin profile not found."}, status=HTTP_400_BAD_REQUEST)
 
-class UpdateAdminProfileView(RetrieveUpdateAPIView):
+class UpdateAdminProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = AdminProfileSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_object(self):
         return self.request.user.admin_profile

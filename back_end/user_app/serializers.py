@@ -29,16 +29,11 @@ class SignupSerializer(serializers.ModelSerializer):
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """
-    Serializer for user profile management.
-    """
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'profile_picture', 'location', 'bio']
+        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio']
         extra_kwargs = {
-            'profile_picture': {'required': False, 'allow_null': True},
-            'bio': {'required': False, 'allow_blank': True},
-            'location': {'required': False},
+            'email': {'read_only': True},  # Prevent users from updating their email
         }
 
 class AdminProfileSerializer(serializers.ModelSerializer):
