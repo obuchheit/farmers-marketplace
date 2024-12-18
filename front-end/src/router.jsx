@@ -4,12 +4,12 @@ import RegistrationPage from "../pages/RegistrationPage.jsx";
 import LogInPage from "../pages/LogInPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
-import GardenPage from "../pages/GardenPage.jsx";
+import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
 import SavedPostPage from "../pages/SavedPostPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortalPage.jsx";
-import SinglePostPage from "../pages/SinglePostPage.jsx";
+import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 

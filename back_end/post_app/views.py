@@ -14,7 +14,8 @@ from .serializers import (
     AllUserSavedPostsSerializer, 
     UserSavedPostSerializer, 
     PostSerializer, 
-    PostDetailSerializer
+    PostDetailSerializer,
+    AllPostSerializer
     )
 
 from django.contrib.gis.db.models.functions import Distance
@@ -29,7 +30,7 @@ Public-view of UserPosts Views
 
 #View to list all UserPosts based on location.
 class AllPostsByLocationView(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = AllPostSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 

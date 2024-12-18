@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import './SinglePostPage.css'
 
 const SinglePostPage = () => {
     const { postId } = useParams();
@@ -34,9 +35,17 @@ const SinglePostPage = () => {
 
     return (
         <div>
+            
             <h1>{post.title}</h1>
-            <img src={post.image} alt="" />
-            <p>{post.description}</p>
+            <div className='post-image'>
+                <img id='post-image' src={post.image} alt="" />
+            </div>
+            <div className='user-div'> 
+                <img className='user-image' src={post.user.profile_picture}/>
+                <div>User: {post.user.first_name} {post.user.last_name}</div>
+            </div>
+
+            <p><strong>Desctiption: </strong>{post.description}</p>
             <p><strong>Location:</strong> {post.address}</p>
             <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
             <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>

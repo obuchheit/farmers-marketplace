@@ -5,11 +5,11 @@
     align-items: center;
     height: 15vh; /* Full height of the viewport */
     flex-direction: column; /* Optional: to stack any content above or below */
-    margin-bottom: 1vh;
+    margin-bottom: 3vh;
 }
 
 .slider-label {
-    font-size: 1em;
+    font-size: 1.5em;
     margin-bottom: 10px;
 }
 
@@ -54,6 +54,7 @@
     background: #5E653E;  
     cursor: pointer;
     margin-top: -1vh;
+    border: 1px #1d1f14 solid;
 }
 
 /* For Firefox */

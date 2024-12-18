@@ -3,6 +3,7 @@ import { InputGroup, FormControl, Button, Card, Row, Col } from 'react-bootstrap
 import { Search } from 'react-bootstrap-icons';
 import { Link } from "react-router-dom";
 import axios from "axios";
+import './CardenPage.css'
 
 const GardenPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,16 +30,17 @@ const GardenPage = () => {
 
   return (
     <div>
-      <InputGroup className="mb-3">
-        <InputGroup.Text>
-          <Search />
+      <InputGroup className="mb-3 input-group">
+        <InputGroup.Text className="icon">
+          <Search className="icon"/>
         </InputGroup.Text>
         <FormControl
+          className="search-bar"
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button onClick={handleSearch}>Search</Button>
+        <Button className="search-button" onClick={handleSearch}>Search</Button>
       </InputGroup>
 
       {error && <p className="text-danger">{error}</p>}
@@ -47,7 +49,7 @@ const GardenPage = () => {
         {results.length > 0 ? (
           results.map((item, index) => (
             <Col key={index} xs={6} md={3} lg={3} className="mb-4">
-              <Card>
+              <Card className="custom-card">
                 <Card.Img 
                 variant="top" 
                 src={item.attributes.main_image_path} 

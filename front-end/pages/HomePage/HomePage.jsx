@@ -10,7 +10,9 @@ const HomePage = ({ user }) => {
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userLocation, setUserLocation] = useState()
   const navigate = useNavigate();
+
 
   const fetchPosts = async () => {
     setLoading(true);
