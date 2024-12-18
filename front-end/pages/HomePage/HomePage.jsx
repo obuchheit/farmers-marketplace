@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import HomePageCard from "../components/HomePageCard/HomePageCard";
+import HomePageCard from "../../components/HomePageCard/HomePageCard";
+import "./HomePage.css"
 
 
 const HomePage = ({ user }) => {
@@ -54,8 +55,8 @@ const HomePage = ({ user }) => {
   return (
     <div>
         <h3>Today's Posts</h3>
-      <div>
-          <label htmlFor="distance-slider">Search Radius: {distance} km</label>
+      <div className="slider-container">
+          <label htmlFor="distance-slider" className="slider-label">Search Radius: {distance} km</label>
           <input
               id="distance-slider"
               type="range"
@@ -64,7 +65,7 @@ const HomePage = ({ user }) => {
               value={distance}
               onChange={handleDistanceChange}
           />
-          <button onClick={fetchPosts}>Search</button>
+          <button onClick={fetchPosts} className="slider-button">Search</button>
       </div>
 
       {loading && <p>Loading...</p>}

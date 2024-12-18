@@ -1,0 +1,81 @@
+/* Centering the slider on the page */
+.slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh; /* Full height of the viewport */
+    flex-direction: column; /* Optional: to stack any content above or below */
+    margin-bottom: 1vh;
+}
+
+.slider-label {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.slider-button {
+    background-color: #795f4b;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    width: 20vw;
+    height: 5vh;
+}
+
+/* Styling the slider */
+#distance-slider {
+    -webkit-appearance: none;  /* Removes default styles in Webkit browsers (Chrome, Safari) */
+    appearance: none;
+    width: 80%;  /* Set width of the slider */
+    height: 1vh;  /* Set height of the track */
+    background: #ddd;  /* Default background color of the track */
+    border-radius: 5px;
+    outline: none;  /* Remove outline */
+    transition: background 0.3s ease;  /* Smooth transition for hover effects */
+    margin-bottom: 3vh;
+
+}
+
+/* Styling the slider track */
+#distance-slider::-webkit-slider-runnable-track {
+    height: 1vh;
+    border-radius: 5px;
+    background: #856f61a1; /* Green color for the track */
+}
+
+/* Styling the slider thumb */
+#distance-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;  /* Removes default thumb styling */
+    appearance: none;
+    width: 3vh;
+    height: 3vh;
+    border-radius: 50%;
+    background: #5E653E;  
+    cursor: pointer;
+    margin-top: -1vh;
+}
+
+/* For Firefox */
+#distance-slider::-moz-range-track {
+    height: 10px;
+    border-radius: 5px;
+    background: #856f61a1;  
+}
+
+#distance-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5E653E;  
+    cursor: pointer;
+}
+
+/* Optional: Change the color of the track when the slider is being used */
+#distance-slider:active::-webkit-slider-runnable-track {
+    background: #856f61; /* Darker green */
+}
+
+#distance-slider:active::-moz-range-track {
+    background: #856f61; /* Darker green */
+}
