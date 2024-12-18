@@ -9,13 +9,11 @@
 .custom-navbar .navbar-brand,
 .custom-navbar .nav-link,
 .custom-navbar .dropdown-item {
-    color: white !important;
+    color: black !important;
     background-color: #9B9E87; 
 }
 
-#basic-nav-dropdown {
-    background-color: #C2A28D !important;
-}
+
 
 /* Flexbox for left and right alignment */
 .nav-links {

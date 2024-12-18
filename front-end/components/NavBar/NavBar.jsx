@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap"
-import { signOut } from "../utilities";
+import { signOut } from "../../utilities";
 import './NavBar.css';
 
 

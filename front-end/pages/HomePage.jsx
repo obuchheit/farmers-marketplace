@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import HomePageCard from "../components/HomePageCard/HomePageCard";
 
 
 const HomePage = ({ user }) => {
@@ -52,7 +53,7 @@ const HomePage = ({ user }) => {
 
   return (
     <div>
-        <h1>Welcome User</h1>
+        <h3>Today's Posts</h3>
       <div>
           <label htmlFor="distance-slider">Search Radius: {distance} km</label>
           <input
@@ -69,20 +70,15 @@ const HomePage = ({ user }) => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
-      <ul>
-      {posts && Array.isArray(posts) && posts.length > 0 ? (
+      <div className="card-container">
+        {posts && Array.isArray(posts) && posts.length > 0 ? (
             posts.map(post => (
-                <li key={post.id} onClick={() => handlePostClick(post.id)} style={{ cursor: 'pointer' }}>
-                    <img src={post.image} alt={post.title} />
-                    <h2>{post.title}</h2>
-                    <p>{post.description}</p>
-                    <p><strong>Distance:</strong> {Math.round(post.distance / 1000)} km</p>
-                </li>
+                <HomePageCard key={post.id} post={post} onClick={handlePostClick} />
             ))
-            ) : (
+        ) : (
             <p>No posts available.</p>
         )}
-      </ul>
+      </div>
     </div>
   )
 }

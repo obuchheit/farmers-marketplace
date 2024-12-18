@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar/NavBar";
 import { getInfo } from "../utilities";
 import "./index.css"
 
