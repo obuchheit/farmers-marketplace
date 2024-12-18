@@ -1,0 +1,31 @@
+/* Navbar container */
+.custom-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #9B9E87;
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .dropdown-item {
+    color: white !important;
+    background-color: #9B9E87; 
+}
+
+#basic-nav-dropdown {
+    background-color: #C2A28D !important;
+}
+
+/* Flexbox for left and right alignment */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Spacing between items */
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Spacing between Profile and buttons */
+}
