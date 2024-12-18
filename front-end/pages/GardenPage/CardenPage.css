@@ -1,0 +1,19 @@
+.input-group {
+    border-color: brown !important;
+}
+
+.icon {
+    background-color:#5e653e;
+}
+.search-bar {
+    background-color: #a8aa93;
+}
+
+.search-button {
+    background-color: #5e653e !important;
+    border: none;
+}
+
+.custom-card {
+    width: 250px !important;
+}

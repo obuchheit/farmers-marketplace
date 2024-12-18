@@ -28,6 +28,7 @@ const ProfilePage = () => {
       const response = await axios.get(baseUrl, {
         headers: { Authorization: `Token ${token}` },
       });
+      console.log(response.data)
       setFormData(response.data); // Populate formData with user profile data
     } catch (err) {
       setError(err.response ? err.response.data : 'An error occurred');

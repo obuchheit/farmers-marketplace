@@ -3,6 +3,8 @@ from .models import UserPosts, UserSavedPosts
 from user_app.models import User
 from user_app.views import TokenReq
 from user_app.serializers import UserProfileSerializer
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 
 
 """Serializer for Users to view or CRUD their own posts."""
@@ -34,29 +36,29 @@ class PostSerializer(ModelSerializer):
         fields = ['id', 'user', 'image', 'title', 'description', 'address', 'time_posted', 'location', 'is_available', 'is_public']
 
     def get_user(self, obj):
+        print(obj.user.profile_picture.url)
         # Expose only limited user information (e.g., name and profile picture)
         return {
             "first_name": obj.user.first_name,
             "last_name": obj.user.last_name,
-            "profile_picture": obj.user.profile_picture.url if obj.user.profile_picture else None
+            "profile_picture": f'http://localhost:8000{obj.user.profile_picture.url}' if obj.user.profile_picture else None
         }
     
 class AllPostSerializer(ModelSerializer):
-    user = SerializerMethodField()  
     image = ImageField(use_url=True) # Ensures the full URL is included in the response
+    distance = SerializerMethodField()
 
     class Meta:
         model = UserPosts
-        fields = ['user', 'image', 'title', 'location']
+        fields = ['id', 'image', 'title', 'address', 'distance']
         extra_kwargs = {
             'image': {'required': False},
         }
-    def get_user(self, obj):
-        # Return limited user information for public access
-        return {
-            "first_name": obj.user.first_name,
-            "last_name": obj.user.last_name,
-        }
+    
+    def get_distance(self, obj):
+        distance = round(obj.distance.km, 2)
+        return distance
+
 
 
 '''Saved Post Serializers'''

@@ -20,6 +20,7 @@
 .custom-navbar .dropdown-item {
     color: black !important;
     background-color: #9B9E87; 
+    padding: 0;
 }
 
 
@@ -35,4 +36,10 @@
     display: flex;
     align-items: center;
     gap: 1rem; /* Spacing between Profile and buttons */
+}
+
+@media (max-height: 700px) {
+    .custom-navbar {
+        height: 8vh;
+    }
 }

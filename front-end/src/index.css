@@ -6,7 +6,12 @@ body, html, #root {
 
 html {
   background-color: #C8C2B4;
-  padding: 7vh 5vh;
+  padding: 7vh 3vw;
 }
 
 
+@media (max-height: 700px) {
+  html {
+      padding: 8vh 2vw;
+  }
+}
