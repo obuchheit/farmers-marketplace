@@ -1,12 +1,16 @@
 import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar/NavBar";
 import { getInfo } from "../utilities";
+import "./index.css"
 
 function App() {
   const [user, setUser] = useState(useLoaderData());
   const navigate = useNavigate();
   const location = useLocation();
+  const nullUserPages = ['/signin', '/register'];
+
+
 
   useEffect(()=> {
     let nullUserUrl = ['/signin', '/register']
@@ -21,7 +25,9 @@ function App() {
   
   return (
     <>
-      <NavBar user={user} setUser={setUser}/>
+      {!nullUserPages.includes(location.pathname) && (
+      <NavBar user={user} setUser={setUser} />
+      )}      
       <Outlet context={{ user, setUser }}/>
     </>
   )

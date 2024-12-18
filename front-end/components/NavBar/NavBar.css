@@ -1,0 +1,38 @@
+/* Navbar container */
+.custom-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #9B9E87;
+    height: 6vh;
+}
+
+.dropdown-menu {
+    background-color: #9B9E87 !important;
+}
+
+.dropdown-item:hover {
+    background-color: #6b6d5c !important;
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .dropdown-item {
+    color: black !important;
+    background-color: #9B9E87; 
+}
+
+
+
+/* Flexbox for left and right alignment */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Spacing between items */
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Spacing between Profile and buttons */
+}

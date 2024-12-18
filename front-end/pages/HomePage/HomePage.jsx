@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import HomePageCard from "../../components/HomePageCard/HomePageCard";
+import "./HomePage.css"
 
 
 const HomePage = ({ user }) => {
@@ -52,9 +54,9 @@ const HomePage = ({ user }) => {
 
   return (
     <div>
-        <h1>Welcome User</h1>
-      <div>
-          <label htmlFor="distance-slider">Search Radius: {distance} km</label>
+        <h3>Today's Posts</h3>
+      <div className="slider-container">
+          <label htmlFor="distance-slider" className="slider-label">Search Radius: {distance} km</label>
           <input
               id="distance-slider"
               type="range"
@@ -63,26 +65,21 @@ const HomePage = ({ user }) => {
               value={distance}
               onChange={handleDistanceChange}
           />
-          <button onClick={fetchPosts}>Search</button>
+          <button onClick={fetchPosts} className="slider-button">Search</button>
       </div>
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
-      <ul>
-      {posts && Array.isArray(posts) && posts.length > 0 ? (
+      <div className="card-container">
+        {posts && Array.isArray(posts) && posts.length > 0 ? (
             posts.map(post => (
-                <li key={post.id} onClick={() => handlePostClick(post.id)} style={{ cursor: 'pointer' }}>
-                    <img src={post.image} alt={post.title} />
-                    <h2>{post.title}</h2>
-                    <p>{post.description}</p>
-                    <p><strong>Distance:</strong> {Math.round(post.distance / 1000)} km</p>
-                </li>
+                <HomePageCard key={post.id} post={post} onClick={handlePostClick} />
             ))
-            ) : (
+        ) : (
             <p>No posts available.</p>
         )}
-      </ul>
+      </div>
     </div>
   )
 }

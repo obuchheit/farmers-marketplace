@@ -1,0 +1,81 @@
+/* Card.css */
+
+/* Container for the cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px; 
+    justify-content: center; 
+}
+
+/* Card styling */
+.card {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #5E653E !important;
+    transition: transform 0.2s ease-in-out;
+    max-width: 250px;
+    margin: 5px auto;
+}
+
+/* Hover effect */
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    margin-top: -3px;
+    margin-bottom: 0; 
+    padding: 0; 
+}
+
+.card h2 {
+    text-align: center;
+    font-size: 1em;
+    margin: 8px 0;
+}
+
+.card p {
+    text-align: center;
+    color: white;
+    font-size: 0.9em;
+    margin: 4px 0;
+}
+
+.card .distance {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Media queries for responsive layout */
+@media (min-width: 1200px) {
+    .card-container {
+        justify-content: space-evenly; /* Even spacing on large screens */
+    }
+
+    .card {
+        flex: 0 0 22%; /* 4 cards per row on large screens */
+    }
+}
+
+@media (max-width: 991px) {
+    .card {
+        flex: 0 0 48%; /* 2 cards per row on medium screens (e.g., tablets) */
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        flex: 0 0 98%; /* 1 card per row on small screens (e.g., mobile) */
+    }
+}
