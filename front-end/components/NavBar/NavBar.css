@@ -38,6 +38,12 @@
     gap: 1rem; /* Spacing between Profile and buttons */
 }
 
+#profile-picture {
+    height: 4vh;
+    width: 4vh;
+    border-radius: 50%;
+}
+
 @media (max-height: 700px) {
     .custom-navbar {
         height: 8vh;

@@ -82,3 +82,19 @@ export const getInfo = async() => {
         return null
     }
 }
+
+export const getProfilePicture = async() => {
+    let token = localStorage.getItem('token')
+    if (token){
+        api.defaults.headers.common['Authorization'] = `Token ${token}`
+        let response = await api.get("users/profile/update/")
+        if (response.status === 200) {
+            return response.data.profile_picture
+        }
+        return null
+    }
+    else {
+        return null
+    }
+
+}
