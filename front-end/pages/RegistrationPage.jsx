@@ -96,6 +96,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="text"
             name="address"
+            placeholder='City, State'
             value={formData.address}
             onChange={handleChange}
             required

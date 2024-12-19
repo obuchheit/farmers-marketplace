@@ -57,7 +57,7 @@ class User(AbstractUser):
         upload_to='profile_pictures/',
         blank=True,
         null=True,
-        default='../media/default_images/default_post_image.jpg'
+        default='profile_pictures/default_profile_picture.jpg'
     )
     location = gis_models.PointField(blank=True, null=True, default="San Diego, CA")
     address = models.CharField(

@@ -10,7 +10,7 @@ from django.contrib.gis.geos import Point
 
 class UserPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts')
-    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True, default='post_images/default_post_image.jpg')
     title = models.CharField(blank=False, null=True)
     description = models.TextField(blank=False, null=True)
     location = gis_models.PointField(blank=True, null=True, default='San Diego, CA')

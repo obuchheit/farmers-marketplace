@@ -10,18 +10,26 @@ from django.contrib.gis.geos import Point
 """Serializer for Users to view or CRUD their own posts."""
 class UserPostSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
-    image = ImageField(use_url=True) # Ensures the full URL is included in the response
+    image = ImageField(use_url=True, required=False, allow_null=True) # Ensures the full URL is included in the response
 
     class Meta:
         model = UserPosts
         fields = "__all__"
         extra_kwargs = {
             'user': {'required': False}, # Allow the view to set this field programmatically
-            'image': {'required': False},
+            'image': {'required': False, 'allow_null': True},
         }
+        
+    def validate_image(self, value):
+        # Allow missing or null image
+        if not value:
+            return None
+        return value
 
     def create(self, validated_data):
-        # Ensure the user is set during post creation
+        if 'image' not in validated_data or not validated_data['image']:
+            validated_data['image'] = 'post_images/default_post_image.jpg'
+
         user = self.context['request'].user
         return UserPosts.objects.create(user=user, **validated_data)
 

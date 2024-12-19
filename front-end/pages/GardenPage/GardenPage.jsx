@@ -30,7 +30,7 @@ const GardenPage = () => {
 
   return (
     <div>
-      <InputGroup className="mb-3 input-group">
+      <InputGroup className="mb-2 input-group">
         <InputGroup.Text className="icon">
           <Search className="icon"/>
         </InputGroup.Text>
@@ -40,7 +40,7 @@ const GardenPage = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button className="search-button" onClick={handleSearch}>Search</Button>
+        <Button className="search-button" onSubmit={handleSearch}>Search</Button>
       </InputGroup>
 
       {error && <p className="text-danger">{error}</p>}
