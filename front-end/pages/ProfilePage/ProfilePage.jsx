@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { FaPencilAlt } from 'react-icons/fa'; 
+import "./ProfilePage.css"
 
 const ProfilePage = () => {
   const [error, setError] = useState(null);
@@ -99,36 +101,43 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Profile Page</h1>
+    <div className="profile-page">
 
       {/* Display Profile Picture */}
       {formData.profile_picture ? (
         <img
           src={formData.profile_picture}
           alt="Profile"
-          style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem' }}
+          className="profile-picture"
         />
       ) : (
         <p>No profile picture available.</p>
       )}
 
       {/* Upload Profile Picture */}
-      <div style={{ marginBottom: '1rem' }}>
-        <label>Change Profile Picture:</label>
-        <input type="file" onChange={handleProfilePictureUpload} />
+      <div className="upload-section">
+        <label htmlFor="profile-picture-upload" className="upload-label">
+          <FaPencilAlt /> 
+        </label>
+        <input
+          type="file"
+          id="profile-picture-upload"
+          onChange={handleProfilePictureUpload}
+          className="file-input"
+        />
       </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
+
       {loading ? (
         <p>Loading...</p>
       ) : (
         <form>
           {/* Editable fields */}
           {['first_name', 'last_name', 'address', 'bio'].map((field) => (
-            <div key={field} style={{ marginBottom: '1rem' }}>
+            <div key={field} className="form-group">
               <label>
-                <strong>{field.replace('_', ' ').toUpperCase()}:</strong>
+                <strong>{field.replace('_', ' ').toUpperCase()}: </strong>
               </label>
               {editingField === field ? (
                 <input
@@ -142,20 +151,21 @@ const ProfilePage = () => {
               )}
               <button
                 type="button"
+                className="edit-button"
                 onClick={() =>
                   editingField === field
                     ? handleFieldSubmit(field)
                     : setEditingField(field)
                 }
               >
-                {editingField === field ? 'Submit' : 'Edit'}
+                {editingField === field ? 'Submit' : <FaPencilAlt />}
               </button>
             </div>
           ))}
 
           {/* Password change */}
           <h3>Change Password</h3>
-          <div style={{ marginBottom: '1rem' }}>
+          <div className="form-group">
             <label>Current Password:</label>
             <input
               type="password"
@@ -169,7 +179,7 @@ const ProfilePage = () => {
               }
             />
           </div>
-          <div style={{ marginBottom: '1rem' }}>
+          <div className="form-group">
             <label>New Password:</label>
             <input
               type="password"
@@ -183,13 +193,17 @@ const ProfilePage = () => {
               }
             />
           </div>
-          <button type="button" onClick={handleFieldSubmit}>
+          <button type="button" className="submit-button" onClick={handleFieldSubmit}>
             Change Password
           </button>
 
           {/* Delete profile */}
           <h3>Delete Profile</h3>
-          <button type="button" style={{ color: 'red' }} onClick={() => handleDeleteProfile()}>
+          <button
+            type="button"
+            className="delete-button"
+            onClick={() => handleDeleteProfile()}
+          >
             Delete Profile
           </button>
         </form>
