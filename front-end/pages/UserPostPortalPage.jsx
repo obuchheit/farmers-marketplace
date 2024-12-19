@@ -45,7 +45,12 @@ const UserPostPortalPage = ({ user }) => {
     const handleCreatePost = async () => {
         try {
             const form = new FormData();
-            Object.keys(formData).forEach(key => form.append(key, formData[key]));
+            Object.keys(formData).forEach(key => {
+                if (key === "image" && !formData[key]) return; // Skip appending if image is null
+                form.append(key, formData[key]);
+            });
+
+            console.log([...form.entries()]);
 
             await axios.post('http://localhost:8000/api/v1/posts/user-posts/', form, {
                 headers: {
@@ -55,7 +60,10 @@ const UserPostPortalPage = ({ user }) => {
             });
             setShowCreateModal(false);
             fetchUserPosts(); // Refresh posts
+            
         } catch (err) {
+            console.error(err.response?.data || err.message);
+
             alert('Error creating post. Please try again.');
         }
     }

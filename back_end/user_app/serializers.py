@@ -21,7 +21,7 @@ class SignupSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name'),
             address=validated_data.get('address'),
         )
-        user.profile_picture = validated_data.get('profile_picture')
+        user.profile_picture = validated_data.get('profile_picture') or 'profile_pictures/default_profile_picture.jpg'
         user.bio = validated_data.get('bio')
 
         
