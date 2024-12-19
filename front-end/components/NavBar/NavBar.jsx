@@ -1,16 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap"
-import { signOut } from "../../utilities";
+import { signOut, getProfilePicture } from "../../utilities";
 import './NavBar.css';
-
-
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const NavBar = ({ user, setUser }) => {
+    const [profileImage, setProfileImage] = useState(null);
+
     const logOut = async() => {
         setUser(await signOut(user))
     }
+
+    useEffect (() => {
+        const getImage = async() => {
+            setProfileImage(await getProfilePicture())
+        }
+        getImage()
+    },[])
+
+
   return (
     <Navbar expand="lg" fixed="top" className="custom-navbar px-5">
             <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
@@ -32,7 +42,7 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                            <Link to="/profile"><img id="profile-picture" src={profileImage}/></Link>
                             <Button variant="outline-danger" onClick={logOut}>Sign Out</Button>
                         </>
                     ) : (
