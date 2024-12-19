@@ -72,6 +72,10 @@ class UpdateUserProfileView(RetrieveUpdateDestroyAPIView):
     
     def delete(self, request, *args, **kwargs):
         user = self.get_object()
+
+        if hasattr(user, 'auth_token'):
+            user.auth_token.delete()
+            
         user.delete()
         return Response({"message": "User Profile deleted successfully."}, status=HTTP_204_NO_CONTENT)
 
