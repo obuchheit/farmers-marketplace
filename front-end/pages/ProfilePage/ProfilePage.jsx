@@ -75,6 +75,24 @@ const ProfilePage = () => {
     }
   };
 
+  const handleDeleteProfile = async () => {
+    try {
+      const response = await axios.delete(baseUrl, {
+        headers: {
+          Authorization: `Token ${token}`, 
+        },
+      });
+      
+      alert(response.data.message); // Notify the user of successful deletion.
+      localStorage.removeItem('token');
+      
+      window.location.href = '/'; // Redirect to login or homepage.
+    } catch (error) {
+      console.error('Error deleting profile:', error);
+      alert('Failed to delete profile. Please try again.');
+    }
+  };
+
 
   useEffect(() => {
     fetchProfile();

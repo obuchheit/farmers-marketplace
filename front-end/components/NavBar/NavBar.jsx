@@ -42,8 +42,8 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <Link to="/profile"><img id="profile-picture" src={profileImage}/></Link>
                             <Button variant="outline-danger" onClick={logOut}>Sign Out</Button>
+                            <Link to="/profile"><img id="profile-picture" src={profileImage}/></Link>
                         </>
                     ) : (
                         <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>

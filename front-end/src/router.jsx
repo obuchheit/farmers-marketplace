@@ -3,7 +3,7 @@ import App from "./App.jsx";
 import RegistrationPage from "../pages/RegistrationPage.jsx";
 import LogInPage from "../pages/LogInPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
-import ProfilePage from "../pages/ProfilePage.jsx";
+import ProfilePage from "../pages/ProfilePage/ProfilePage.jsx";
 import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
