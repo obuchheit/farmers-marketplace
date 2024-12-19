@@ -1,0 +1,7 @@
+#crop-image {
+    object-fit: cover;
+    height: 20vh;
+    width: 40vh;
+    border-radius: 3vh;
+    margin-bottom: 3vh;
+}

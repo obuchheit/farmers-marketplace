@@ -147,7 +147,7 @@ const ProfilePage = () => {
                   onChange={handleFieldChange}
                 />
               ) : (
-                <p>{formData[field]}</p>
+                <p className="value-field">{formData[field]}</p>
               )}
               <button
                 type="button"

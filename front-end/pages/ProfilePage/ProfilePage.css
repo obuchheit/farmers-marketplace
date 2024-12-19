@@ -6,10 +6,6 @@
     margin: 0 auto;
   }
   
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
   
   .form-group {
     margin-bottom: 1rem;
@@ -20,7 +16,6 @@
     display: none;
   }
   
-  /* Style the label to look like a button with a pencil icon */
   .upload-label {
     display: inline-flex;
     align-items: center;
@@ -38,6 +33,15 @@
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
+  }
+
+  .value-field {
+    margin-left: 1vh;
+    background-color: rgba(158, 146, 123, 0.39);
+    border: lightgray solid 2px;
+    border-radius: 1vh;
+    padding: 1vh;
+    margin-top: -0.75vh;
   }
   
   input[type="text"],
@@ -66,7 +70,6 @@
     height: 20vh;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 1rem;
   }
   
   /* Buttons */
@@ -85,13 +88,14 @@
   
   .edit-button {
     background-color: transparent;
-    color: #9B9E87;
-    border: none;
-    font-size: 1.25rem;
+    color: black;
+    border-radius: 50%;
+    font-size: 1rem;
+    padding: none;
   }
   
   .edit-button:hover {
-    color: #9B9E87;
+    background-color: #9B9E87;
   }
   
   .submit-button {
@@ -123,10 +127,11 @@
   
   /* Upload section */
   .upload-section {
-    margin: -3vh 0 4vh 7vh;
     display: flex;
     justify-content: start;
-    padding-left: 5vw;
+    padding-left: 20vh;
+    margin-top: -5vh;
+    margin-bottom: 8vh;
   }
   
   .upload-section input[type="file"] {
