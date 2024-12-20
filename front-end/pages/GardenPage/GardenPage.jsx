@@ -7,8 +7,10 @@ import './CardenPage.css'
 
 const GardenPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]); // State to hold search results
-  const [error, setError] = useState(''); // State to hold error messages
+  const [results, setResults] = useState([]); 
+  const [error, setError] = useState(''); 
+
+  const aws = 's3.amazonaws.com'
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -54,7 +56,14 @@ const GardenPage = () => {
         {results.length > 0 ? (
           results.map((item, index) => (
             <div className="custom-card" key={index}>
-              <img src={item.attributes.main_image_path} alt={item.attributes.name} id="image" />
+
+              <img 
+              src={item.attributes.main_image_path} 
+              alt={item.attributes.name} 
+              id="image" 
+              />
+
+
               <h3>{item.attributes.name}</h3>
               <Button as={Link} to={`/garden/${item.id}`} className="details-button">Details</Button>
             </div>
