@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './SinglePostPage.css'
@@ -37,14 +38,15 @@ const SinglePostPage = () => {
         <div>
             
             <h1>{post.title}</h1>
-            <div className='post-image'>
-                <img id='post-image' src={post.image} alt="" />
-            </div>
-            <div className='user-div'> 
-                <img className='user-image' src={post.user.profile_picture}/>
-                <div>User: {post.user.first_name} {post.user.last_name}</div>
-            </div>
-
+                <div className='post-image'>
+                    <img id='post-image' src={post.image} alt="" />
+                </div>
+                <Link to={`/public-profile-page/${post.user.id}`} className="link-style">
+                    <div className='user-div'> 
+                        <img className='user-image' src={post.user.profile_picture}/>
+                        <div>{post.user.first_name} {post.user.last_name}</div>
+                    </div>
+                </Link>
             <p><strong>Desctiption: </strong>{post.description}</p>
             <p><strong>Location:</strong> {post.address}</p>
             <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>

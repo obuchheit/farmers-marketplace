@@ -2,9 +2,9 @@ import React from 'react'
 
 const Error404Page = () => {
   return (
-    <div>
-      
-    </div>
+    <h1>
+      404 Page Does Not Exist
+    </h1>
   )
 }
 

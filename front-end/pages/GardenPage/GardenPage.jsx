@@ -7,8 +7,10 @@ import './CardenPage.css'
 
 const GardenPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]); // State to hold search results
-  const [error, setError] = useState(''); // State to hold error messages
+  const [results, setResults] = useState([]); 
+  const [error, setError] = useState(''); 
+
+  const aws = 's3.amazonaws.com'
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -32,51 +34,44 @@ const GardenPage = () => {
     <div>
       <InputGroup className="mb-2 input-group">
         <InputGroup.Text className="icon">
-          <Search className="icon"/>
+          <Search className="icon" />
         </InputGroup.Text>
         <FormControl
           className="search-bar"
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch(e); // Pass the event explicitly for Enter key.
+            }
+          }}
         />
-        <Button className="search-button" onSubmit={handleSearch}>Search</Button>
+        <Button className="search-button" onClick={() => handleSearch()}>Search</Button>
       </InputGroup>
 
-      {error && <p className="text-danger">{error}</p>}
 
-      <Row>
+      {error && <p className="text-danger">{error}</p>}
+        <div className="card-container">
         {results.length > 0 ? (
           results.map((item, index) => (
-            <Col key={index} xs={6} md={3} lg={3} className="mb-4">
-              <Card className="custom-card">
-                <Card.Img 
-                variant="top" 
-                src={item.attributes.main_image_path} 
-                alt={item.attributes.name} 
-                style={{
-                  width: "100%",
-                  height: "10vw",
-                  objectFit: "cover",
-                }}
-                />
-                <Card.Body>
-                  <Card.Title>{item.attributes.name}</Card.Title>
-                  <Button 
-                  variant="primary"
-                  as={Link}
-                  to={`/garden/${item.id}`}
-                  >
-                    View Details
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
+            <div className="custom-card" key={index}>
+
+              <img 
+              src={item.attributes.main_image_path} 
+              alt={item.attributes.name} 
+              id="image" 
+              />
+
+
+              <h3>{item.attributes.name}</h3>
+              <Button as={Link} to={`/garden/${item.id}`} className="details-button">Details</Button>
+            </div>
           ))
         ) : (
           <p>No results to display.</p>
         )}
-      </Row>
+        </div>
     </div>
   );
 };

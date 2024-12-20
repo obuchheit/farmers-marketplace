@@ -42,7 +42,7 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <Button variant="outline-danger" onClick={logOut}>Sign Out</Button>
+                            <Button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</Button>
                             <Link to="/profile"><img id="profile-picture" src={profileImage}/></Link>
                         </>
                     ) : (

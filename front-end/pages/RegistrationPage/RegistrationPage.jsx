@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
-import { userRegistration } from "../utilities";
-
+import { userRegistration } from "../../utilities";
+import './RegistrationPage.css'
 
 const RegistrationPage = () => {
   const { setUser } = useOutletContext();
@@ -52,6 +52,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="email"
             name="email"
+            placeholder='youremail@email.com'
             value={formData.email}
             onChange={handleChange}
             required
@@ -63,6 +64,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="password"
             name="password"
+            placeholder='Password'
             value={formData.password}
             onChange={handleChange}
             required
@@ -74,6 +76,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="text"
             name="first_name"
+            placeholder='First'
             value={formData.first_name}
             onChange={handleChange}
             required
@@ -85,6 +88,7 @@ const RegistrationPage = () => {
           <Form.Control
             type="text"
             name="last_name"
+            placeholder='Last'
             value={formData.last_name}
             onChange={handleChange}
             required
@@ -110,7 +114,7 @@ const RegistrationPage = () => {
           label="All the info is correct" />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className='button'>
           Sign Up
         </Button>
       </Form>

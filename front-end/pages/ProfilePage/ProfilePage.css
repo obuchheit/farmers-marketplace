@@ -6,10 +6,6 @@
     margin: 0 auto;
   }
   
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
   
   .form-group {
     margin-bottom: 1rem;
@@ -20,16 +16,16 @@
     display: none;
   }
   
-  /* Style the label to look like a button with a pencil icon */
   .upload-label {
     display: inline-flex;
     align-items: center;
-    background-color: #9B9E87;
-    border: solid 2px lightgray;
+    background-color: transparent;
     cursor: pointer;
     color: black;
     padding: 1vh;
     border-radius: 50%;
+    height: 6vh;
+    width: 6vh;
     font-size: 1rem;
     transition: background-color 0.3s ease;
   }
@@ -38,6 +34,15 @@
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
+  }
+
+  .value-field {
+    margin-left: 1vh;
+    background-color: rgba(158, 146, 123, 0.39);
+    border: lightgray solid 2px;
+    border-radius: 1vh;
+    padding: 1vh;
+    margin-top: -0.75vh;
   }
   
   input[type="text"],
@@ -66,7 +71,6 @@
     height: 20vh;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 1rem;
   }
   
   /* Buttons */
@@ -83,33 +87,38 @@
     opacity: 0.8;
   }
   
-  .edit-button {
+  #pencil-button {
     background-color: transparent;
-    color: #9B9E87;
-    border: none;
-    font-size: 1.25rem;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
   }
   
   .edit-button:hover {
-    color: #9B9E87;
+    background-color: #9B9E87;
   }
   
   .submit-button {
-    background-color: #28a745;
+    background-color: #5e653e;
     color: white;
+    border-radius: 1vh;
   }
   
   .submit-button:hover {
-    background-color: #218838;
+    background-color: #56583c;
+
   }
   
-  .delete-button {
+  #delete-button {
     background-color: transparent;
     color: red;
     border: 1px solid red;
   }
   
-  .delete-button:hover {
+  #delete-button:hover {
     background-color: red;
     color: white;
   }
@@ -123,10 +132,11 @@
   
   /* Upload section */
   .upload-section {
-    margin: -3vh 0 4vh 7vh;
     display: flex;
     justify-content: start;
-    padding-left: 5vw;
+    padding-left: 20vh;
+    margin-top: -5vh;
+    margin-bottom: 8vh;
   }
   
   .upload-section input[type="file"] {
@@ -135,3 +145,7 @@
     font-size: 1rem;
   }
   
+
+  .change-password-input {
+    background-color: rgba(158, 146, 123, 0.39);
+  }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
 import axios from "axios";
+import './UserPostPortalPage.css'
 
 const UserPostPortalPage = ({ user }) => {
     const [error, setError] = useState(null);
@@ -19,8 +20,6 @@ const UserPostPortalPage = ({ user }) => {
         image: null,
     });
     const token = localStorage.getItem('token');
-
-
 
     const fetchUserPosts = async () => {
         setLoading(true);
@@ -144,7 +143,7 @@ const UserPostPortalPage = ({ user }) => {
   return (
     <div>
 
-            <Button onClick={openCreateModal} variant="primary" className="mb-3">
+            <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">
                 Create New Post
             </Button>
 
@@ -159,8 +158,10 @@ const UserPostPortalPage = ({ user }) => {
                             <Card.Body>
                                 <Card.Title>{post.title}</Card.Title>
                                 <Card.Text>{post.description}</Card.Text>
-                                <Button variant="info" onClick={() => openEditModal(post)}>Edit</Button>{' '}
-                                <Button variant="danger" onClick={() => handleDeletePost(post.id)}>Delete</Button>
+                                <div className="button-container">
+                                    <Button className="edit-button" variant="info" onClick={() => openEditModal(post)}>Edit</Button>{' '}
+                                    <Button className="delete-button" variant="danger" onClick={() => handleDeletePost(post.id)}>Delete</Button>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import axios from "axios";
+import './CropDetailPage.css'
 
 
 const CropDetailPage = () => {
@@ -32,7 +33,7 @@ const CropDetailPage = () => {
     <div>
       <h1>{results.attributes.name}</h1>
       <p><strong>Binomial Name: </strong>{results.attributes.binomial_name}</p>
-      <img src={results.attributes.main_image_path} alt={results.attributes.name} />
+      <img src={results.attributes.main_image_path} alt={results.attributes.name} id="crop-image" />
       <p><strong>Descrition:</strong><br />{results.attributes.description}</p>
       <p>
         <strong>Planting Details</strong><br />

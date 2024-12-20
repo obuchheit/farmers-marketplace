@@ -1,17 +1,52 @@
 .input-group {
-    border-color: brown !important;
+    margin: 3vh 3vh !important;
+}
+
+.input-group-text {
+    background-color: #5e653e !important;
+    border: none !important;
 }
 
 
 .search-bar {
-    background-color: #a8aa93;
+    background-color: #a8aa93 !important;
+    border: none !important;
 }
 
 .search-button {
     background-color: #5e653e !important;
-    border: none;
+    border: none !important;
 }
+
+.card-container {
+    margin-top: 5vh;
+}
+
 
 .custom-card {
     width: 250px !important;
+    min-height: 10vh !important;
+    background-color: #5E653E;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1vh;
+}
+
+
+.details-button {
+    background-color: rgb(109, 88, 60) !important;
+    color: white;
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+#image {
+    width: 250px !important;
+    height: 15vh !important;
+    border-radius: 8px;
+    margin-bottom: 1vh;
+    object-fit: cover;
+    height: auto;
 }

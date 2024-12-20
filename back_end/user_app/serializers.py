@@ -31,9 +31,23 @@ class SignupSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio']
+        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio', 'password']
         extra_kwargs = {
             'email': {'read_only': True},  # Prevent users from updating their email
+        }
+
+class UserProfilePublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio']
+        extra_kwargs = {
+            'id': {'read_only': True},
+            'email': {'read_only': True},
+            'first_name': {'read_only': True},  
+            'last_name': {'read_only': True},
+            'profile_picture': {'read_only': True},
+            'bio': {'read_only': True},
+            'address': {'read_only': True},
         }
 
 class AdminProfileSerializer(serializers.ModelSerializer):

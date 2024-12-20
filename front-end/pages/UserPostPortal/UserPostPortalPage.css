@@ -1,0 +1,21 @@
+.create-button {
+    background-color: #5e653e !important;
+    border: white 2px solid !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.edit-button {
+    background-color: #7688aa !important;
+    border: none !important;
+    color: white !important;
+}
+
+.delete-button {
+    background-color: #a74d32 !important;
+    border: none !important;
+    color: white !important;
+}

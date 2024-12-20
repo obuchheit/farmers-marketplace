@@ -47,6 +47,7 @@ class PostSerializer(ModelSerializer):
         print(obj.user.profile_picture.url)
         # Expose only limited user information (e.g., name and profile picture)
         return {
+            "id": obj.user.id,
             "first_name": obj.user.first_name,
             "last_name": obj.user.last_name,
             "profile_picture": f'http://localhost:8000{obj.user.profile_picture.url}' if obj.user.profile_picture else None

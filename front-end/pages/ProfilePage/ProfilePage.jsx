@@ -147,11 +147,11 @@ const ProfilePage = () => {
                   onChange={handleFieldChange}
                 />
               ) : (
-                <p>{formData[field]}</p>
+                <p className="value-field">{formData[field]}</p>
               )}
               <button
                 type="button"
-                className="edit-button"
+                id="pencil-button"
                 onClick={() =>
                   editingField === field
                     ? handleFieldSubmit(field)
@@ -170,6 +170,7 @@ const ProfilePage = () => {
             <input
               type="password"
               name="current_password"
+              className="change-password-input"
               value={passwordData.current_password}
               onChange={(e) =>
                 setPasswordData((prev) => ({
@@ -184,6 +185,7 @@ const ProfilePage = () => {
             <input
               type="password"
               name="new_password"
+              className="change-password-input"
               value={passwordData.new_password}
               onChange={(e) =>
                 setPasswordData((prev) => ({
@@ -201,7 +203,7 @@ const ProfilePage = () => {
           <h3>Delete Profile</h3>
           <button
             type="button"
-            className="delete-button"
+            id="delete-button"
             onClick={() => handleDeleteProfile()}
           >
             Delete Profile

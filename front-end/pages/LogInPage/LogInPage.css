@@ -1,0 +1,30 @@
+.page {
+    display: flex;
+    justify-content: center;
+    margin-top: 20vh;
+    height: 100vh;
+}
+
+.container {
+    max-width: 50vw !important;
+    max-height: 30vh !important;
+    align-items: center;
+}
+
+.button {
+    margin-right: 10vh;
+    background-color: rgb(111, 119, 66) !important;
+    border: none !important;
+    border-radius: 3vh !important;
+    color: white;
+}
+
+@media (max-width: 800px) {
+    .container {
+        max-width: 80vw !important;
+    }
+
+    .button {
+        margin-right: 5vh;
+    }
+}
