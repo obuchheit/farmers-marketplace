@@ -8,7 +8,7 @@ import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage/CropDetailPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
 import SavedPostPage from "../pages/SavedPostPage.jsx";
-import UserPostPortalPage from "../pages/UserPostPortalPage.jsx";
+import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import { getInfo } from "../utilities.jsx";
 

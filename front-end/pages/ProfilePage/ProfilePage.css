@@ -19,12 +19,13 @@
   .upload-label {
     display: inline-flex;
     align-items: center;
-    background-color: #9B9E87;
-    border: solid 2px lightgray;
+    background-color: transparent;
     cursor: pointer;
     color: black;
     padding: 1vh;
     border-radius: 50%;
+    height: 6vh;
+    width: 6vh;
     font-size: 1rem;
     transition: background-color 0.3s ease;
   }
@@ -86,12 +87,14 @@
     opacity: 0.8;
   }
   
-  .edit-button {
+  #pencil-button {
     background-color: transparent;
+    cursor: pointer;
     color: black;
+    font-weight: bold;
     border-radius: 50%;
     font-size: 1rem;
-    padding: none;
+    transition: background-color 0.3s ease;
   }
   
   .edit-button:hover {
@@ -99,21 +102,23 @@
   }
   
   .submit-button {
-    background-color: #28a745;
+    background-color: #5e653e;
     color: white;
+    border-radius: 1vh;
   }
   
   .submit-button:hover {
-    background-color: #218838;
+    background-color: #56583c;
+
   }
   
-  .delete-button {
+  #delete-button {
     background-color: transparent;
     color: red;
     border: 1px solid red;
   }
   
-  .delete-button:hover {
+  #delete-button:hover {
     background-color: red;
     color: white;
   }
@@ -140,3 +145,7 @@
     font-size: 1rem;
   }
   
+
+  .change-password-input {
+    background-color: rgba(158, 146, 123, 0.39);
+  }
