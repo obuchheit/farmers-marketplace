@@ -1,0 +1,96 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  /* Card Styles */
+  .profile-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Header Styles */
+  .profile-header {
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4caf50;
+  }
+  
+  /* Details Styles */
+  .profile-details {
+    text-align: left;
+  }
+  
+  .profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4caf50;
+    margin: 0;
+  }
+  
+  .profile-email {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+  }
+  
+  .profile-bio {
+    font-size: 14px;
+    margin: 15px 0;
+  }
+  
+  .profile-address {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #444;
+  }
+  
+  .profile-address strong {
+    color: #4caf50;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .profile-card {
+      padding: 15px;
+    }
+  
+    .profile-picture {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .profile-name {
+      font-size: 20px;
+    }
+  
+    .profile-email, .profile-bio, .profile-address {
+      font-size: 12px;
+    }
+  }
+  

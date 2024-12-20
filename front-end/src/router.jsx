@@ -10,6 +10,7 @@ import Error404Page from "../pages/Error404Page.jsx";
 import SavedPostPage from "../pages/SavedPostPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
+import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -54,7 +55,11 @@ const router = createBrowserRouter([
             {
                 path: '/post/:postId',
                 element: <SinglePostPage />
-            }
+            },
+            {
+                path: '/public-profile-page/:userId',
+                element: < PublicProfilePage />
+            },
         ],
         errorElement: <Error404Page />
     }

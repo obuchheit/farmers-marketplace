@@ -6,8 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 from .models import User, AdminProfile
-from .serializers import SignupSerializer, UserProfileSerializer, AdminProfileSerializer
+from .serializers import SignupSerializer, UserProfileSerializer, AdminProfileSerializer, UserProfilePublicSerializer
 
 class TokenReq(APIView):
     authentication_classes = [TokenAuthentication]
@@ -60,6 +61,14 @@ class SignOutView(TokenReq):
 class UserProfileView(TokenReq):
     def get(self, request):
         return Response({"email": request.user.email})
+    
+class UserProfilePublicView(TokenReq):
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserProfilePublicSerializer(user)
+        return Response(serializer.data, status=HTTP_200_OK)
+
+
 
 
 class UpdateUserProfileView(RetrieveUpdateDestroyAPIView):
