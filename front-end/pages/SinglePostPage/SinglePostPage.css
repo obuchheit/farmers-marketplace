@@ -18,3 +18,12 @@
     border-radius: 50%;
     margin-right: 2vh;
 }
+
+.link-style {
+    text-decoration: none; /* Removes the underline */
+    color: inherit; /* Inherits the color from the parent */
+}
+
+.link-style:hover {
+    text-decoration: none; /* Ensures no underline appears on hover */
+}

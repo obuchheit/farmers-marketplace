@@ -41,10 +41,10 @@ const SinglePostPage = () => {
                 <div className='post-image'>
                     <img id='post-image' src={post.image} alt="" />
                 </div>
-                <Link to={`/public-profile-page/${post.user.id}`}>
+                <Link to={`/public-profile-page/${post.user.id}`} className="link-style">
                     <div className='user-div'> 
                         <img className='user-image' src={post.user.profile_picture}/>
-                        <div>User: {post.user.first_name} {post.user.last_name}</div>
+                        <div>{post.user.first_name} {post.user.last_name}</div>
                     </div>
                 </Link>
             <p><strong>Desctiption: </strong>{post.description}</p>

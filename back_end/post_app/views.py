@@ -54,6 +54,8 @@ class AllPostsByLocationView(ListAPIView):
         return UserPosts.objects.filter(
             is_public=True,
             is_available=True
+        ).exclude(
+            user=user  # Exclude posts created by the authenticated user
         ).annotate(
             distance=Distance('location', user_location)
         ).filter(
