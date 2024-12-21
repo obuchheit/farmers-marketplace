@@ -39,7 +39,7 @@ const SinglePostPage = () => {
             
             <h1>{post.title}</h1>
                 <div className='post-image'>
-                    <img id='post-image' src={post.image} alt="" />
+                    <img className='post-image' src={post.image} alt="" />
                 </div>
                 <Link to={`/public-profile-page/${post.user.id}`} className="link-style">
                     <div className='user-div'> 
@@ -47,10 +47,12 @@ const SinglePostPage = () => {
                         <div>{post.user.first_name} {post.user.last_name}</div>
                     </div>
                 </Link>
-            <p><strong>Desctiption: </strong>{post.description}</p>
-            <p><strong>Location:</strong> {post.address}</p>
-            <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
-            <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
+            <div className='info-container'>
+                <p><strong>Desctiption: </strong>{post.description}</p>
+                <p><strong>Location:</strong> {post.address}</p>
+                <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
+                <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
+            </div>
         </div>
     );
 };

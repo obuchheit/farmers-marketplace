@@ -58,7 +58,11 @@ const GardenPage = () => {
             <div className="custom-card" key={index}>
 
               <img 
-              src={item.attributes.main_image_path} 
+              src={
+                item.attributes.main_image_path.includes(aws)
+                  ? item.attributes.main_image_path
+                  : "http://127.0.0.1:8000/media/post_images/default_post_image.jpg"
+              }
               alt={item.attributes.name} 
               id="image" 
               />

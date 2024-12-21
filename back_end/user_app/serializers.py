@@ -31,7 +31,7 @@ class SignupSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio', 'password']
+        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio']
         extra_kwargs = {
             'email': {'read_only': True},  # Prevent users from updating their email
         }

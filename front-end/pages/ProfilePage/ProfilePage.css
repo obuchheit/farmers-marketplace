@@ -66,9 +66,9 @@
   }
   
   /* Profile picture styling */
-  .profile-picture {
-    width: 20vh;
-    height: 20vh;
+  .profile-picture-page {
+    width: 25vh;
+    height: 25vh;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -87,7 +87,7 @@
     opacity: 0.8;
   }
   
-  #pencil-button {
+  .pencil-button {
     background-color: transparent;
     cursor: pointer;
     color: black;
