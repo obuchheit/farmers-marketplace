@@ -1,15 +1,24 @@
 .post-image {
-    width: 100%;
     display: flex;
-    max-height: 20vh;
+    height: 30vh;
+    width: 40vh;
     margin-bottom: 3vh;
+    border-radius: 5vh;
+    object-fit: cover;
 }
 
 
 .user-div {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     margin-bottom: 3vh;
+    padding: 1vh;
+    border-radius: 4vh;
+    transition: box-shadow 0.3s ease;
+}
+
+.user-div:hover {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
 }
 
 .user-image {
@@ -27,3 +36,28 @@
 .link-style:hover {
     text-decoration: none; /* Ensures no underline appears on hover */
 }
+
+.info-container {
+    background-color: #96a38c; 
+    border: 1px solid #96a38cb2; 
+    border-radius: 8px; 
+    padding: 16px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    font-family: 'Arial', sans-serif; 
+    max-width: 400px; 
+  }
+  
+  .info-container p {
+    margin: 8px 0; /* Spacing between paragraphs */
+    line-height: 1.5; /* Improved readability */
+    color: #333; /* Dark gray text for good contrast */
+  }
+  
+  .info-container strong {
+    color: #344429; /* Accent color for labels */
+  }
+  
+  .info-container p:last-child {
+    font-weight: bold; /* Highlight the last piece of info */
+  }
+  

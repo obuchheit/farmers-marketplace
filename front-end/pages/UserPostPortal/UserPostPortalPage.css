@@ -1,6 +1,7 @@
 .create-button {
-    background-color: #5e653e !important;
-    border: white 2px solid !important;
+    background-color: #6d634e !important;
+    border: none !important;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) !important; 
 }
 
 .button-container {
@@ -9,13 +10,17 @@
 }
 
 .edit-button {
-    background-color: #7688aa !important;
-    border: none !important;
-    color: white !important;
+    background-color: #7688aa;
+    border: none;
+    color: white;
+    border-radius: 1vh;
+    margin: 1vh;
 }
 
 .delete-button {
-    background-color: #a74d32 !important;
-    border: none !important;
-    color: white !important;
+    background-color: #a74d32;
+    border: none;
+    color: white;
+    border-radius: 1vh;
+    margin: 1vh;
 }

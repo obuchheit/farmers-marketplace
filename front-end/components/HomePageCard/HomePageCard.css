@@ -32,11 +32,12 @@
 
 .card img {
     width: 250px;
-    height: auto;
+    height: 20vh;
     border-radius: 8px;
     margin-top: -3px;
     margin-bottom: 0; 
     padding: 0; 
+    object-fit: cover;
 }
 
 .card h2 {

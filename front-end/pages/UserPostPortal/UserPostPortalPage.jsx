@@ -153,18 +153,17 @@ const UserPostPortalPage = ({ user }) => {
             <Row xs={1} md={2} lg={3} className="g-4">
                 {posts.map(post => (
                     <Col key={post.id}>
-                        <Card>
-                            <Card.Img variant="top" src={post.image} alt={post.title} />
-                            <Card.Body>
-                                <Card.Title>{post.title}</Card.Title>
-                                <Card.Text>{post.description}</Card.Text>
-                                <div className="button-container">
-                                    <Button className="edit-button" variant="info" onClick={() => openEditModal(post)}>Edit</Button>{' '}
-                                    <Button className="delete-button" variant="danger" onClick={() => handleDeletePost(post.id)}>Delete</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
+                        <div className="card" onClick={() => onClick(post.id)}>
+                            <img src={post.image} alt={post.title} />
+                            <h2>{post.title}</h2>
+                            <p>{post.description}</p>
+                            <div className="button-container">
+                                <button className="edit-button" variant="info" onClick={() => openEditModal(post)}>Edit</button>{' '}
+                                <button className="delete-button" variant="danger" onClick={() => handleDeletePost(post.id)}>Delete</button>
+                            </div>
+                        </div>
                     </Col>
+                    
                 ))}
             </Row>
 

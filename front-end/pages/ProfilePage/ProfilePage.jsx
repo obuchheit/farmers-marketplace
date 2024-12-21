@@ -108,7 +108,7 @@ const ProfilePage = () => {
         <img
           src={formData.profile_picture}
           alt="Profile"
-          className="profile-picture"
+          className="profile-picture-page"
         />
       ) : (
         <p>No profile picture available.</p>
@@ -151,7 +151,7 @@ const ProfilePage = () => {
               )}
               <button
                 type="button"
-                id="pencil-button"
+                className="pencil-button"
                 onClick={() =>
                   editingField === field
                     ? handleFieldSubmit(field)
