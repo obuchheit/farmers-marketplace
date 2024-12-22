@@ -9,6 +9,8 @@ const CropDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [results, setResults] = useState([]);
+    const aws = 's3.amazonaws.com'
+
 
 
     useEffect(() => {
@@ -33,7 +35,15 @@ const CropDetailPage = () => {
     <div>
       <h1>{results.attributes.name}</h1>
       <p><strong>Binomial Name: </strong>{results.attributes.binomial_name}</p>
-      <img src={results.attributes.main_image_path} alt={results.attributes.name} id="crop-image" />
+      <img
+      src={
+        results.attributes.main_image_path.includes(aws)
+          ? results.attributes.main_image_path
+          : "http://127.0.0.1:8000/media/post_images/default_post_image.jpg"
+        }
+      alt={results.attributes.name} 
+      id="crop-image" 
+      />
       <p><strong>Descrition:</strong><br />{results.attributes.description}</p>
       <p>
         <strong>Planting Details</strong><br />
