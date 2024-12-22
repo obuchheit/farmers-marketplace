@@ -95,6 +95,26 @@ const ProfilePage = () => {
     }
   };
 
+  const handlePasswordChange = async () => {
+    setError(null); // Clear previous errors
+    try {
+      await axios.put(
+        baseUrl,
+        {
+          current_password: passwordData.current_password,
+          new_password: passwordData.new_password,
+        },
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      alert('Password updated successfully!');
+      setPasswordData({ current_password: '', new_password: '' });
+    } catch (err) {
+      const errorMessage = err.response?.data?.new_password || 'An error occurred';
+      setError(errorMessage);
+    }
+  };
+  
+
 
   useEffect(() => {
     fetchProfile();
@@ -195,7 +215,11 @@ const ProfilePage = () => {
               }
             />
           </div>
-          <button type="button" className="submit-button" onClick={handleFieldSubmit}>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={handlePasswordChange}
+          >
             Change Password
           </button>
 

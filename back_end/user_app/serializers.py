@@ -29,12 +29,32 @@ class SignupSerializer(serializers.ModelSerializer):
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(write_only=True, required=False)
+    new_password = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio']
+        fields = ['email', 'first_name', 'last_name', 'profile_picture', 'address', 'bio', 'current_password', 'new_password']
         extra_kwargs = {
-            'email': {'read_only': True},  # Prevent users from updating their email
+            'email': {'read_only': True},
         }
+
+    def validate(self, data):
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+
+        if current_password and new_password:
+            if not self.instance.check_password(current_password):
+                raise serializers.ValidationError({"current_password": "Incorrect current password."})
+            if len(new_password) < 8:
+                raise serializers.ValidationError({"new_password": "Password must be at least 8 characters long."})
+
+        return data
+
+    def update(self, instance, validated_data):
+        if 'new_password' in validated_data:
+            instance.set_password(validated_data.pop('new_password'))
+        return super().update(instance, validated_data)
 
 class UserProfilePublicSerializer(serializers.ModelSerializer):
     class Meta:
