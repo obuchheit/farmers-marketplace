@@ -29,13 +29,7 @@ const NavBar = ({ user, setUser }) => {
                 {/* Left-side Nav Links */}
                 <Nav className="nav-links me-auto">
                     <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
-                    <NavDropdown title="Find" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Trade Groups</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item as={Link} to="/garden">Gardening Tips</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
                 </Nav>
 
                 {/* Right-side Nav Links */}

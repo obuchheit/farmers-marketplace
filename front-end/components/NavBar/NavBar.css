@@ -6,6 +6,15 @@
     height: 6vh;
 }
 
+.navbar-brand {
+    font-weight: 500;
+    transition: text-shadow 0.3s ease;
+}
+
+.navbar-brand:hover {
+    text-shadow: 2px 3px 5px rgba(0,0,0,0.5);
+}
+
 .dropdown-menu {
     background-color: #9B9E87 !important;
 }
@@ -22,7 +31,9 @@
     padding: 0;
 }
 
-
+.nav-link:hover {
+    text-decoration: underline;
+}
 
 
 .nav-links {
