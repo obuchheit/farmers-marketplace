@@ -7,7 +7,7 @@ import './CardenPage.css'
 
 const GardenPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]); 
+  const [results, setResults] = useState(() => JSON.parse(sessionStorage.getItem('gardenResults')) || []);
   const [error, setError] = useState(''); 
 
   const aws = 's3.amazonaws.com'
@@ -19,15 +19,16 @@ const GardenPage = () => {
     
     try {
       const { data } = await axios.get(`http://127.0.0.1:8000/api/v1/garden/crops/${searchTerm}/`);
-      console.log(data)
-      setResults(data.data); 
+      setResults(data.data);
+      sessionStorage.setItem('gardenResults', JSON.stringify(data.data)); // Save results in sessionStorage
     } catch (err) {
-      setError("No results found."); 
+      setError("No results found.");
+      setResults([]);
+      sessionStorage.removeItem('gardenResults'); // Clear previous results on error
     }
 
-    setSearchTerm(''); 
+    setSearchTerm('');
   };
-
 
 
   return (
