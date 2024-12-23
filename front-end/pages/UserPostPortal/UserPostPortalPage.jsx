@@ -142,11 +142,12 @@ const UserPostPortalPage = ({ user }) => {
 
   return (
     <div>
-
-            <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">
-                Create New Post
-            </Button>
-
+            <div>
+                <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">
+                    Create New Post
+                </Button>
+            </div>
+    
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
 

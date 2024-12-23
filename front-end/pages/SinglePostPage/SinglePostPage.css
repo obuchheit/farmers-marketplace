@@ -7,6 +7,9 @@
     object-fit: cover;
 }
 
+.profile-save-container {
+  display: flex;
+}
 
 .user-div {
     display: inline-flex;
@@ -35,6 +38,26 @@
 
 .link-style:hover {
     text-decoration: none; /* Ensures no underline appears on hover */
+}
+
+.save-post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  margin: 2vh 0 0 1vh;
+}
+
+.saved-icon {
+  color: #ada052;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.unsaved-icon {
+  color: black;
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .info-container {

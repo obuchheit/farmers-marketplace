@@ -19,6 +19,7 @@ urlpatterns = [
 
     #User Saved Posts Views
     path('user-saved-posts/', AllUserSavedPostsView.as_view(), name='all-user-saved-posts'),
-    path('user-saved-posts/<int:post_id>', UserSavedPostView.as_view(), name='user-saved-post')
+    path('user-saved-posts/<int:post_id>/', UserSavedPostView.as_view(), name='user-saved-post')  # Save, view, or delete a saved post
+
 ]
 
