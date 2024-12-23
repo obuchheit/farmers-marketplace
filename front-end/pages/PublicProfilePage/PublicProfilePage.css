@@ -15,7 +15,7 @@ body {
   
   /* Card Styles */
   .profile-card {
-    background: #fff;
+    background: #857255;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -38,7 +38,7 @@ body {
     height: 30vh;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #9acc9c;
+    border: 3px solid #567a57;
   }
   
   /* Details Styles */
@@ -49,29 +49,30 @@ body {
   .profile-name {
     font-size: 24px;
     font-weight: bold;
-    color: #4caf50;
+    color: #273328;
     margin: 0;
   }
   
   .profile-email {
     font-size: 16px;
-    color: #666;
+    color: #000000;
     margin: 10px 0;
   }
   
   .profile-bio {
     font-size: 14px;
     margin: 15px 0;
+    color: #2b2626;
   }
   
   .profile-address {
     font-size: 14px;
     margin-top: 10px;
-    color: #444;
+    color: #2b2626;
   }
   
   .profile-address strong {
-    color: #4caf50;
+    color: #273328;
   }
   
   /* Responsive Design */

@@ -29,6 +29,7 @@ const NavBar = ({ user, setUser }) => {
                 {/* Left-side Nav Links */}
                 <Nav className="nav-links me-auto">
                     <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
+                    <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
                     <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
                 </Nav>
 

@@ -83,6 +83,8 @@ export const getInfo = async() => {
     }
 }
 
+
+//Get profile picture for NavBar
 export const getProfilePicture = async() => {
     let token = localStorage.getItem('token')
     if (token){
@@ -98,3 +100,61 @@ export const getProfilePicture = async() => {
     }
 
 }
+
+// Saved Post Logic
+
+// Fetch the user's saved posts
+export const fetchSavedPosts = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            api.defaults.headers.common['Authorization'] = `Token ${token}`;
+            const response = await api.get("posts/user-saved-posts/", {
+                headers: {
+                    Authorization: `Token ${token}`,
+                }
+            });
+            if (response.status === 200) {
+                console.log(response.data)
+                return response.data; // Assume this is an array of saved post IDs
+            }
+        } catch (error) {
+            console.error("Error fetching saved posts:", error);
+        }
+    }
+    return [];
+};
+
+// Add a post to saved posts
+export const addSavedPost = async (postId) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            api.defaults.headers.common['Authorization'] = `Token ${token}`;
+            const response = await api.post(`posts/user-saved-posts/${postId}/`);
+            if (response.status === 201) {
+                return true; // Successfully saved
+            }
+        } catch (error) {
+            console.error("Error saving post:", error);
+        }
+    }
+    return false;
+};
+
+// Remove a post from saved posts
+export const removeSavedPost = async (postId) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            api.defaults.headers.common['Authorization'] = `Token ${token}`;
+            const response = await api.delete(`posts/user-saved-posts/${postId}/`);
+            if (response.status === 204) {
+                return true; // Successfully removed
+            }
+        } catch (error) {
+            console.error("Error removing saved post:", error);
+        }
+    }
+    return false;
+};

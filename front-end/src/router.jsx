@@ -7,10 +7,10 @@ import ProfilePage from "../pages/ProfilePage/ProfilePage.jsx";
 import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage/CropDetailPage.jsx";
 import Error404Page from "../pages/Error404Page.jsx";
-import SavedPostPage from "../pages/SavedPostPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
+import SavedPostsPage from "../pages/SavedPostsPage/SavedPostsPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -45,10 +45,6 @@ const router = createBrowserRouter([
                 element: <CropDetailPage />
             },
             {
-                path: '/saved-posts',
-                element: <SavedPostPage />
-            },
-            {
                 path: '/user-post-portal',
                 element: <UserPostPortalPage />
             },
@@ -60,6 +56,10 @@ const router = createBrowserRouter([
                 path: '/public-profile-page/:userId',
                 element: < PublicProfilePage />
             },
+            {
+                path: '/saved-posts',
+                element: <SavedPostsPage />
+            }
         ],
         errorElement: <Error404Page />
     }

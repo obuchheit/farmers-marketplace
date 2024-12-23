@@ -73,9 +73,12 @@ class AllPostSerializer(ModelSerializer):
 '''Saved Post Serializers'''
 # Serializer for common post-related fields
 class PostDetailSerializer(ModelSerializer):
+
     class Meta:
         model = UserPosts
-        fields = ['image', 'title', 'location']  # Limited fields for saved posts
+        fields = ['id', 'image', 'title', 'address']  # Limited fields for saved posts
+
+
 
 class AllUserSavedPostsSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
@@ -84,6 +87,7 @@ class AllUserSavedPostsSerializer(ModelSerializer):
     class Meta:
         model = UserSavedPosts
         fields = ['id', 'user', 'post_details', 'saved_at']
+
 
 
 class UserSavedPostSerializer(ModelSerializer):

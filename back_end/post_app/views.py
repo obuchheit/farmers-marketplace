@@ -135,37 +135,36 @@ User Saved Post Views
 """
 
 #Retrieves all of a users saved posts
+# Allows a user to see all of their saved posts
 class AllUserSavedPostsView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = AllUserSavedPostsSerializer
 
     def get_queryset(self):
+        # Only return the saved posts for the authenticated user
         return UserSavedPosts.objects.filter(user=self.request.user)
-    
 
-#Allows a user to see a saved post in more detail or add or delete a saved post form their list.
-class UserSavedPostView(APIView):
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+# Allows a user to save, delete, or view a specific saved post
+class UserSavedPostView(TokenReq):
 
-    #Retrieve a saved post
+    # View details of a saved post
     def get(self, request, post_id):
-
+        # Ensure the saved post belongs to the current user
         saved_post = get_object_or_404(UserSavedPosts, pk=post_id, user=request.user)
         serializer = UserSavedPostSerializer(saved_post)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
 
-    #Add a post to the user's saved posts.
+    # Save a post to the user's saved posts
     def post(self, request, post_id):
         try:
-            post = UserPosts.objects.get(pk=post_id)
-            saved_post, created = UserSavedPosts.objects.get_or_create(
-                user=request.user,
-                post=post
-            )
+            # Get the post to save
+            post = get_object_or_404(UserPosts, pk=post_id)
+
+            # Create or get the saved post
+            saved_post, created = UserSavedPosts.objects.get_or_create(user=request.user, post=post)
+
             if created:
                 return Response(
                     {"message": "Post added to saved posts successfully."},
@@ -182,12 +181,13 @@ class UserSavedPostView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-    #Remove a post from the user's saved posts.
+    # Remove a post from the user's saved posts
     def delete(self, request, post_id):
         try:
-            post = UserPosts.objects.get(pk=post_id)
-            saved_post = UserSavedPosts.objects.get(user=request.user, post=post)
+            post = get_object_or_404(UserPosts, pk=post_id)
+            saved_post = get_object_or_404(UserSavedPosts, user=request.user, post=post)
             saved_post.delete()
+
             return Response(
                 {"message": "Post removed from saved posts successfully."},
                 status=status.HTTP_200_OK
@@ -202,7 +202,7 @@ class UserSavedPostView(APIView):
                 {"error": "Post is not in your saved posts."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
 """
 Group Posts
 """
