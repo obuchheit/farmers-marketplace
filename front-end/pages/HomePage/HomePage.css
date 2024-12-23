@@ -1,82 +1,98 @@
-/* Centering the slider on the page */
+/* Updated slider container */
 .slider-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 15vh; /* Full height of the viewport */
-    flex-direction: column; /* Optional: to stack any content above or below */
-    margin-bottom: 3vh;
+    gap: 1rem; /* Modern spacing */
+    width: 100%; /* Take full width of parent */
+    max-width: 500px; /* Limit the width for a modern compact look */
+    margin: auto; /* Center on the page */
 }
 
+/* Slider header */
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Updated label */
 .slider-label {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #5E653E; /* Use the thumb color for consistency */
 }
 
+/* Updated button */
 .slider-button {
     background-color: #795f4b;
     color: white;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
-    width: 20vw;
-    height: 5vh;
-}
-
-/* Styling the slider */
-#distance-slider {
-    -webkit-appearance: none;  /* Removes default styles in Webkit browsers (Chrome, Safari) */
-    appearance: none;
-    width: 80%;  /* Set width of the slider */
-    height: 1vh;  /* Set height of the track */
-    background: #ddd;  /* Default background color of the track */
-    border-radius: 5px;
-    outline: none;  /* Remove outline */
-    transition: background 0.3s ease;  /* Smooth transition for hover effects */
-    margin-bottom: 3vh;
-
-}
-
-/* Styling the slider track */
-#distance-slider::-webkit-slider-runnable-track {
-    height: 1vh;
-    border-radius: 5px;
-    background: #856f61a1; /* Green color for the track */
-}
-
-/* Styling the slider thumb */
-#distance-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;  /* Removes default thumb styling */
-    appearance: none;
-    width: 3vh;
-    height: 3vh;
-    border-radius: 50%;
-    background: #5E653E;  
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: -1vh;
-    border: 1px #1d1f14 solid;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-/* For Firefox */
-#distance-slider::-moz-range-track {
-    height: 10px;
-    border-radius: 5px;
-    background: #856f61a1;  
+.slider-button:hover {
+    background-color: #5E653E;
+    transform: scale(1.05);
 }
 
+/* Modern slider */
+#distance-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%; /* Full width */
+    height: 6px; /* Sleek track */
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+/* Modern slider track */
+#distance-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    background: #856f61a1;
+}
+
+/* Modern slider thumb */
+#distance-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5E653E;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    margin-top: -7px;
+}
+
+#distance-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Firefox thumb */
 #distance-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #5E653E;  
+    background: #5E653E;
     cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
 }
 
-/* Optional: Change the color of the track when the slider is being used */
-#distance-slider:active::-webkit-slider-runnable-track {
-    background: #856f61; /* Darker green */
-}
-
+#distance-slider:active::-webkit-slider-runnable-track,
 #distance-slider:active::-moz-range-track {
-    background: #856f61; /* Darker green */
+    background: #856f61; /* Slightly darker on active */
 }
