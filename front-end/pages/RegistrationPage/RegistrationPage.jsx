@@ -26,13 +26,26 @@ const RegistrationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isReady) {
-      setUser(await userRegistration(formData));
+    if (!isReady) {
+        alert("You must check the box before submitting.");
+        return;
     }
-    else {
-      alert("You must check the box before submitting.")
-    }  
-  }
+
+    const result = await userRegistration(formData);
+
+    if (result && result.success) {
+        setMessage("Registration successful!");
+        setErrors({});
+        setUser(result.user); // Set user after successful registration
+    } else if (result && result.errors) {
+        setErrors(result.errors); // Display specific validation errors
+        setMessage('');
+    } else {
+        setMessage("An unexpected error occurred.");
+        setErrors({});
+    }
+};
+
 
   return (
     <div className="registration-page container mt-5">
@@ -61,7 +74,7 @@ const RegistrationPage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="password">
+        <Form.Group className="mb-1" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"

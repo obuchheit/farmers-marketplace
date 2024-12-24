@@ -5,16 +5,17 @@ import requests
 from django.contrib.gis.db import models as gis_models
 from marketplace_proj.utils import get_coordinates_from_address
 from django.contrib.gis.geos import Point
-
+from .validators import validate_title
+from user_app.validators import validate_city_state_format
 
 
 class UserPosts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts')
     image = models.ImageField(upload_to='post_images/', blank=True, null=True, default='post_images/default_post_image.jpg')
-    title = models.CharField(blank=False, null=True)
+    title = models.CharField(blank=False, null=True, validators=[validate_title])
     description = models.TextField(blank=False, null=True)
     location = gis_models.PointField(blank=True, null=True, default='San Diego, CA')
-    address = models.CharField(blank=False, null=True)
+    address = models.CharField(blank=False, null=True, validators=[validate_city_state_format])
     time_posted = models.DateTimeField(auto_now_add=True)
     is_available = models.BooleanField(default=True, null=True)
     is_public = models.BooleanField(default=True, null=True)

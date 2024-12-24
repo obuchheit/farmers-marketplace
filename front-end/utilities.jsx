@@ -16,16 +16,19 @@ export const userRegistration = async (formData) => {
             // Automatically log the user in after signup
             await userLogIn(formData);  // Log the user in right after signup
 
-            return user;  // Return the user object after successful signup and login
+            return { success: true, user };  // Return success and user object
         }
-        alert(response.data);
-        return null;
     } catch (error) {
-        alert("Error during registration");
-        console.error(error);
-        return null;
+        if (error.response && error.response.data) {
+            return { success: false, errors: error.response.data }; // Return validation errors
+        } else {
+            alert("An unexpected error occurred.");
+            console.error(error);
+            return { success: false, errors: { general: "An unexpected error occurred." } };
+        }
     }
 };
+
 
 
 export const userLogIn = async (formData) => {
