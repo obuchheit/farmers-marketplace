@@ -9,6 +9,7 @@
 
 .profile-save-container {
   display: flex;
+  cursor: pointer;
 }
 
 .user-div {

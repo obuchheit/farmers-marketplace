@@ -8,10 +8,16 @@ body, html, #root {
 
 }
 
+.auth-page-body {
+  background-image: url('http://127.0.0.1:8000/media/project_images/LoadImage.jpg'); /* Replace with your auth page background */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-html {
+#root {
   background-color: #c8c2b479;
-  padding: 7vh 3vw;
+  padding: 7vh 3vw 0 3vw;
 }
 
 

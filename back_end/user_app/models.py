@@ -6,7 +6,7 @@ import requests
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
 from marketplace_proj.utils import get_coordinates_from_address
-
+from .validators import validate_city_state_format, validate_email, validate_name
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -35,19 +35,22 @@ class User(AbstractUser):
     email = models.EmailField(
         verbose_name=_('Email Address'),
         max_length=255,
-        unique=True
+        unique=True,
+        validators=[validate_email]
     )
     first_name = models.CharField(
         verbose_name=_('First Name'),
         max_length=30,
         blank=False,
-        null=True
+        null=True,
+        validators=[validate_name]
     )
     last_name = models.CharField(
         verbose_name=_('Last Name'),
         max_length=30,
         blank=False,
-        null=True
+        null=True,
+        validators=[validate_name]
     )
     is_active = models.BooleanField(default=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -65,6 +68,7 @@ class User(AbstractUser):
         max_length=100,
         blank=False,
         null=True,
+        validators=[validate_city_state_format]
     )
     bio = models.TextField(
         verbose_name=_('Biography'),

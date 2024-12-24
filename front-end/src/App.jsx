@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import { getInfo, fetchSavedPosts, addSavedPost, removeSavedPost } from "../utilities";
 import axios from "axios";
-import "./index.css"
+import './styles/global.css'
+
 
 function App() {
   const [user, setUser] = useState(useLoaderData());
@@ -61,17 +62,24 @@ function App() {
 
 
 
-  useEffect(()=> {
-    let nullUserUrl = ['/signin', '/register']
-    let isAllowed = nullUserUrl.includes(location.pathname)
-    if(user && isAllowed) {
-      navigate('/')
-    }
-    else if (!user && !isAllowed) {
-      navigate('/signin')
-    }
-  }, [location.pathname, user])
-  
+useEffect(() => {
+  const nullUserUrls = ['/signin', '/register'];
+  const isAllowed = nullUserUrls.includes(location.pathname);
+
+  if (user && isAllowed) {
+    navigate('/');
+  } else if (!user && !isAllowed) {
+    navigate('/signin');
+  }
+
+  // Update the body class for SignIn/SignUp
+  if (nullUserUrls.includes(location.pathname)) {
+    document.body.className = 'auth-page-body'; // Set a class for login/register pages
+  } else {
+    document.body.className = ''; // Reset the class for other pages
+  }
+}, [location.pathname, user, navigate]);
+
   return (
     <>
       {!nullUserPages.includes(location.pathname) && (

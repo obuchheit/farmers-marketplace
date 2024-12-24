@@ -1,0 +1,14 @@
+/* RegistrationPage.css */
+
+  
+  .registration-page {
+    background-color: rgba(255, 255, 255, 0.5); /* Adds a semi-transparent white background */
+    padding: 3vh;
+    border-radius: 10px;
+    max-width: 500px;
+    min-height: 80vh;
+    max-height: 150vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: auto; /* Add a scrollbar when content overflows */
+
+  }
