@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { userRegistration } from "../../utilities";
 import './RegistrationPage.css'
 
+
 const RegistrationPage = () => {
   const { setUser } = useOutletContext();
   const [formData, setFormData] = useState({
@@ -46,6 +47,7 @@ const RegistrationPage = () => {
           </ul>
         </Alert>
       )}
+      <div className='form-div'>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
@@ -118,6 +120,8 @@ const RegistrationPage = () => {
           Sign Up
         </Button>
       </Form>
+
+      </div>
     </div>
   );
 };
