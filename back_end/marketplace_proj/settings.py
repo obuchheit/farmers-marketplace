@@ -4,7 +4,6 @@ import os
 
 
 
-USDA_API_KEY = config("USDA_API_KEY")
 MAPBOX_ACCESS_TOKEN = config("MAPBOX_ACCESS_TOKEN")
 
 

@@ -14,7 +14,6 @@ const GardenPage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault()
-    setError(''); // Clear previous errors
 
     
     try {
