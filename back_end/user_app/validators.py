@@ -19,3 +19,24 @@ def validate_city_state_format(value):
             _('Address must be in "City, State" format (e.g., "Chicago, IL" or "St. Louis, Missouri").'),
             params={'value': value}
         )
+
+
+def validate_password(value):
+    """
+    Validates a password to ensure it meets the following criteria:
+    - At least 8 characters long
+    - Contains at least one uppercase letter
+    - Contains at least one lowercase letter
+    - Contains at least one number
+    - Contains at least one special character (!@#$%^&*()_+=-)
+    """
+    if len(value) < 8:
+        raise ValidationError(_("Password must be at least 8 characters long."))
+    if not any(char.isupper() for char in value):
+        raise ValidationError(_("Password must contain at least one uppercase letter."))
+    if not any(char.islower() for char in value):
+        raise ValidationError(_("Password must contain at least one lowercase letter."))
+    if not any(char.isdigit() for char in value):
+        raise ValidationError(_("Password must contain at least one number."))
+    if not re.search(r'[!@#$%^&*()_+=\-]', value):
+        raise ValidationError(_("Password must contain at least one special character (!@#$%^&*()_+=-)."))
