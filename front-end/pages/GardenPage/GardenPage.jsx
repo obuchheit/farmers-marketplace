@@ -13,9 +13,8 @@ const GardenPage = () => {
   const aws = 's3.amazonaws.com'
 
   const handleSearch = async (e) => {
-    e.preventDefault()
+    e.preventDefault(e)
 
-    
     try {
       const { data } = await axios.get(`http://127.0.0.1:8000/api/v1/garden/crops/${searchTerm}/`);
       setResults(data.data);
@@ -47,7 +46,7 @@ const GardenPage = () => {
             }
           }}
         />
-        <Button className="search-button" onClick={() => handleSearch()}>Search</Button>
+        <Button className="search-button" onClick={(e) => handleSearch(e)}>Search</Button>
       </InputGroup>
 
 
