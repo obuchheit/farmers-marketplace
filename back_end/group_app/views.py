@@ -190,3 +190,48 @@ class InviteMemberView(APIView):
             return Response({"detail": "Invitation already exists."}, status=HTTP_400_BAD_REQUEST)
 
         return Response(InvitationSerializer(invitation).data, status=HTTP_201_CREATED)
+    
+
+class AcceptInvitationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        invitation = get_object_or_404(Invitation, id=pk, invitee=request.user)
+        
+        # Check if the invitation is still pending
+        if invitation.status != 'pending':
+            return Response({"detail": "This invitation is no longer valid."}, status=HTTP_400_BAD_REQUEST)
+
+        invitation.status = 'accepted'
+        invitation.save()
+
+        # Check if the inviter is an admin
+        inviter_is_admin = invitation.group.members.filter(user=invitation.invited_by, role='admin').exists()
+        
+        # Automatically approve the invitee if the inviter is an admin
+        GroupMember.objects.create(
+            group=invitation.group,
+            user=request.user,
+            role='member',
+            is_approved=inviter_is_admin
+        )
+
+        return Response({"detail": "Invitation accepted."}, status=HTTP_200_OK)
+    
+
+class RejectInvitationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        invitation = get_object_or_404(Invitation, id=pk, invitee=request.user)
+
+        # Check if the invitation is still pending
+        if invitation.status != 'pending':
+            return Response({"detail": "This invitation is no longer valid."}, status=HTTP_400_BAD_REQUEST)
+
+        invitation.status = 'rejected'
+        invitation.save()
+
+        return Response({"detail": "Invitation rejected."}, status=HTTP_200_OK)
+
+
