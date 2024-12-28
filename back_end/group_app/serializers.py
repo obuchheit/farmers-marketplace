@@ -1,7 +1,7 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import Group, GroupMember, JoinRequest
+from .models import Group, GroupMember, JoinRequest, Invitation
 from user_app.models import User
 from django.contrib.auth import get_user_model
 
@@ -47,3 +47,13 @@ class GroupMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupMember
         fields = ['user', 'role', 'is_approved']
+
+
+#Invitaiton Serializer
+class InvitationSerializer(serializers.ModelSerializer):
+    invited_by = serializers.ReadOnlyField(source='invited_by.email')
+    group_name = serializers.ReadOnlyField(source='group.name')
+
+    class Meta:
+        model = Invitation
+        fields = ['id', 'group', 'invited_by', 'invitee', 'status', 'created_at', 'group_name']

@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .models import Group, GroupMember, JoinRequest
+from .models import Group, GroupMember, JoinRequest, Invitation
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
-from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer
+from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
@@ -156,3 +156,37 @@ class GroupDetailPublicView(RetrieveAPIView):
         if not GroupMember.objects.filter(group_id=group, user=user, is_approved=True).exists():
             return Group.objects.none()  # Return no groups if the user is not a member or approved
         return Group.objects.filter(id=group)
+    
+"""
+Invitaiton Views
+"""
+
+class InviteMemberView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        group_id = request.data.get('group')
+        invitee_id = request.data.get('invitee')
+
+        group = get_object_or_404(Group, id=group_id)
+        invitee = get_object_or_404(User, id=invitee_id)
+        invited_by = request.user
+
+        # Check if the invited_by user is a member of the group
+        if not group.members.filter(user=invited_by, is_approved=True).exists():
+            return Response({"detail": "You are not a member of this group."}, status=HTTP_403_FORBIDDEN)
+
+        # Check if invitee is already a member
+        if group.members.filter(user=invitee).exists():
+            return Response({"detail": "User is already a member of this group."}, status=HTTP_400_BAD_REQUEST)
+
+        # Create invitation
+        invitation, created = Invitation.objects.get_or_create(
+            group=group, invitee=invitee,
+            defaults={'invited_by': invited_by}
+        )
+
+        if not created:
+            return Response({"detail": "Invitation already exists."}, status=HTTP_400_BAD_REQUEST)
+
+        return Response(InvitationSerializer(invitation).data, status=HTTP_201_CREATED)
