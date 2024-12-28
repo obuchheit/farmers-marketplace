@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .models import Group, GroupMember, JoinRequest, Invitation
+from .models import Group, GroupMember, JoinRequest, Invitation, Notification
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
 from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer
@@ -235,3 +235,34 @@ class RejectInvitationView(APIView):
         return Response({"detail": "Invitation rejected."}, status=HTTP_200_OK)
 
 
+
+"""
+Notification Views
+"""
+
+class NotificationListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        notifications = Notification.objects.filter(user=request.user, is_read=False)
+        data = [
+            {
+                "id": notification.id,
+                "message": notification.message,
+                "created_at": notification.created_at,
+                "is_read": notification.is_read,
+            }
+            for notification in notifications
+        ]
+        return Response(data)
+
+class MarkNotificationAsReadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        notification = Notification.objects.filter(id=pk, user=request.user).first()
+        if not notification:
+            return Response({"detail": "Notification not found."}, status=404)
+        notification.is_read = True
+        notification.save()
+        return Response({"detail": "Notification marked as read."})
