@@ -12,6 +12,7 @@ from .views import (
     RejectInvitationView,
     NotificationListView,
     MarkNotificationAsReadView,
+    UserGroupsView,
 )
 from post_app.views import AllGroupMemberUserPostsView
 
@@ -22,6 +23,7 @@ urlpatterns = [
     path('create/', GroupCreateView.as_view(), name='create-group'),
 
     #Private Group Member views
+    path('my-groups/', UserGroupsView.as_view(), name='user_groups'),
     path('<int:pk>/', GroupDetailView.as_view(), name='group-member-detail'),
     path('<int:pk>/posts', AllGroupMemberUserPostsView.as_view(), name='group-member-posts'), #Shows all group members posts requardless if is_public or is_available is False
 

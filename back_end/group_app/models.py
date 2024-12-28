@@ -10,8 +10,13 @@ from marketplace_proj.utils import get_coordinates_from_address
 class Group(models.Model):
     name = models.CharField(null=True)
     description = models.TextField(blank=True, null=True)
-    group_image = models.ImageField(blank=True, null=True)
-    address = models.CharField(blank=False, null=True, default='92039')
+    group_image = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to='group_images/',
+        default='group_images/group_default.png',
+        )
+    address = models.CharField(blank=False, null=True)
     location = gis_models.PointField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(

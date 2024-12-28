@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from .models import Group, GroupMember, JoinRequest, Invitation, Notification
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
-from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer
+from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer, GroupListSerializer
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
@@ -28,6 +28,16 @@ class GroupCreateView(APIView):
             serializer.save(created_by=request.user)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    
+#User's groups list view
+class UserGroupsView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = GroupListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        # Get all groups where the user is an approved member
+        return GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
 
 
 #Only a Group member can see details of a group

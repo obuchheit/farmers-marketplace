@@ -5,6 +5,12 @@ from .models import Group, GroupMember, JoinRequest, Invitation
 from user_app.models import User
 from django.contrib.auth import get_user_model
 
+#Serializer for a user's groups
+class GroupListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['id', 'name', 'description', 'group_image', 'created_at']
+
 #Serializer for member details on the Group Pages
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
