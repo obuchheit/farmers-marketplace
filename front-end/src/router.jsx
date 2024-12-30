@@ -13,6 +13,7 @@ import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx"
 import SavedPostsPage from "../pages/SavedPostsPage/SavedPostsPage.jsx";
 import FindGroupPage from "../pages/GroupPages/FindGroupPage/FindGroupPage.jsx";
 import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage.jsx";
+import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
             {
                 path: '/group-public-view/:pk',
                 element: <GroupPublicPage />
+            },
+            {
+                path: '/users-groups',
+                element: < UserGroupsPage />
             }
         ],
         errorElement: <Error404Page />
