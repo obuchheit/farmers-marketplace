@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const GroupMemberPage = () => {
   const { pk } = useParams(); // Retrieve the group ID from the URL
+  const navigate = useNavigate(); // For navigating to another page
   const [groupDetails, setGroupDetails] = useState(null);
   const [groupPosts, setGroupPosts] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [errorDetails, setErrorDetails] = useState(null);
   const [errorPosts, setErrorPosts] = useState(null);
+  const [inviteStatus, setInviteStatus] = useState(null);
+
 
   useEffect(() => {
     fetchGroupDetails();
@@ -42,6 +45,29 @@ const GroupMemberPage = () => {
     }
   };
 
+  const handleInvite = async () => {
+    const inviteeId = prompt("Enter the ID of the user you want to invite:");
+    if (!inviteeId) {
+      alert("Invitee ID is required.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "/api/groups/invite/",
+        { group: pk, invitee: inviteeId },
+        { headers: { Authorization: `Token ${localStorage.getItem("authToken")}` } }
+      );
+      setInviteStatus("Invitation sent successfully.");
+    } catch (err) {
+      setInviteStatus("Failed to send invitation.");
+    }
+  };
+
+  const handleAdminPortal = () => {
+    navigate("/"); // Update this route as necessary
+  };
+
   return (
     <div>
       {loadingDetails ? (
@@ -52,6 +78,11 @@ const GroupMemberPage = () => {
         <div>
           <h1>{groupDetails.name}</h1>
           <p>{groupDetails.description}</p>
+          <button onClick={handleInvite}>Send Invite</button>
+          {inviteStatus && <p>{inviteStatus}</p>}
+          {(groupDetails.role === "admin" || groupDetails.role === "creator") && (
+            <button onClick={handleAdminPortal}>Admin Page</button>
+          )}
         </div>
       )}
 
