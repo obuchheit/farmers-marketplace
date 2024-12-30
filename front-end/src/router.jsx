@@ -14,6 +14,7 @@ import SavedPostsPage from "../pages/SavedPostsPage/SavedPostsPage.jsx";
 import FindGroupPage from "../pages/GroupPages/FindGroupPage/FindGroupPage.jsx";
 import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage.jsx";
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
+import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -74,7 +75,11 @@ const router = createBrowserRouter([
             {
                 path: '/users-groups',
                 element: < UserGroupsPage />
-            }
+            },
+            {
+                path: '/goup-member-page',
+                element: <GroupMemberPage />
+            },
         ],
         errorElement: <Error404Page />
     }
