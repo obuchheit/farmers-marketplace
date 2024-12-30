@@ -1,11 +1,14 @@
-#from decouple import config
+
 from pathlib import Path
 from dotenv import dotenv_values
 import os 
 
 env = dotenv_values(".env")
 
+
 MAPBOX_ACCESS_TOKEN = env.get("MAPBOX_ACCESS_TOKEN")
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
