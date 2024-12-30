@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .models import Group, GroupMember, JoinRequest
+from .models import Group, GroupMember, JoinRequest, Invitation, Notification
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
-from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer
+from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer, GroupListSerializer
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
@@ -28,6 +28,16 @@ class GroupCreateView(APIView):
             serializer.save(created_by=request.user)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    
+#User's groups list view
+class UserGroupsView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = GroupListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        # Get all groups where the user is an approved member
+        return GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
 
 
 #Only a Group member can see details of a group
@@ -156,3 +166,113 @@ class GroupDetailPublicView(RetrieveAPIView):
         if not GroupMember.objects.filter(group_id=group, user=user, is_approved=True).exists():
             return Group.objects.none()  # Return no groups if the user is not a member or approved
         return Group.objects.filter(id=group)
+    
+"""
+Invitaiton Views
+"""
+
+class InviteMemberView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        group_id = request.data.get('group')
+        invitee_id = request.data.get('invitee')
+
+        group = get_object_or_404(Group, id=group_id)
+        invitee = get_object_or_404(User, id=invitee_id)
+        invited_by = request.user
+
+        # Check if the invited_by user is a member of the group
+        if not group.members.filter(user=invited_by, is_approved=True).exists():
+            return Response({"detail": "You are not a member of this group."}, status=HTTP_403_FORBIDDEN)
+
+        # Check if invitee is already a member
+        if group.members.filter(user=invitee).exists():
+            return Response({"detail": "User is already a member of this group."}, status=HTTP_400_BAD_REQUEST)
+
+        # Create invitation
+        invitation, created = Invitation.objects.get_or_create(
+            group=group, invitee=invitee,
+            defaults={'invited_by': invited_by}
+        )
+
+        if not created:
+            return Response({"detail": "Invitation already exists."}, status=HTTP_400_BAD_REQUEST)
+
+        return Response(InvitationSerializer(invitation).data, status=HTTP_201_CREATED)
+    
+
+class AcceptInvitationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        invitation = get_object_or_404(Invitation, id=pk, invitee=request.user)
+        
+        # Check if the invitation is still pending
+        if invitation.status != 'pending':
+            return Response({"detail": "This invitation is no longer valid."}, status=HTTP_400_BAD_REQUEST)
+
+        invitation.status = 'accepted'
+        invitation.save()
+
+        # Check if the inviter is an admin
+        inviter_is_admin = invitation.group.members.filter(user=invitation.invited_by, role='admin').exists()
+        
+        # Automatically approve the invitee if the inviter is an admin
+        GroupMember.objects.create(
+            group=invitation.group,
+            user=request.user,
+            role='member',
+            is_approved=inviter_is_admin
+        )
+
+        return Response({"detail": "Invitation accepted."}, status=HTTP_200_OK)
+    
+
+class RejectInvitationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        invitation = get_object_or_404(Invitation, id=pk, invitee=request.user)
+
+        # Check if the invitation is still pending
+        if invitation.status != 'pending':
+            return Response({"detail": "This invitation is no longer valid."}, status=HTTP_400_BAD_REQUEST)
+
+        invitation.status = 'rejected'
+        invitation.save()
+
+        return Response({"detail": "Invitation rejected."}, status=HTTP_200_OK)
+
+
+
+"""
+Notification Views
+"""
+
+class NotificationListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        notifications = Notification.objects.filter(user=request.user, is_read=False)
+        data = [
+            {
+                "id": notification.id,
+                "message": notification.message,
+                "created_at": notification.created_at,
+                "is_read": notification.is_read,
+            }
+            for notification in notifications
+        ]
+        return Response(data)
+
+class MarkNotificationAsReadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        notification = Notification.objects.filter(id=pk, user=request.user).first()
+        if not notification:
+            return Response({"detail": "Notification not found."}, status=404)
+        notification.is_read = True
+        notification.save()
+        return Response({"detail": "Notification marked as read."})
