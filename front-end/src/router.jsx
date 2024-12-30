@@ -11,8 +11,8 @@ import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
 import SavedPostsPage from "../pages/SavedPostsPage/SavedPostsPage.jsx";
-import FindGroupPage from "../pages/FindGroupPage/FindGroupPage.jsx";
-import GroupPublicPage from "../pages/GroupPublicPage/GroupPublicPage.jsx";
+import FindGroupPage from "../pages/GroupPages/FindGroupPage/FindGroupPage.jsx";
+import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
                 element: <FindGroupPage />
             },
             {
-                path: '/group-public-view/:groupId',
+                path: '/group-public-view/:pk',
                 element: <GroupPublicPage />
             }
         ],

@@ -17,7 +17,12 @@ const FindGroupPage = () => {
   
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/v1/groups/public/"); 
+        const response = await axios.get("http://127.0.0.1:8000/api/v1/groups/public/",{
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+            params: { distance },
+      }); 
         setGroups(response.data);
         setLoading(false);
       } catch (err) {
