@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "./GroupDetailPage.css";
+import "./GroupPublicPage.css";
 
 const GroupPublicPage = () => {
   const { pk } = useParams(); // Retrieve the group ID from the URL
