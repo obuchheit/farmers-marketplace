@@ -15,7 +15,7 @@ const adminPortalPage = () => {
   
     const fetchJoinRequests = async () => {
       try {
-        const response = await axios.get(`/api/groups/${pk}/join-requests/`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/join-requests/`, {
           headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
         });
         setJoinRequests(response.data);
@@ -28,7 +28,7 @@ const adminPortalPage = () => {
   
     const handleApprove = async (requestId) => {
       try {
-        await axios.post(`/api/groups/join-request/approve/${requestId}/`, {}, {
+        await axios.post(`http://127.0.0.1:8000/api/v1/groups/join-request/approve/${requestId}/`, {}, {
           headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
         });
         alert("Join request approved successfully.");
@@ -40,7 +40,7 @@ const adminPortalPage = () => {
   
     const handleDeny = async (requestId) => {
       try {
-        await axios.post(`/api/groups/join-request/deny/${requestId}/`, {}, {
+        await axios.post(`http://127.0.0.1:8000/api/v1/groups/join-request/deny/${requestId}/`, {}, {
           headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
         });
         alert("Join request denied successfully.");
