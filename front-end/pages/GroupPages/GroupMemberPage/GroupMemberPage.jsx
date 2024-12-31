@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './GroupMemberPage.css'
 
 const GroupMemberPage = () => {
   const { pk } = useParams(); // Retrieve the group ID from the URL
@@ -65,7 +66,7 @@ const GroupMemberPage = () => {
   };
 
   const handleAdminPortal = () => {
-    navigate("/"); // Update this route as necessary
+    navigate("/groups/:pk/admin-portal"); // Update this route as necessary
   };
 
   return (

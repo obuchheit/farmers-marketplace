@@ -93,6 +93,15 @@ class JoinRequestCreateView(APIView):
         join_request = JoinRequest.objects.create(group=group, user=user)
         return Response(JoinRequestSerializer(join_request).data, status=HTTP_201_CREATED)
 
+#Join Requests View
+class GroupJoinRequestsView(ListAPIView):
+    permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
+    serializer_class = JoinRequestSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs['pk']  # Retrieve the group ID from the URL
+        return JoinRequest.objects.filter(group_id=group_id, is_approved=False)
+
 #Only a Group Admin can approve a request
 class JoinRequestApproveView(APIView):
     permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
