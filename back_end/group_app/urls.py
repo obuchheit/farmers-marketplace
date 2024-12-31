@@ -13,6 +13,7 @@ from .views import (
     NotificationListView,
     MarkNotificationAsReadView,
     UserGroupsView,
+    GroupJoinRequestsView
 )
 from post_app.views import AllGroupMemberUserPostsView
 
@@ -29,6 +30,7 @@ urlpatterns = [
 
     #Join Request Views
     path('join-request/create/', JoinRequestCreateView.as_view(), name='join-request-create'),#
+    path('<int:pk>/join-requests/', GroupJoinRequestsView.as_view(), name='group-join-requests'),
     path('join-request/approve/<int:pk>/', JoinRequestApproveView.as_view(), name='join-request-approve'),
     path('join-request/deny/<int:pk>/', JoinRequestDenyView.as_view(), name='join-request-deny'),
 

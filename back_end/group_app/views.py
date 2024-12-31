@@ -20,7 +20,9 @@ Group Views
 """
 #Any user can Create a group
 class GroupCreateView(APIView):
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
     
     def post(self, request, *args, **kwargs):
         serializer = GroupSerializer(data=request.data)
@@ -93,6 +95,15 @@ class JoinRequestCreateView(APIView):
         join_request = JoinRequest.objects.create(group=group, user=user)
         return Response(JoinRequestSerializer(join_request).data, status=HTTP_201_CREATED)
 
+#Join Requests View
+class GroupJoinRequestsView(ListAPIView):
+    permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
+    serializer_class = JoinRequestSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs['pk']  # Retrieve the group ID from the URL
+        return JoinRequest.objects.filter(group_id=group_id, is_approved=False)
+
 #Only a Group Admin can approve a request
 class JoinRequestApproveView(APIView):
     permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
@@ -135,7 +146,7 @@ class GroupListView(ListAPIView):
 
     def get_queryset(self):
         try: 
-            distance = float(self.request.queryparams.get('distance', 10))
+            distance = float(self.request.query_params.get('distance', 10))
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
 
