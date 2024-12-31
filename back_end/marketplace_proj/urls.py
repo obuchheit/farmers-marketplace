@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include 
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from .settings import MEDIA_URL, MEDIA_ROOT
 from django.contrib import admin
@@ -27,4 +27,6 @@ urlpatterns = [
     path('api/v1/groups/', include('group_app.urls')),
     path('api/v1/map/', include('map_app.urls')),
     path('api/v1/garden/', include('garden_app.urls')),
+    path('api/vi/chat/', include("chat_app.urls"))
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
+
