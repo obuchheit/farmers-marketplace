@@ -20,7 +20,9 @@ Group Views
 """
 #Any user can Create a group
 class GroupCreateView(APIView):
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
     
     def post(self, request, *args, **kwargs):
         serializer = GroupSerializer(data=request.data)
@@ -144,7 +146,7 @@ class GroupListView(ListAPIView):
 
     def get_queryset(self):
         try: 
-            distance = float(self.request.queryparams.get('distance', 10))
+            distance = float(self.request.query_params.get('distance', 10))
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
 

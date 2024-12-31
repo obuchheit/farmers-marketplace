@@ -67,7 +67,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/find-groups',
-                element: <FindGroupPage />
+                element: <FindGroupPage/>
             },
             {
                 path: '/group-public-view/:pk',
