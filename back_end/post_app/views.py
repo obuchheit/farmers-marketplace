@@ -214,7 +214,7 @@ class AllGroupMemberUserPostsView(ListAPIView):
     def get_queryset(self):
         group_id = self.kwargs.get('pk')
 
-        group_members = GroupMember.objects.filter(group_id=group_id.values_list('user_id', flat=True))
+        group_members = GroupMember.objects.filter(group_id=group_id).values_list('user_id', flat=True)
 
         return UserPosts.objects.filter(user_id__in=group_members)
 

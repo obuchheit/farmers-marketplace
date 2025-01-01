@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './GroupMemberPage.css'
+import HomePageCard from "../../../components/HomePageCard/HomePageCard";
 
 const GroupMemberPage = () => {
   const { pk } = useParams(); // Retrieve the group ID from the URL
@@ -38,6 +39,7 @@ const GroupMemberPage = () => {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/posts`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
+      console.log(response.data)
       setGroupPosts(response.data);
       setLoadingPosts(false);
     } catch (err) {
@@ -69,6 +71,10 @@ const GroupMemberPage = () => {
     navigate("/groups/:pk/admin-portal"); // Update this route as necessary
   };
 
+  const handlePostClick = (postId) => {
+    navigate(`/post/${postId}`);
+};
+
   return (
     <div>
       {loadingDetails ? (
@@ -97,11 +103,9 @@ const GroupMemberPage = () => {
           {groupPosts.length === 0 ? (
             <p>No posts in this group yet.</p>
           ) : (
-            <ul>
-              {groupPosts.map((post) => (
-                <li key={post.id}>{post.content}</li>
-              ))}
-            </ul>
+            groupPosts.map(post => (
+              <HomePageCard key={post.id} post={post} onClick={handlePostClick} />
+          ))
           )}
         </div>
       )}
