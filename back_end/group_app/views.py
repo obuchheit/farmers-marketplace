@@ -27,10 +27,20 @@ class GroupCreateView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = GroupSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(created_by=request.user)
+            # Save the group with the current user as the creator
+            group = serializer.save(created_by=request.user)
+
+            # Add the creator as a member of the group with an admin role
+            GroupMember.objects.create(
+                group=group,
+                user=request.user,
+                role='Admin',  # Or another role that suits your logic
+                is_approved=True
+            )
+
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-    
+
 #User's groups list view
 class UserGroupsView(ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -38,9 +48,9 @@ class UserGroupsView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        # Get all groups where the user is an approved member
-        return GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
-
+        # Retrieve all groups where the user is an approved member
+        group_ids = GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
+        return Group.objects.filter(id__in=group_ids)
 
 #Only a Group member can see details of a group
 #Only the Group Creator can PUT or DEL a group

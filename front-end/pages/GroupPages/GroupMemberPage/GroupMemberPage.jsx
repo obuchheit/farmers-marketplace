@@ -23,7 +23,7 @@ const GroupMemberPage = () => {
   const fetchGroupDetails = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/`, {
-        headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
       setGroupDetails(response.data);
       setLoadingDetails(false);
@@ -36,7 +36,7 @@ const GroupMemberPage = () => {
   const fetchGroupPosts = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/posts`, {
-        headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
       setGroupPosts(response.data);
       setLoadingPosts(false);

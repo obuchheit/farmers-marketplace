@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import Group, GroupMember, JoinRequest, Invitation
 from user_app.models import User
 from django.contrib.auth import get_user_model
-
+from user_app.serializers import UserProfilePublicSerializer
 #Serializer for a user's groups
 class GroupListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +36,7 @@ class GroupDetailSerializer(serializers.ModelSerializer):
 
     def get_members(self, obj):
         members = GroupMember.objects.filter(group=obj, is_approved=True)
-        return UserSerializer(members.values('user'), many=True).data
+        return UserProfilePublicSerializer(members.values('user'), many=True).data
 
 
 

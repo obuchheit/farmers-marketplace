@@ -78,7 +78,7 @@ const router = createBrowserRouter([
                 element: < UserGroupsPage />
             },
             {
-                path: '/goup-member-page',
+                path: '/group-member-page/:pk',
                 element: <GroupMemberPage />
             },
             {
