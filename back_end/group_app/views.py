@@ -4,10 +4,12 @@ from .models import Group, GroupMember, JoinRequest, Invitation, Notification
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
 from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer, GroupListSerializer
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import PermissionDenied
+
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN, HTTP_204_NO_CONTENT
 from django.contrib.gis.geos import Point
@@ -34,7 +36,7 @@ class GroupCreateView(APIView):
             GroupMember.objects.create(
                 group=group,
                 user=request.user,
-                role='Admin',  # Or another role that suits your logic
+                role='admin',  # Or another role that suits your logic
                 is_approved=True
             )
 
@@ -54,36 +56,38 @@ class UserGroupsView(ListAPIView):
 
 #Only a Group member can see details of a group
 #Only the Group Creator can PUT or DEL a group
-class GroupDetailView(APIView):
-    permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
+class GroupDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupDetailSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user and not group.members.filter(user=request.user, role='admin').exists():
-            return Response({"detail": "You don't have permission to view this group."}, status=HTTP_403_FORBIDDEN)
-        
-        serializer = GroupDetailSerializer(group)
-        return Response(serializer.data)
+    def check_permissions(self, request):
+        """
+        Custom permission logic to handle role-based access.
+        """
+        group = get_object_or_404(Group, pk=self.kwargs['pk'])
 
-    def put(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user:
-            return Response({"detail": "Only the group creator can update this group."}, status=HTTP_403_FORBIDDEN)
+        if request.method == 'GET':
+            # Allow if the user is a member or an admin
+            if not group.members.filter(user=request.user).exists():
+                raise PermissionDenied("You don't have permission to view this group.")
 
+        elif request.method in ['PUT', 'PATCH', 'DELETE']:
+            # Allow only admins to update or delete
+            if not group.members.filter(user=request.user, role='admin').exists():
+                raise PermissionDenied("Only admins can update or delete this group.")
+
+        super().check_permissions(request)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Override update to use a different serializer for updates.
+        """
+        group = self.get_object()
         serializer = GroupSerializer(group, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user:
-            return Response({"detail": "Only the group creator can delete this group."}, status=HTTP_403_FORBIDDEN)
-        
-        group.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
-    
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
     """
     Join Request Views
     """

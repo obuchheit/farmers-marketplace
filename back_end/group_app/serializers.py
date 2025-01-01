@@ -21,22 +21,35 @@ class UserSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     created_by = serializers.ReadOnlyField(source='created_by.email')  # Only show the email of the creator
 
+
     class Meta:
         model = Group
         fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_at', 'created_by']
+
+
   
 #Detailed Public view of a single group
 class GroupDetailSerializer(serializers.ModelSerializer):
     created_by = UserSerializer(read_only=True)
     members = serializers.SerializerMethodField()
+    role = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Group
-        fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_by', 'created_at', 'members']
+        fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_by', 'created_at', 'members', 'role']
 
     def get_members(self, obj):
         members = GroupMember.objects.filter(group=obj, is_approved=True)
         return UserProfilePublicSerializer(members.values('user'), many=True).data
+    
+    def get_role(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            group_member = GroupMember.objects.filter(group=obj, user=request.user).first()
+            if group_member:
+                return group_member.role  
+        return None  
 
 
 
