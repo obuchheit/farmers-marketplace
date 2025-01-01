@@ -81,6 +81,7 @@ class GroupDetailView(APIView):
 #Any user can request to join a group
 class JoinRequestCreateView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
         group_id = request.data.get('group')
@@ -169,14 +170,14 @@ class GroupListView(ListAPIView):
 class GroupDetailPublicView(RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupDetailSerializer
-    permission_classes = [IsAuthenticated, IsMemberOfGroup]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         group = self.kwargs['pk']
-        user = self.request.user
-        if not GroupMember.objects.filter(group_id=group, user=user, is_approved=True).exists():
-            return Group.objects.none()  # Return no groups if the user is not a member or approved
+        print(group)
         return Group.objects.filter(id=group)
+    
     
 """
 Invitaiton Views

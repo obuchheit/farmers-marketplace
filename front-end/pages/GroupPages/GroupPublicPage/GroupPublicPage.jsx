@@ -8,6 +8,9 @@ const GroupPublicPage = () => {
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [joinRequestStatus, setJoinRequestStatus] = useState('');
+  const token = localStorage.getItem('token');
+
 
   useEffect(() => {
     fetchGroupDetails();
@@ -15,9 +18,12 @@ const GroupPublicPage = () => {
 
   const fetchGroupDetails = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/public/${pk}/`); // Adjust URL if necessary
-      setGroup(response.data);
+      const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/public/${pk}/`, {
+        headers: { Authorization: `Token ${token}` },
+      });
       setLoading(false);
+      console.log(response.data)
+      setGroup(response.data)
     } catch (err) {
       setError("Failed to fetch group details.");
       setLoading(false);
@@ -27,12 +33,14 @@ const GroupPublicPage = () => {
   const handleJoinRequest = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/groups/join-request/", 
-        { group: pk },
-        { headers: { Authorization: `Token ${localStorage.getItem("authToken")}` } } // Adjust for your auth setup
-      );
+        "http://127.0.0.1:8000/api/v1/groups/join-request/create/",  
+          { 'group': pk },
+          {headers: { Authorization: `Token ${token}` },
+        });
+      console.log(response)
       setJoinRequestStatus("Request sent successfully.");
     } catch (err) {
+      console.log(err)
       setJoinRequestStatus("Failed to send join request.");
     }
   };
