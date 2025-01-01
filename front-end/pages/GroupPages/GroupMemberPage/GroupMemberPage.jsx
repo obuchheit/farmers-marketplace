@@ -27,6 +27,7 @@ const GroupMemberPage = () => {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
       setGroupDetails(response.data);
+      console.log(response.data)
       setLoadingDetails(false);
     } catch (err) {
       setErrorDetails("Failed to fetch group details.");
@@ -57,7 +58,7 @@ const GroupMemberPage = () => {
 
     try {
       const response = await axios.post(
-        "/api/groups/invite/",
+        "http:/127.0.0.1:8000/api/v1/groups/invite/",
         { group: pk, invitee: inviteeId },
         { headers: { Authorization: `Token ${localStorage.getItem("authToken")}` } }
       );
@@ -68,7 +69,7 @@ const GroupMemberPage = () => {
   };
 
   const handleAdminPortal = () => {
-    navigate("/groups/:pk/admin-portal"); // Update this route as necessary
+    navigate(`/groups/${pk}/admin-portal`); 
   };
 
   const handlePostClick = (postId) => {

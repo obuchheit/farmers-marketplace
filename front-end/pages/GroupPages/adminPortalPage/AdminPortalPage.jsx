@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import axios from "axios"
 import './adminPortalPage.css'
 
-const adminPortalPage = () => {
+const AdminPortalPage = () => {
     const { pk } = useParams(); // Retrieve the group ID from the URL
     const [joinRequests, setJoinRequests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,9 +16,10 @@ const adminPortalPage = () => {
     const fetchJoinRequests = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/join-requests/`, {
-          headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
         });
         setJoinRequests(response.data);
+        console.log(response.data)
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch join requests.");
@@ -29,7 +30,7 @@ const adminPortalPage = () => {
     const handleApprove = async (requestId) => {
       try {
         await axios.post(`http://127.0.0.1:8000/api/v1/groups/join-request/approve/${requestId}/`, {}, {
-          headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
         });
         alert("Join request approved successfully.");
         setJoinRequests(joinRequests.filter((request) => request.id !== requestId));
@@ -41,7 +42,7 @@ const adminPortalPage = () => {
     const handleDeny = async (requestId) => {
       try {
         await axios.post(`http://127.0.0.1:8000/api/v1/groups/join-request/deny/${requestId}/`, {}, {
-          headers: { Authorization: `Token ${localStorage.getItem("authToken")}` },
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
         });
         alert("Join request denied successfully.");
         setJoinRequests(joinRequests.filter((request) => request.id !== requestId));
@@ -77,4 +78,4 @@ const adminPortalPage = () => {
     );
   };
 
-export default adminPortalPage
+export default AdminPortalPage

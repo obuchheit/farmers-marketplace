@@ -68,7 +68,7 @@ class SingleUserPostView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    queryset = UserPosts.objects.filter(is_public=True)  
+    queryset = UserPosts.objects  
     serializer_class = PostSerializer
 
 
