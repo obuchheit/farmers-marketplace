@@ -77,7 +77,7 @@ class Invitation(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="invitations")
     invited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_invitaitons")
     invitee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recieved_invitations")
-    staus = models.CharField(
+    status = models.CharField(
         max_length=10,
         choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')],
         default='pending'

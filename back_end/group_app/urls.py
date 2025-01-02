@@ -36,8 +36,8 @@ urlpatterns = [
 
     #Invitation Views
     path('invite/', InviteMemberView.as_view(), name='invite_member'),#
-    path('invite/<int:pk>/accept/', AcceptInvitationView.as_view(), name='accept_invitation'),
-    path('invite/<int:pk>/reject/', RejectInvitationView.as_view(), name='reject_invitation'),
+    path('invite/<int:pk>/accept/', AcceptInvitationView.as_view(), name='accept_invitation'),#
+    path('invite/<int:pk>/reject/', RejectInvitationView.as_view(), name='reject_invitation'),#
 
     #Notification Views
     path('notifications/', NotificationListView.as_view(), name='notifications'),
