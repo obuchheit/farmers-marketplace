@@ -1,11 +1,14 @@
-from decouple import config
+
 from pathlib import Path
+from dotenv import dotenv_values
 import os 
 
+env = dotenv_values(".env")
 
 
-USDA_API_KEY = config("USDA_API_KEY")
-MAPBOX_ACCESS_TOKEN = config("MAPBOX_ACCESS_TOKEN")
+MAPBOX_ACCESS_TOKEN = env.get("MAPBOX_ACCESS_TOKEN")
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -16,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = env.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +47,7 @@ INSTALLED_APPS = [
     'post_app',
     'map_app',
     'garden_app',
+    'chat_app',
 ]
 
 REST_FRAMEWORK = {
@@ -86,8 +92,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'marketplace_proj.wsgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+        },
+    },
+}
 
+ASGI_APPLICATION = 'marketplace_proj.asgi.application'
+# WSGI_APPLICATION = 'marketplace_proj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

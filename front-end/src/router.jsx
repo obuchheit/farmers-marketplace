@@ -11,6 +11,11 @@ import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
 import SavedPostsPage from "../pages/SavedPostsPage/SavedPostsPage.jsx";
+import FindGroupPage from "../pages/GroupPages/FindGroupPage/FindGroupPage.jsx";
+import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage.jsx";
+import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
+import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
+import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -59,6 +64,26 @@ const router = createBrowserRouter([
             {
                 path: '/saved-posts',
                 element: <SavedPostsPage />
+            },
+            {
+                path: '/find-groups',
+                element: <FindGroupPage/>
+            },
+            {
+                path: '/group-public-view/:pk',
+                element: <GroupPublicPage />
+            },
+            {
+                path: '/users-groups',
+                element: < UserGroupsPage />
+            },
+            {
+                path: '/group-member-page/:pk',
+                element: <GroupMemberPage />
+            },
+            {
+                path: '/groups/:pk/admin-portal',
+                element: <AdminPortalPage />
             }
         ],
         errorElement: <Error404Page />

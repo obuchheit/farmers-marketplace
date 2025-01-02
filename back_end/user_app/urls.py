@@ -7,7 +7,8 @@ from .views import (
     UpdateUserProfileView,
     AdminProfileView,
     UpdateAdminProfileView,
-    UserProfilePublicView
+    UserProfilePublicView,
+    UserSearchView,
 )
 
 urlpatterns = [
@@ -28,5 +29,8 @@ urlpatterns = [
 
     #User profile public view endpoint
     path('user/<int:user_id>/', UserProfilePublicView.as_view(), name='user-profile'),
+
+    #Search Users endpoint
+    path('search/', UserSearchView.as_view(), name='user-search')
 
 ]
