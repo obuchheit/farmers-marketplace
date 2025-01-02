@@ -26,7 +26,7 @@ urlpatterns = [
     #Private Group Member views
     path('my-groups/', UserGroupsView.as_view(), name='user_groups'),##
     path('<int:pk>/', GroupDetailView.as_view(), name='group-member-detail'),##
-    path('<int:pk>/posts', AllGroupMemberUserPostsView.as_view(), name='group-member-posts'),##  #Shows all group members posts requardless if is_public or is_available is False
+    path('<int:pk>/posts', AllGroupMemberUserPostsView.as_view(), name='group-member-posts'),## 
 
     #Join Request Views
     path('join-request/create/', JoinRequestCreateView.as_view(), name='join-request-create'),##
@@ -35,7 +35,7 @@ urlpatterns = [
     path('join-request/deny/<int:pk>/', JoinRequestDenyView.as_view(), name='join-request-deny'),##
 
     #Invitation Views
-    path('invite/', InviteMemberView.as_view(), name='invite_member'),#
+    path('invite/', InviteMemberView.as_view(), name='invite_member'),##
     path('invite/<int:pk>/accept/', AcceptInvitationView.as_view(), name='accept_invitation'),
     path('invite/<int:pk>/reject/', RejectInvitationView.as_view(), name='reject_invitation'),
 

@@ -219,7 +219,7 @@ class InviteMemberView(APIView):
         # Create invitation
         invitation, created = Invitation.objects.get_or_create(
             group=group, invitee=invitee,
-            defaults={'invited_by': invited_by}
+            defaults={'invited_by': invited_by},
         )
 
         if not created:
