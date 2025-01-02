@@ -4,10 +4,12 @@ from .models import Group, GroupMember, JoinRequest, Invitation, Notification
 from rest_framework.exceptions import ValidationError
 from user_app.models import User
 from .serializers import GroupSerializer, GroupDetailSerializer, GroupMemberSerializer, JoinRequestSerializer, InvitationSerializer, GroupListSerializer
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsMemberOfGroup, IsGroupCreatorOrAdmin
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import PermissionDenied
+
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN, HTTP_204_NO_CONTENT
 from django.contrib.gis.geos import Point
@@ -20,15 +22,27 @@ Group Views
 """
 #Any user can Create a group
 class GroupCreateView(APIView):
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
     
     def post(self, request, *args, **kwargs):
         serializer = GroupSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(created_by=request.user)
+            # Save the group with the current user as the creator
+            group = serializer.save(created_by=request.user)
+
+            # Add the creator as a member of the group with an admin role
+            GroupMember.objects.create(
+                group=group,
+                user=request.user,
+                role='admin',  # Or another role that suits your logic
+                is_approved=True
+            )
+
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-    
+
 #User's groups list view
 class UserGroupsView(ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -36,42 +50,44 @@ class UserGroupsView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        # Get all groups where the user is an approved member
-        return GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
-
+        # Retrieve all groups where the user is an approved member
+        group_ids = GroupMember.objects.filter(user=user, is_approved=True).values_list('group', flat=True)
+        return Group.objects.filter(id__in=group_ids)
 
 #Only a Group member can see details of a group
 #Only the Group Creator can PUT or DEL a group
-class GroupDetailView(APIView):
-    permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
+class GroupDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupDetailSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user and not group.members.filter(user=request.user, role='admin').exists():
-            return Response({"detail": "You don't have permission to view this group."}, status=HTTP_403_FORBIDDEN)
-        
-        serializer = GroupDetailSerializer(group)
-        return Response(serializer.data)
+    def check_permissions(self, request):
+        """
+        Custom permission logic to handle role-based access.
+        """
+        group = get_object_or_404(Group, pk=self.kwargs['pk'])
 
-    def put(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user:
-            return Response({"detail": "Only the group creator can update this group."}, status=HTTP_403_FORBIDDEN)
+        if request.method == 'GET':
+            # Allow if the user is a member or an admin
+            if not group.members.filter(user=request.user).exists():
+                raise PermissionDenied("You don't have permission to view this group.")
 
+        elif request.method in ['PUT', 'PATCH', 'DELETE']:
+            # Allow only admins to update or delete
+            if not group.members.filter(user=request.user, role='admin').exists():
+                raise PermissionDenied("Only admins can update or delete this group.")
+
+        super().check_permissions(request)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Override update to use a different serializer for updates.
+        """
+        group = self.get_object()
         serializer = GroupSerializer(group, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        group = get_object_or_404(Group, pk=pk)
-        if group.created_by != request.user:
-            return Response({"detail": "Only the group creator can delete this group."}, status=HTTP_403_FORBIDDEN)
-        
-        group.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
-    
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
     """
     Join Request Views
     """
@@ -79,6 +95,7 @@ class GroupDetailView(APIView):
 #Any user can request to join a group
 class JoinRequestCreateView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
         group_id = request.data.get('group')
@@ -92,6 +109,15 @@ class JoinRequestCreateView(APIView):
         # Create the join request
         join_request = JoinRequest.objects.create(group=group, user=user)
         return Response(JoinRequestSerializer(join_request).data, status=HTTP_201_CREATED)
+
+#Join Requests View
+class GroupJoinRequestsView(ListAPIView):
+    permission_classes = [IsAuthenticated, IsGroupCreatorOrAdmin]
+    serializer_class = JoinRequestSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs['pk']  # Retrieve the group ID from the URL
+        return JoinRequest.objects.filter(group_id=group_id, is_approved=False)
 
 #Only a Group Admin can approve a request
 class JoinRequestApproveView(APIView):
@@ -135,7 +161,7 @@ class GroupListView(ListAPIView):
 
     def get_queryset(self):
         try: 
-            distance = float(self.request.queryparams.get('distance', 10))
+            distance = float(self.request.query_params.get('distance', 10))
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
 
@@ -158,14 +184,14 @@ class GroupListView(ListAPIView):
 class GroupDetailPublicView(RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupDetailSerializer
-    permission_classes = [IsAuthenticated, IsMemberOfGroup]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         group = self.kwargs['pk']
-        user = self.request.user
-        if not GroupMember.objects.filter(group_id=group, user=user, is_approved=True).exists():
-            return Group.objects.none()  # Return no groups if the user is not a member or approved
+        print(group)
         return Group.objects.filter(id=group)
+    
     
 """
 Invitaiton Views

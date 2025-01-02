@@ -31,6 +31,12 @@ const NavBar = ({ user, setUser }) => {
                     <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
                     <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
                     <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
+                    <NavDropdown title="Groups" id="basic-nav-dropdown">
+                        <NavDropdown.Item as={Link} to="/find-groups">Find Groups</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/users-groups">
+                            Your Groups
+                        </NavDropdown.Item>
+                    </NavDropdown>
                 </Nav>
 
                 {/* Right-side Nav Links */}

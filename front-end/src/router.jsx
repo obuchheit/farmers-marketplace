@@ -15,6 +15,7 @@ import FindGroupPage from "../pages/GroupPages/FindGroupPage/FindGroupPage.jsx";
 import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage.jsx";
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
+import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -66,7 +67,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/find-groups',
-                element: <FindGroupPage />
+                element: <FindGroupPage/>
             },
             {
                 path: '/group-public-view/:pk',
@@ -77,9 +78,13 @@ const router = createBrowserRouter([
                 element: < UserGroupsPage />
             },
             {
-                path: '/goup-member-page',
+                path: '/group-member-page/:pk',
                 element: <GroupMemberPage />
             },
+            {
+                path: '/groups/:pk/admin-portal',
+                element: <AdminPortalPage />
+            }
         ],
         errorElement: <Error404Page />
     }
