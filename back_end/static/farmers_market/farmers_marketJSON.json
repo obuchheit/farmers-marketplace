@@ -1,0 +1,92 @@
+[
+    {
+        "listing_id": 300002,
+        "listing_name": "Colorado Farm and Art Market",
+        "location_address": "7350 Pine Creek Road, Colorado Springs, Colorado 80919",
+        "location_x": -104.81468,
+        "location_y": "38.9377160",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300003,
+        "listing_name": "Market in The Park",
+        "location_address": "300 Conti, Mobile, Alabama 36602",
+        "location_x": -88.045015,
+        "location_y": "30.690350",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300004,
+        "listing_name": "The Territory Farmers' Market",
+        "location_address": "2000 Territory Drive, Galena, Illinois 61036",
+        "location_x": -90.31353,
+        "location_y": "42.404443",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300005,
+        "listing_name": "City of Plymouth Farmers Market",
+        "location_address": "15500 County Road 6, Plymouth, Minnesota 55447",
+        "location_x": -93.473419,
+        "location_y": "44.997274",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300006,
+        "listing_name": "Durham Farmers' Market",
+        "location_address": "501 Foster Street, Durham, North Carolina 27701",
+        "location_x": -78.901856,
+        "location_y": "36.000559",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300008,
+        "listing_name": "Webster's Joe Obbie Farmers' Market, Inc.",
+        "location_address": "1028 Ridge Road, Webster Towne Center, Webster, New York 14580",
+        "location_x": -77.452948,
+        "location_y": "43.212229",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300009,
+        "listing_name": "Appleton Downtown Farm Market",
+        "location_address": "100 College Avenue, Appleton, Wisconsin 54911",
+        "location_x": -88.40703,
+        "location_y": "44.26201",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300010,
+        "listing_name": "Bastrop 1832 Farmers Market",
+        "location_address": "1302 Chestnut Street, Bastrop, Texas 78602",
+        "location_x": -97.311627,
+        "location_y": "30.111777",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300013,
+        "listing_name": "Alexandria Bay Farmers Market",
+        "location_address": "Route 12, Alexandria Bay, New York 13607",
+        "location_x": -75.916118,
+        "location_y": "44.331171",
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 300016,
+        "listing_name": "Clarence Hollow Farmers' Market",
+        "location_address": "New Town lot, 10717 Main St. (route 5), Clarence, New York 14031",
+        "location_x": -78.58945,
+        "location_y": "42.98032",
+        "orgnization": null,
+        "listing_desc": null
+    }
+]
