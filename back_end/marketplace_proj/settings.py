@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'post_app',
     'map_app',
     'garden_app',
+    'chat_app',
 ]
 
 REST_FRAMEWORK = {
@@ -89,8 +92,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'marketplace_proj.wsgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+        },
+    },
+}
 
+ASGI_APPLICATION = 'marketplace_proj.asgi.application'
+# WSGI_APPLICATION = 'marketplace_proj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
