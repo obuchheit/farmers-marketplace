@@ -1,4 +1,4 @@
-<!-- agritourism.csv 
+<!-- 
 listing_id
 update_time
 listing_name
@@ -32,29 +32,8 @@ facilities_1
 facilities_2
 facilities_3
 facilities_4
-facilities_5
-facilities_6
-facilities_7
-facilities_8
 facilities_888
 facilities_other_desc
-services
-services_1
-services_2
-services_3
-services_4
-services_5
-services_888
-services_other_desc
-nearbylodging_type
-nearbylodging_type_1
-nearbylodging_type_2
-nearbylodging_type_3
-nearbylodging_type_4
-nearbylodging_type_5
-nearbylodging_type_6
-nearbylodging_type_888
-nearbylodging_type_other_desc
 specialproductionmethods
 specialproductionmethods_1
 specialproductionmethods_2
@@ -111,7 +90,6 @@ FNAP_3
 FNAP_888
 FNAP_3_desc
 FNAP_other_desc
-qualify_csa
 webscripting
 bulktable_id
 bulktable_row_id -->

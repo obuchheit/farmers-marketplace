@@ -1,0 +1,92 @@
+[
+    {
+        "listing_id": 500000,
+        "listing_name": "Little Rock Local Food Club",
+        "location_address": "509 Scott St, Little Rock, Arkansas 72201",
+        "location_x": -92.269829,
+        "location_y": 34.7432407,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500001,
+        "listing_name": "Ojai Pixie Growers Association",
+        "location_address": "15275 Maricopa Hwy, Ojai, California 93023",
+        "location_x": -119.29144,
+        "location_y": 34.4813063,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500002,
+        "listing_name": "Farm 2 Family's Brunswick Farmers Market",
+        "location_address": "10600 Bubbling Wells Rd, Grass Valley, California 95945",
+        "location_x": -121.02649,
+        "location_y": 39.2335394,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500003,
+        "listing_name": "High Plains Food Cooperative",
+        "location_address": "7900 E Union Ave.   Ste 200, Denver, Colorado 80237",
+        "location_x": -104.89604,
+        "location_y": 39.6277464,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500004,
+        "listing_name": "LoCo Food Distribution",
+        "location_address": "229 N US HWY 287, Fort Collins, Colorado 80524",
+        "location_x": -105.0804,
+        "location_y": 40.6180146,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500005,
+        "listing_name": "Iowa Food Cooperative",
+        "location_address": "4944 Franklin Avenue, Des Moines, Iowa 50310",
+        "location_x": -93.686808,
+        "location_y": 41.610739,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500006,
+        "listing_name": "Irv & Shelly's Fresh Picks",
+        "location_address": "5625 W. Howard Street, Niles, Illinois 60714",
+        "location_x": -87.768252,
+        "location_y": 42.0183999,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500007,
+        "listing_name": "Hoosier Harvest Market",
+        "location_address": "802 North Apple Street, Greenfield, Indiana 46140",
+        "location_x": -85.75621,
+        "location_y": 39.7931106,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500008,
+        "listing_name": "Massachusetts Local Food Cooperative",
+        "location_address": "114 Coburn Avenue, Gardner, Massachusetts 01440",
+        "location_x": -72.007044,
+        "location_y": 42.5696247,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 500009,
+        "listing_name": "Berkshire Organics Market and Delivery",
+        "location_address": "813 Dalton Division Rd., Dalton, Massachusetts 01226",
+        "location_x": -73.196493,
+        "location_y": 42.4300153,
+        "orgnization": null,
+        "listing_desc": null
+    }
+]
