@@ -26,13 +26,13 @@ urlpatterns = [
     #Private Group Member views
     path('my-groups/', UserGroupsView.as_view(), name='user_groups'),##
     path('<int:pk>/', GroupDetailView.as_view(), name='group-member-detail'),##
-    path('<int:pk>/posts', AllGroupMemberUserPostsView.as_view(), name='group-member-posts'),#  #Shows all group members posts requardless if is_public or is_available is False
+    path('<int:pk>/posts', AllGroupMemberUserPostsView.as_view(), name='group-member-posts'),##  #Shows all group members posts requardless if is_public or is_available is False
 
     #Join Request Views
     path('join-request/create/', JoinRequestCreateView.as_view(), name='join-request-create'),##
-    path('<int:pk>/join-requests/', GroupJoinRequestsView.as_view(), name='group-join-requests'),
-    path('join-request/approve/<int:pk>/', JoinRequestApproveView.as_view(), name='join-request-approve'),
-    path('join-request/deny/<int:pk>/', JoinRequestDenyView.as_view(), name='join-request-deny'),
+    path('<int:pk>/join-requests/', GroupJoinRequestsView.as_view(), name='group-join-requests'),##
+    path('join-request/approve/<int:pk>/', JoinRequestApproveView.as_view(), name='join-request-approve'),##
+    path('join-request/deny/<int:pk>/', JoinRequestDenyView.as_view(), name='join-request-deny'),##
 
     #Invitation Views
     path('invite/', InviteMemberView.as_view(), name='invite_member'),#
