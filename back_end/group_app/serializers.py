@@ -54,10 +54,11 @@ class GroupDetailSerializer(serializers.ModelSerializer):
 
 
 class JoinRequestSerializer(serializers.ModelSerializer):
+    user = UserProfilePublicSerializer(read_only=True)
+
     class Meta:
         model = JoinRequest
         fields = ['id', 'group', 'user', 'request_date', 'is_approved']
-
 
 
 class GroupMemberSerializer(serializers.ModelSerializer):
