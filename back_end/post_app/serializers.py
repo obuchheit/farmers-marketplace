@@ -36,15 +36,17 @@ class UserPostSerializer(ModelSerializer):
 
 """Serializer for public view."""
 class PostSerializer(ModelSerializer):
-
     user = SerializerMethodField()  # Customize what user data is exposed
+    distance = SerializerMethodField()  # Include distance in the response
 
     class Meta:
         model = UserPosts
-        fields = ['id', 'user', 'image', 'title', 'description', 'address', 'time_posted', 'location', 'is_available', 'is_public']
+        fields = [
+            'id', 'user', 'image', 'title', 'description', 'address', 
+            'time_posted', 'location', 'is_available', 'is_public', 'distance'
+        ]
 
     def get_user(self, obj):
-        print(obj.user.profile_picture.url)
         # Expose only limited user information (e.g., name and profile picture)
         return {
             "id": obj.user.id,
@@ -52,6 +54,13 @@ class PostSerializer(ModelSerializer):
             "last_name": obj.user.last_name,
             "profile_picture": f'http://localhost:8000{obj.user.profile_picture.url}' if obj.user.profile_picture else None
         }
+
+    def get_distance(self, obj):
+        # Ensure distance is included in the queryset
+        if hasattr(obj, 'distance'):
+            return round(obj.distance.km, 2)
+        return None
+
     
 class AllPostSerializer(ModelSerializer):
     image = ImageField(use_url=True) # Ensures the full URL is included in the response

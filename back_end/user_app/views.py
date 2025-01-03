@@ -9,6 +9,10 @@ from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from .models import User, AdminProfile
 from .serializers import SignupSerializer, UserProfileSerializer, AdminProfileSerializer, UserProfilePublicSerializer
+from django.db.models import Q, Value, CharField
+from django.db.models.functions import Concat
+
+
 
 class TokenReq(APIView):
     authentication_classes = [TokenAuthentication]
@@ -108,3 +112,38 @@ class UpdateAdminProfileView(RetrieveUpdateDestroyAPIView):
         return self.request.user.admin_profile
     
 
+class UserSearchView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    
+    def get(self, request):
+        query = request.query_params.get("query", "").strip()
+        if not query:
+            return Response({"error": "Query parameter is required."}, status=HTTP_400_BAD_REQUEST)
+
+        # Annotate users with a combined 'full_name' field (first name + last name)
+        users = User.objects.annotate(
+            full_name=Concat(
+                Value(" "),
+                'first_name',
+                Value(" "),
+                'last_name',
+                output_field=CharField()
+            )
+        ).filter(
+            Q(full_name__icontains=query) | Q(email__icontains=query)
+        ).exclude(id=request.user.id)  # Exclude the current user from search results
+
+        # Serialize user data
+        results = [
+            {
+                "id": user.id,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "profile_picture": f'http://localhost:8000{user.profile_picture.url}' if user.profile_picture else None,
+            }
+            for user in users
+        ]
+
+        return Response(results, status=HTTP_200_OK)

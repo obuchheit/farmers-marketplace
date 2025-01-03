@@ -6,8 +6,8 @@ import './GroupMemberPage.css';
 import HomePageCard from "../../../components/HomePageCard/HomePageCard";
 
 const GroupMemberPage = () => {
-  const { pk } = useParams(); // Retrieve the group ID from the URL
-  const navigate = useNavigate(); // For navigating to another page
+  const { pk } = useParams(); 
+  const navigate = useNavigate(); 
   const [groupDetails, setGroupDetails] = useState(null);
   const [groupPosts, setGroupPosts] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(true);
@@ -18,6 +18,8 @@ const GroupMemberPage = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [inviteError, setInviteError] = useState(null); 
+
 
   useEffect(() => {
     fetchGroupDetails();
@@ -63,10 +65,11 @@ const GroupMemberPage = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/v1/users/", {
+      const response = await axios.get("http://127.0.0.1:8000/api/v1/users/search/", {
         params: { query: searchTerm },
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
+      console.log(response.data)
       setSearchResults(response.data);
     } catch (err) {
       console.error("Failed to search users.");
@@ -81,10 +84,17 @@ const GroupMemberPage = () => {
         { headers: { Authorization: `Token ${localStorage.getItem("token")}` } }
       );
       setInviteStatus("Invitation sent successfully.");
+      setInviteError(null); // Clear any previous error
     } catch (err) {
-      setInviteStatus("Failed to send invitation.");
+      // Capture the error message from the response
+      if (err.response && err.response.data && err.response.data.detail) {
+        setInviteError(err.response.data.detail);
+      } else {
+        setInviteError("An unexpected error occurred."); // Fallback for unexpected errors
+      }
     }
   };
+  
 
   const handleAdminPortal = () => {
     navigate(`/groups/${pk}/admin-portal`);
@@ -134,6 +144,10 @@ const GroupMemberPage = () => {
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <div>
+          {inviteStatus && <p className="success-message">{inviteStatus}</p>}
+          {inviteError && <p className="error-message">{inviteError}</p>}
+        </div>
           <Form>
             <Form.Group controlId="searchTerm">
               <Form.Label>Search by name or email:</Form.Label>

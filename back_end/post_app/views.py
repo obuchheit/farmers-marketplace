@@ -68,7 +68,7 @@ class SingleUserPostView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    queryset = UserPosts.objects  
+    queryset = UserPosts.objects.filter(is_public=True)  
     serializer_class = PostSerializer
 
 
@@ -208,15 +208,27 @@ Group Posts
 """
 
 class AllGroupMemberUserPostsView(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = AllPostSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # Get the group ID from the URL
         group_id = self.kwargs.get('pk')
 
+        # Get the authenticated user's location
+        user = self.request.user
+        if not user.location:
+            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
+
+        # Ensure user location is a Point
+        if not isinstance(user.location, Point):
+            raise ValidationError({"error": "User location is invalid."})
+
+        # Get group members
         group_members = GroupMember.objects.filter(group_id=group_id).values_list('user_id', flat=True)
 
-        return UserPosts.objects.filter(user_id__in=group_members)
-
-
+        # Annotate distance and filter posts by group members
+        return UserPosts.objects.filter(user_id__in=group_members).annotate(
+            distance=Distance('location', user.location)
+        )
 
