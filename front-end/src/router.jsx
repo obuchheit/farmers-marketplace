@@ -16,7 +16,9 @@ import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
+import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 import { getInfo } from "../utilities.jsx";
+import { Search } from "react-bootstrap-icons";
 
 
 const router = createBrowserRouter([
@@ -84,6 +86,10 @@ const router = createBrowserRouter([
             {
                 path: '/groups/:pk/admin-portal',
                 element: <AdminPortalPage />
+            },
+            {
+                path: '/search-farms',
+                element: <SearchFarmsPage />
             }
         ],
         errorElement: <Error404Page />

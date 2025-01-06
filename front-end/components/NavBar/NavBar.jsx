@@ -1,28 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
-import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap"
+import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { signOut, getProfilePicture } from "../../utilities";
 import './NavBar.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const NavBar = ({ user, setUser }) => {
     const [profileImage, setProfileImage] = useState(null);
 
-    const logOut = async() => {
-        setUser(await signOut(user))
-    }
+    const logOut = async () => {
+        setUser(await signOut(user));
+    };
 
-    useEffect (() => {
-        const getImage = async() => {
-            setProfileImage(await getProfilePicture())
-        }
-        getImage()
-    },[])
+    useEffect(() => {
+        const getImage = async () => {
+            setProfileImage(await getProfilePicture());
+        };
+        getImage();
+    }, []);
 
-
-  return (
-    <Navbar expand="lg" fixed="top" className="custom-navbar px-5">
+    return (
+        <Navbar expand="lg" fixed="top" className="custom-navbar px-5">
             <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -31,6 +29,7 @@ const NavBar = ({ user, setUser }) => {
                     <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
                     <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
                     <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
+                    <Nav.Link as={Link} to="/search-farms">Search Farms</Nav.Link> {/* Added link to Search Farms */}
                     <NavDropdown title="Groups" id="basic-nav-dropdown">
                         <NavDropdown.Item as={Link} to="/find-groups">Find Groups</NavDropdown.Item>
                         <NavDropdown.Item as={Link} to="/users-groups">
@@ -44,7 +43,7 @@ const NavBar = ({ user, setUser }) => {
                     {user ? (
                         <>
                             <Button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</Button>
-                            <Link to="/profile"><img id="profile-picture" src={profileImage}/></Link>
+                            <Link to="/profile"><img id="profile-picture" src={profileImage} alt="Profile" /></Link>
                         </>
                     ) : (
                         <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>
@@ -52,8 +51,7 @@ const NavBar = ({ user, setUser }) => {
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
+    );
+};
 
-  )
-}
-
-export default NavBar
+export default NavBar;
