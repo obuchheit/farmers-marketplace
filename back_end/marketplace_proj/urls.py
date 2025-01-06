@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from .settings import MEDIA_URL, MEDIA_ROOT
 from django.contrib import admin
 from .views import MapboxTokenView
+from .views import MapboxTokenView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
