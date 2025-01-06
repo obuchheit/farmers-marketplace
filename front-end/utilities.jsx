@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 
 export const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api/v1/"
@@ -161,3 +162,32 @@ export const removeSavedPost = async (postId) => {
     }
     return false;
 };
+
+
+//MapBox Token Retrieval
+
+export const useMapboxToken = () => {
+    const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+  
+    const fetchToken = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/mapbox-token/", {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        });
+        setToken(response.data.accessToken);
+      } catch (err) {
+        console.error("Failed to fetch Mapbox token:", err);
+        setError("Failed to fetch Mapbox token.");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    return { token, fetchToken, loading, error };
+  };
+  
