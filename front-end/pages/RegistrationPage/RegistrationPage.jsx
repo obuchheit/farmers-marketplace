@@ -48,6 +48,10 @@ const RegistrationPage = () => {
 
 
   return (
+    <>
+    <div className="title">
+      <h1>Welcome to Farmers Marketplace</h1>
+    </div>
     <div className="registration-page container mt-5">
       <h2>Sign Up</h2>
       {message && <Alert variant="success">{message}</Alert>}
@@ -136,6 +140,7 @@ const RegistrationPage = () => {
 
       </div>
     </div>
+    </>
   );
 };
 

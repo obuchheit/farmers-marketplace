@@ -55,24 +55,25 @@ const HomePage = ({ user }) => {
 
 
   return (
-    <div>
-        <h3>Today's Posts</h3>
-        <div className="slider-container">
-            <div className="slider-header">
-                <label htmlFor="distance-slider" className="slider-label">Radius: {distance} km</label>
-                <button onClick={fetchPosts} className="slider-button">Search</button>
+    <div className="main-page">
+        <div className="top-content">
+            <h3>Today's Posts</h3>
+            <div className="slider-container">
+                <div className="slider-header">
+                    <label htmlFor="distance-slider" className="slider-label">Radius: {distance} km</label>
+                    <button onClick={fetchPosts} className="slider-button">Search</button>
+                </div>
+                <input
+                    id="distance-slider"
+                    type="range"
+                    min="1"
+                    max="100"
+                    value={distance}
+                    onChange={handleDistanceChange}
+                    className="modern-slider"
+                />
             </div>
-            <input
-                id="distance-slider"
-                type="range"
-                min="1"
-                max="100"
-                value={distance}
-                onChange={handleDistanceChange}
-                className="modern-slider"
-            />
         </div>
-
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 

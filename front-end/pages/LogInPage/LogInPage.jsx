@@ -22,7 +22,9 @@ const LogInPage = () => {
 
   return (
     <>
-    <h1>Welcome to Farmers Marketplace</h1>
+    <div className="header">
+        <h1>Welcome to Farmers Marketplace</h1>
+    </div>
     <div className="page">
       <div className="container">
         <Form onSubmit={handleSubmit}>
@@ -43,13 +45,12 @@ const LogInPage = () => {
             placeholder="Password" 
             />
           </Form.Group>
-          <Button type="submit" className="button">
-            Submit
-          </Button>
-
-          <Button as={Link} to='/register' className="button">
-            Sign up
-          </Button>
+          <div className="buttons-container">
+            <Button type="submit" className="button">
+              Sign In
+            </Button>
+            <Link to='/register' className="signup-link">Sign Up</Link>
+          </div>
         </Form>
       </div>
     </div>

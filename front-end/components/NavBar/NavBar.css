@@ -3,7 +3,8 @@
     align-items: center;
     justify-content: space-around;
     background-color: #9b9e87;
-    height: 6vh;
+    height: 7vh;
+    padding-left: 5vh !important;
 }
 
 .navbar-brand {

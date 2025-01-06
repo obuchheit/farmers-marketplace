@@ -1,4 +1,10 @@
-/* Updated slider container */
+.main-page {
+    padding: 8vh 5vh;
+}
+
+.top-content {
+    display: flex;
+}
 .slider-container {
     display: flex;
     flex-direction: column;
