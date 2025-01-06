@@ -1,10 +1,10 @@
-.custom-navbar {
+#custom-navbar {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: #9b9e87;
+    background-color: #9b9e87 !important;
     height: 7vh;
-    padding-left: 5vh !important;
+    padding: 0 5vh !important;
 }
 
 .navbar-brand {
@@ -40,7 +40,6 @@
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem; 
 }
 
 .nav-right {

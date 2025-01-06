@@ -22,7 +22,7 @@ const NavBar = ({ user, setUser }) => {
 
 
   return (
-    <Navbar expand="lg" fixed="top" className="custom-navbar px-5">
+    <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
             <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

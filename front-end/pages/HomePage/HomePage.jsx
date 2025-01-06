@@ -7,6 +7,7 @@ import "./HomePage.css"
 
 const HomePage = ({ user }) => {
   const [distance, setDistance] = useState(50);
+  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,26 +20,25 @@ const HomePage = ({ user }) => {
     setError(null);
 
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            setError("Authentication token not found. Please log in.");
-            return;
-        }
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError("Authentication token not found. Please log in.");
+        return;
+      }
 
-        const response = await axios.get('http://localhost:8000/api/v1/posts/', {
-            headers: {
-                Authorization: `Token ${token}`,
-            },
-            params: { distance },
-        });
-        console.log(response.data)
-        setPosts(response.data);
+      const response = await axios.get('http://localhost:8000/api/v1/posts/', {
+        headers: { Authorization: `Token ${token}` },
+        params: { distance, search: searchQuery },
+      });
+
+      setPosts(response.data);
     } catch (err) {
-        setError(err.response?.data || 'An unexpected error occurred');
+      setError(err.response?.data || 'An unexpected error occurred');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
+
 
   // Fetch posts on initial render
   useEffect(() => {
@@ -53,27 +53,48 @@ const HomePage = ({ user }) => {
       navigate(`/post/${postId}`);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    fetchPosts();
+  };
+
 
   return (
     <div className="main-page">
         <div className="top-content">
             <h3>Today's Posts</h3>
+
+            {/* Search Bar */}
+            <form className="search-form" onSubmit={handleSearchSubmit}>
+            <input
+                type="text"
+                className="search-bar"
+                placeholder="Search for posts..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+            />
+            <button type="submit" className="search-button">Search</button>
+            </form>
+
+            {/* Slider */}
             <div className="slider-container">
-                <div className="slider-header">
-                    <label htmlFor="distance-slider" className="slider-label">Radius: {distance} km</label>
-                    <button onClick={fetchPosts} className="slider-button">Search</button>
-                </div>
-                <input
-                    id="distance-slider"
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={distance}
-                    onChange={handleDistanceChange}
-                    className="modern-slider"
-                />
+                <label htmlFor="distance-slider" className="slider-label">Radius: {distance} km</label>
+                <button onClick={fetchPosts} className="slider-button">Search</button>
+            <input
+                id="distance-slider"
+                type="range"
+                min="1"
+                max="100"
+                value={distance}
+                onChange={handleDistanceChange}
+                className="modern-slider"
+            />
             </div>
-        </div>
+      </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 

@@ -21,6 +21,8 @@ from .serializers import (
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from group_app.models import GroupMember
+from django.db.models import Q
+
 
 
 
@@ -35,7 +37,7 @@ class AllPostsByLocationView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Get the distance and user location from the request
+        # Get distance and user location
         try:
             distance = float(self.request.query_params.get('distance', 50))  # Default to 50 km
         except ValueError:
@@ -49,18 +51,30 @@ class AllPostsByLocationView(ListAPIView):
         if not isinstance(user.location, Point):
             raise ValidationError({"error": "User location is invalid."})
 
-        # Filter posts within the specified distance
+        # Get the search query from request
+        search_query = self.request.query_params.get('search', '').strip()
+
+        # Base queryset for public and available posts within the distance
         user_location = user.location
-        return UserPosts.objects.filter(
+        queryset = UserPosts.objects.filter(
             is_public=True,
             is_available=True
         ).exclude(
-            user=user  # Exclude posts created by the authenticated user
+            user=user  # Exclude user's own posts
         ).annotate(
             distance=Distance('location', user_location)
         ).filter(
             distance__lte=distance * 1000  # Convert km to meters
-        ).order_by('distance')
+        )
+
+        # If a search query is provided, filter based on title or description
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) | Q(description__icontains=search_query)
+            )
+
+        return queryset.order_by('distance')
+
   
 
 #View to retrieve a single UserPost by ID.
