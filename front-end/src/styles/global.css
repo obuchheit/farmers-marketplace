@@ -4,8 +4,6 @@
 body, html, #root {
   background-color: #c8c2b479 ; 
   min-height: 100vh;
-  font-family: 'Lato', sans-serif; /* Apply Lato as the default font */
-
 }
 
 .auth-page-body {
@@ -16,7 +14,6 @@ body, html, #root {
 }
 
 #root {
-  background-color: #c8c2b479;
   padding: 7vh 3vw 0 3vw;
 }
 

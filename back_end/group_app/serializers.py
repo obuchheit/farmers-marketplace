@@ -20,12 +20,24 @@ class UserSerializer(serializers.ModelSerializer):
 #Serializer for Public view of listed groups
 class GroupSerializer(serializers.ModelSerializer):
     created_by = serializers.ReadOnlyField(source='created_by.email')  # Only show the email of the creator
-
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
 
     class Meta:
         model = Group
-        fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_at', 'created_by']
+        fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'latitude', 'longitude', 'created_at', 'created_by']
 
+    def get_latitude(self, obj):
+        # Extract latitude from the location field
+        if obj.location:
+            return obj.location.y  # Latitude is stored as y in the Point object
+        return None
+
+    def get_longitude(self, obj):
+        # Extract longitude from the location field
+        if obj.location:
+            return obj.location.x  # Longitude is stored as x in the Point object
+        return None
 
   
 #Detailed Public view of a single group
