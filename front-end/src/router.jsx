@@ -23,8 +23,6 @@ import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
 =======
 import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 import { getInfo } from "../utilities.jsx";
-import { Search } from "react-bootstrap-icons";
->>>>>>> main
 
 
 const router = createBrowserRouter([
