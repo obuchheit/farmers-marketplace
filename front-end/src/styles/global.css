@@ -2,13 +2,13 @@
 
 
 body, html, #root {
-  background-color: #c8c2b479 ; 
+  background-color: #c8c2b479; 
   min-height: 100vh;
   font-family: 'Lato', sans-serif; 
 }
 
 .auth-page-body {
-  background-image: url('http://127.0.0.1:8000/media/project_images/LoadImage.jpg'); /* Replace with your auth page background */
+  background-image: url('http://127.0.0.1:8000/media/project_images/LoadImage.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

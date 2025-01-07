@@ -18,7 +18,6 @@ import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
 import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 import { getInfo } from "../utilities.jsx";
-import { Search } from "react-bootstrap-icons";
 
 
 const router = createBrowserRouter([

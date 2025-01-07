@@ -33,35 +33,43 @@ Public-view of UserPosts Views
 #View to list all UserPosts based on location.
 class AllPostsByLocationView(ListAPIView):
     serializer_class = AllPostSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Get distance and user location
+        # Default location: Chicago, IL (latitude: 41.8781, longitude: -87.6298)
+        default_location = Point(-87.6298, 41.8781, srid=4326)  # Set SRID for the default location
+
+        # Get distance and user location from query params
         try:
             distance = float(self.request.query_params.get('distance', 50))  # Default to 50 km
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
-        
-        user = self.request.user
-        if not user.location:
-            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
 
-        # Ensure user location is a Point
-        if not isinstance(user.location, Point):
-            raise ValidationError({"error": "User location is invalid."})
+        lat = self.request.query_params.get('lat')
+        lng = self.request.query_params.get('lng')
+        
+        # If lat and lng are provided, use them; otherwise, use the default location
+        if lat and lng:
+            try:
+                user_location = Point(float(lng), float(lat), srid=4326)  # Set SRID for user-provided location
+            except ValueError:
+                raise ValidationError({"error": "Invalid latitude or longitude values."})
+        else:
+            user_location = default_location
 
         # Get the search query from request
         search_query = self.request.query_params.get('search', '').strip()
 
         # Base queryset for public and available posts within the distance
-        user_location = user.location
         queryset = UserPosts.objects.filter(
             is_public=True,
             is_available=True
-        ).exclude(
-            user=user  # Exclude user's own posts
-        ).annotate(
+        )
+
+        # Exclude user's own posts if authenticated
+        if self.request.user.is_authenticated:
+            queryset = queryset.exclude(user=self.request.user)
+
+        queryset = queryset.annotate(
             distance=Distance('location', user_location)
         ).filter(
             distance__lte=distance * 1000  # Convert km to meters
@@ -74,7 +82,6 @@ class AllPostsByLocationView(ListAPIView):
             )
 
         return queryset.order_by('distance')
-
   
 
 #View to retrieve a single UserPost by ID.
