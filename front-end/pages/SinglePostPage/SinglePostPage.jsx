@@ -3,6 +3,7 @@ import { Link, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FaRegStar, FaStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import './SinglePostPage.css';
 
 const SinglePostPage = () => {
@@ -11,6 +12,7 @@ const SinglePostPage = () => {
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     // Determine if the post is saved on load
     const isInitiallySaved = savedPosts.includes(postId);
@@ -20,6 +22,11 @@ const SinglePostPage = () => {
         await toggleSavedPost(postId); // Call toggleSavedPost from App.jsx
         setIsSaved(!isSaved); // Toggle the local state
     };
+
+    const handleStartConversation = async () => {
+        console.log()
+        navigate(`/chats/${post.user.id}`)
+    }
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -75,6 +82,11 @@ const SinglePostPage = () => {
                             <span> Save</span>
                         </>
                     )}
+                </div>
+                <div>
+                    <Link onClick={handleStartConversation}>
+                        <p>message user</p>
+                    </Link>
                 </div>
             </div>
 
