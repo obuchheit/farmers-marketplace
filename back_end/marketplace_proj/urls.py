@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from .settings import MEDIA_URL, MEDIA_ROOT
 from django.contrib import admin
 from .views import MapboxTokenView
+from .views import MapboxTokenView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,8 @@ urlpatterns = [
     path('api/v1/groups/', include('group_app.urls')),
     path('api/v1/map/', include('map_app.urls')),
     path('api/v1/garden/', include('garden_app.urls')),
+    path('api/v1/get-all-data/', include('static.api.urls')),
+    path('api/v1/searchfarms/', include('searchfarms_app.urls')),
     # path('api/vi/chat/', include("chat_app.routing")),
     path("mapbox-token/", MapboxTokenView.as_view(), name="mapbox-token"),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)

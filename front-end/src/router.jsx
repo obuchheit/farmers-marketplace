@@ -16,9 +16,15 @@ import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
+<<<<<<< HEAD
 import ChatsPage from "../pages/ChatsPage/ChatsPage.jsx";
 import { getInfo } from "../utilities.jsx";
 import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
+=======
+import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
+import { getInfo } from "../utilities.jsx";
+import { Search } from "react-bootstrap-icons";
+>>>>>>> main
 
 
 const router = createBrowserRouter([
@@ -94,6 +100,10 @@ const router = createBrowserRouter([
             {
                 path: '/chats/:id',
                 element: <SingleConvoPage/>
+            },
+            {
+                path: '/search-farms',
+                element: <SearchFarmsPage />
             }
         ],
         errorElement: <Error404Page />
