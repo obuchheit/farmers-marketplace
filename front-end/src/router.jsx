@@ -16,7 +16,9 @@ import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
+import ChatsPage from "../pages/ChatsPage/ChatsPage.jsx";
 import { getInfo } from "../utilities.jsx";
+import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -84,6 +86,14 @@ const router = createBrowserRouter([
             {
                 path: '/groups/:pk/admin-portal',
                 element: <AdminPortalPage />
+            },
+            {
+                path: '/chats',
+                element: <ChatsPage/>
+            },
+            {
+                path: '/chats/:id',
+                element: <SingleConvoPage/>
             }
         ],
         errorElement: <Error404Page />
