@@ -25,5 +25,68 @@
         "location_y": 64.8404709,
         "orgnization": null,
         "listing_desc": null
+    },
+    {
+        "listing_id": 200003,
+        "listing_name": "Spinach Creek Farm",
+        "location_address": "5181 Murphy Dome Road, Fairbanks, Alaska 99709",
+        "location_x": -148.17984,
+        "location_y": 64.90857,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200004,
+        "listing_name": "SlowMoneyFarm",
+        "location_address": "180 3rd street, Nauvoo, Alabama 35578",
+        "location_x": -87.4869118,
+        "location_y": 33.9891202,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200005,
+        "listing_name": "The Fagan Funny Farm, LLC",
+        "location_address": ", Equality, Alabama",
+        "location_x": -86.1016899,
+        "location_y": 32.7619984,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200006,
+        "listing_name": "Arkansas Local Food Network",
+        "location_address": "509 Scott St, Little Rock, Arkansas 72201",
+        "location_x": -92.2698291,
+        "location_y": 34.7432407,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200007,
+        "listing_name": "Avalon Organic Gardens & EcoVillage",
+        "location_address": "P.O. Box 4910, Tubac, Arizona 85646",
+        "location_x": -111.0459238,
+        "location_y": 31.61259,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200008,
+        "listing_name": "YCGrown, the Yavapai County Farmers & Ranchers Cooperative",
+        "location_address": "P.O. Box 291, Chino Valley, Arizona 86323",
+        "location_x": -112.4053046,
+        "location_y": 34.7560002,
+        "orgnization": null,
+        "listing_desc": null
+    },
+    {
+        "listing_id": 200009,
+        "listing_name": "Elderberry Edibles CSA & Market Garden",
+        "location_address": "1700 N. Wentworth Road, Tucson, Arizona 85749",
+        "location_x": -110.718769,
+        "location_y": 32.241996,
+        "orgnization": null,
+        "listing_desc": null
     }
 ]

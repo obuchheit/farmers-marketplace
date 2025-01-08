@@ -12,7 +12,7 @@ csv_file_path = os.path.join(current_dir, 'farmers_market.csv')
 df = pd.read_csv(csv_file_path, low_memory=False)
 
 # Process only the first 10 entries
-df_subset = df.head(3)
+df_subset = df.head(10)
 
 # Select specific columns to include in the JSON output
 columns_to_include = ['listing_id', 'listing_name', 'location_address', 'location_x', 'location_y', 'orgnization', 'listing_desc']
