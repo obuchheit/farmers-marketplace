@@ -1,52 +1,121 @@
 .main-page {
-    padding: 8vh 5vh;
+    padding: 7vh 5vh;
 }
 
 .top-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    gap: 2vh;
+    width: 100%;
+    padding: 2vh 10vh 3vh 0;
+    background-color: #dfdccc;
+    z-index: 5;
 }
 
+.todays-posts {
+    width: 25%;
+    padding-left: 3vh;
+}
+/* Search Form Styles */
 .search-form {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    width: 50vw;
+    position: relative;
+    width: 50%; 
+    margin: auto; /* Center the search bar */
 }
 
+/* Search Bar */
 .search-bar {
     flex: 1;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    height: 5vh;
+    padding: 0.8vh 5vh !important; /* Add padding for left icon and overall height */
+    font-size: 2vh; /* Larger font size for better readability */
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 50px !important; /* Rounded corners */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.search-button {
-    background-color: #795f4b;
+.search-bar:focus {
+    border-color: #5E653E;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Search Button */
+.search {
+    position: absolute;
+    height: 5vh;
+    right: 0; /* Slight padding from the right */
+    bottom: 0;
+    padding: 0.75vh 2.5vh;
+    font-size: 2vh;
+    font-weight: bold;
     color: white;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
+    background-color: #795f4b;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.search-button:hover {
+.search:hover {
     background-color: #5E653E;
     transform: scale(1.05);
 }
+
+/* Search Icon Inside Search Bar */
+.search-icon {
+    position: absolute;
+    left: 1.5vh; /* Space from the left edge */
+    font-size: 3vh; /* Larger icon size */
+    color: #5E653E; /* Contrast color for visibility */
+    pointer-events: none; /* Prevent interaction */
+    margin-top: 1vh;
+}
+
+/* Address and Radius Container */
+.address-radius-container {
+    display: flex;
+    font-size: 2vh; /* Larger text size */
+    align-items: end;
+    width: 25%;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+}
+
+.edit-location-icon {
+    font-size: 3vh; /* Larger icon size */
+    color: #795f4b;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.address-radius-container .edit-location-icon:hover {
+    transform: scale(1.1);
+    color: #5E653E;
+
+}
+
+
+
+.radius-info {
+    color: #555;
+    font-style: italic;
+    font-size: 1.8vh; /* Slightly larger text */
+    white-space: nowrap; /* Prevent wrapping */
+    font-weight: bold;
+}
+
 
 .slider-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem; /* Modern spacing */
-    width: 15vw; /* Take full width of parent */
+    width: 100%; /* Take full width of parent */
     margin: auto; /* Center on the page */
 }
 
@@ -140,38 +209,6 @@
 
 
 
-
-.address-radius-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 1rem;
-}
-
-.edit-location-icon {
-    font-size: 1.5rem;
-    color: #795f4b;
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.edit-location-icon:hover {
-    color: #5E653E;
-    transform: scale(1.1);
-}
-
-.user-address {
-    font-weight: bold;
-    color: #333;
-}
-
-.radius-info {
-    color: #555;
-    font-style: italic;
-}
-
-/* Modal and Map styling */
-
 /* Modal Styles */
 .modal-header {
     background-color: #795f4b;
@@ -197,7 +234,7 @@
 .map-container {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 100%;
     border: 2px solid #795f4b;
     border-radius: 8px;
     overflow: hidden;
@@ -235,4 +272,34 @@
 .modal-close-button:hover {
     color: #5E653E !important;
     transform: scale(1.05) !important;
+}
+
+
+@media (max-width: 768px) {
+    .main-page {
+        padding: 7vh 2vh 0 2vh;
+        overflow: hidden;
+    }
+    .top-content {
+        flex-wrap: wrap;
+        z-index: 10;
+        width: 100%;
+        padding: 2vh 0;
+    }
+  
+    .address-radius-container {
+        order: 1;
+        width: 45%;
+    }
+
+    .search-form {
+        order: 3;
+        width: 100%;
+        margin-right: 4vh;
+    }
+
+    .todays-posts {
+        width: 45%;
+    }
+
 }
