@@ -8,6 +8,9 @@ from .serializers import MessageSerializer
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from user_app.models import User
 from django.http import JsonResponse
+import random
+import string
+from django.db.models import Q
 
 # Create your views here.
 class TokenReq(APIView):
@@ -16,7 +19,11 @@ class TokenReq(APIView):
 
 class StartChatView(TokenReq):
   # start new chat with user
+  def generate_random_name(self, length=8):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+  
   def post(self, request, *args, **kwargs):
+    print('Here in StartChatView')
     # get user ids of users in chat
     user_ids = request.data.get('user_ids', [])
     group_name = request.data.get('group_name', None)
@@ -30,7 +37,9 @@ class StartChatView(TokenReq):
       if request.user == other_user:
         return JsonResponse({"error": "You cannot start a chat with yourself"}, status=HTTP_400_BAD_REQUEST)
 
-      existing_chat = Conversation.objects.filter(user=request.user, users=other_user)
+      existing_chat = Conversation.objects.filter(
+        Q(users=request.user) & Q(users=other_user)
+      )
       if existing_chat.exists():
         return JsonResponse({"message": "Chat already exists"}, status=HTTP_400_BAD_REQUEST)
       

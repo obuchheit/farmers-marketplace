@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage/HomePage.jsx";
 import ProfilePage from "../pages/ProfilePage/ProfilePage.jsx";
 import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage/CropDetailPage.jsx";
-import Error404Page from "../pages/Error404Page.jsx";
+import NotFoundPage from "../pages/NotFoundPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
@@ -16,8 +16,8 @@ import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
+import ErrorPage from "../pages/ErrorPage.jsx";
 import ChatsPage from "../pages/ChatsPage/ChatsPage.jsx";
-import { getInfo } from "../utilities.jsx";
 import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
 import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 
@@ -91,18 +91,22 @@ const router = createBrowserRouter([
             },
             {
                 path: '/chats',
-                element: <ChatsPage/>
+                element: <ChatsPage />
             },
             {
-                path: '/chats/:id',
-                element: <SingleConvoPage/>
+                path: '/chats/new-message/:otherUserId',
+                element: <SingleConvoPage />
             },
             {
                 path: '/search-farms',
                 element: <SearchFarmsPage />
-            }
+            },
+            {
+                path: '*',
+                element: <NotFoundPage />
+            },
         ],
-        errorElement: <Error404Page />
+        errorElement: <ErrorPage />
     }
 ])
 
