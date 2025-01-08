@@ -6,15 +6,19 @@ body, html, #root {
   font-family: 'Lato', sans-serif; 
 }
 
+#root {
+  background-color: #dfdccc4f;
+}
+
+
+
+
 .auth-page-body {
   background-image: url('http://127.0.0.1:8000/media/project_images/LoadImage.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-}
 
-#root {
-  background-color: #dfdccc;
 }
 
 

@@ -100,7 +100,7 @@ const HomePage = () => {
     <div className="main-page">
          <div className="top-content">
             <div className="todays-posts">
-                <h3>Today's Posts</h3>
+                <h4>Today's Posts</h4>
             </div>
             <form className="search-form" onSubmit={handleSearchSubmit}>
                 {/* Search Icon */}

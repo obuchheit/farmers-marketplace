@@ -1,5 +1,5 @@
 .main-page {
-    padding: 7vh 5vh;
+    padding: 7vh 0;
 }
 
 .top-content {
@@ -7,16 +7,16 @@
     align-items: center;
     justify-content: space-between;
     position: fixed;
+    background-color: #dfdccc;
     gap: 2vh;
     width: 100%;
-    padding: 2vh 10vh 3vh 0;
-    background-color: #dfdccc;
+    padding: 1vh 0vh 2vh 0;
     z-index: 5;
 }
 
 .todays-posts {
     width: 25%;
-    padding-left: 3vh;
+    padding-left: 8vh;
 }
 /* Search Form Styles */
 .search-form {
@@ -79,12 +79,13 @@
 /* Address and Radius Container */
 .address-radius-container {
     display: flex;
-    font-size: 2vh; /* Larger text size */
+    justify-content: center;
     align-items: end;
+    padding-top: 2vh;
     width: 25%;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;
-
+    height: 100%;
 }
 
 .edit-location-icon {
@@ -277,29 +278,31 @@
 
 @media (max-width: 768px) {
     .main-page {
-        padding: 7vh 2vh 0 2vh;
+        padding: 7vh 0;
         overflow: hidden;
     }
     .top-content {
         flex-wrap: wrap;
         z-index: 10;
         width: 100%;
-        padding: 2vh 0;
+        gap: 0;
+        padding: 1vh;
     }
   
     .address-radius-container {
         order: 1;
         width: 45%;
+        padding: 0;
     }
 
     .search-form {
         order: 3;
         width: 100%;
-        margin-right: 4vh;
     }
 
     .todays-posts {
-        width: 45%;
+        width: 50%;
+        padding-left: 2vh;
     }
 
 }
