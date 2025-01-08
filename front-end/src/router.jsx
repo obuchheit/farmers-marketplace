@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage/HomePage.jsx";
 import ProfilePage from "../pages/ProfilePage/ProfilePage.jsx";
 import GardenPage from "../pages/GardenPage/GardenPage.jsx";
 import CropDetailPage from "../pages/CropDetailPage/CropDetailPage.jsx";
-import Error404Page from "../pages/Error404Page.jsx";
+import NotFoundPage from "../pages/NotFoundPage.jsx";
 import UserPostPortalPage from "../pages/UserPostPortal/UserPostPortalPage.jsx";
 import SinglePostPage from "../pages/SinglePostPage/SinglePostPage.jsx";
 import PublicProfilePage from "../pages/PublicProfilePage/PublicProfilePage.jsx";
@@ -16,6 +16,7 @@ import GroupPublicPage from "../pages/GroupPages/GroupPublicPage/GroupPublicPage
 import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.jsx";
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
+import ErrorPage from "../pages/ErrorPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -84,9 +85,13 @@ const router = createBrowserRouter([
             {
                 path: '/groups/:pk/admin-portal',
                 element: <AdminPortalPage />
-            }
+            },
+            {
+                path: '*',
+                element: <NotFoundPage />
+            },
         ],
-        errorElement: <Error404Page />
+        errorElement: <ErrorPage />
     }
 ])
 
