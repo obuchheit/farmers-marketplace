@@ -12,6 +12,7 @@ const Error404Page = () => {
       color: "#556B2F"
     }}
     >
+      <br></br> <br></br>
       <h1>
         404 
       </h1>
