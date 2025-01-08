@@ -89,7 +89,7 @@ const router = createBrowserRouter([
                 path: '/groups/:pk/admin-portal',
                 element: <AdminPortalPage />
             },
-            
+            {
                 path: '/chats',
                 element: <ChatsPage/>
             },
