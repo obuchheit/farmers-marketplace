@@ -25,8 +25,8 @@ class Message(models.Model):
   def __str__(self):
     return f"Message from {self.sender} at {self.timestamp}"
   
-  # class Meta:
-  #   ordering = ['timestamp']
+  class Meta:
+    ordering = ['timestamp']
 
 # class RoomMember(models.Model):
 #   user = models.ForeignKey(User, on_delete=models.CASCADE)

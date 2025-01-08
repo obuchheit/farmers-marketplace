@@ -25,7 +25,7 @@ const SinglePostPage = () => {
 
     const handleStartConversation = async () => {
         console.log()
-        navigate(`/chats/${post.user.id}`)
+        navigate(`/chats/new-message/${post.user.id}`)
     }
 
     useEffect(() => {

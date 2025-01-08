@@ -91,11 +91,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/chats',
-                element: <ChatsPage/>
+                element: <ChatsPage />
             },
             {
-                path: '/chats/:id',
-                element: <SingleConvoPage/>
+                path: '/chats/new-message/:otherUserId',
+                element: <SingleConvoPage />
             },
             {
                 path: '/search-farms',
