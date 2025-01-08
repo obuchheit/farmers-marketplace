@@ -3,6 +3,10 @@ from pathlib import Path
 from dotenv import dotenv_values
 import os 
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 env = dotenv_values(".env")
 
 
@@ -72,7 +76,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'marketplace_proj.urls'
 
-#TODO: Will need to specify what pages need to be allowed later in the project.
+# TODO: Will need to specify what pages need to be allowed later in the project.
 CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
@@ -95,12 +99,18 @@ TEMPLATES = [
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',  # Use Redis as the channel layer backend
         'CONFIG': {
-            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+            "hosts": [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
         },
     },
 }
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 ASGI_APPLICATION = 'marketplace_proj.asgi.application'
 # WSGI_APPLICATION = 'marketplace_proj.wsgi.application'

@@ -16,11 +16,8 @@ djangorestframework==3.15.2
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
-<<<<<<< HEAD
 msgpack==1.1.0
-=======
 numpy==2.2.1
->>>>>>> main
 oauthlib==3.2.2
 pillow==11.0.0
 psycopg==3.2.3
@@ -30,10 +27,7 @@ pyasn1==0.6.1
 pyasn1_modules==0.4.1
 pycparser==2.22
 pyOpenSSL==24.3.0
-<<<<<<< HEAD
-=======
 python-dateutil==2.9.0.post0
->>>>>>> main
 python-decouple==3.8
 python-dotenv==1.0.1
 redis==5.2.1
@@ -41,10 +35,7 @@ requests==2.32.3
 requests-oauthlib==2.0.0
 service-identity==24.2.0
 setuptools==75.6.0
-<<<<<<< HEAD
-=======
 six==1.17.0
->>>>>>> main
 sqlparse==0.5.2
 Twisted==24.11.0
 txaio==23.1.1
