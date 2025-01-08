@@ -12,7 +12,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const nullUserPages = ['/signin', '/register'];
-
+  
   useEffect(() => {
     const loadSavedPosts = async () => {
       if (user) {
