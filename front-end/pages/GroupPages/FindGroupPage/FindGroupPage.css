@@ -11,10 +11,7 @@
     margin-bottom: 20px;
   }
   
-  h1 {
-    font-size: 2.5rem;
-    color: #6b705c;
-  }
+
   
   .create-group-button {
     background-color: #6b705c;
@@ -76,5 +73,20 @@
     font-size: 1rem;
   }
 
-  
+  .map-div {
+    display: flex;
+    background-color: #6b705c;
+    color: white;
+    font-weight: bold;
+    padding: 1vh;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1vh;
+  }
+  #map-div-image {
+    height: 5vh;
+    width: 5vh;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   

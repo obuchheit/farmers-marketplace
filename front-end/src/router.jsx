@@ -17,6 +17,9 @@ import UserGroupsPage from "../pages/GroupPages/UserGroupsPage/UserGroupsPage.js
 import GroupMemberPage from "../pages/GroupPages/GroupMemberPage/GroupMemberPage.jsx";
 import AdminPortalPage from "../pages/GroupPages/adminPortalPage/AdminPortalPage.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
+import ChatsPage from "../pages/ChatsPage/ChatsPage.jsx";
+import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
+import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 import { getInfo } from "../utilities.jsx";
 
 
@@ -85,6 +88,18 @@ const router = createBrowserRouter([
             {
                 path: '/groups/:pk/admin-portal',
                 element: <AdminPortalPage />
+            },
+            
+                path: '/chats',
+                element: <ChatsPage/>
+            },
+            {
+                path: '/chats/:id',
+                element: <SingleConvoPage/>
+            },
+            {
+                path: '/search-farms',
+                element: <SearchFarmsPage />
             },
             {
                 path: '*',

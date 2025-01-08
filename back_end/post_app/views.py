@@ -21,6 +21,8 @@ from .serializers import (
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from group_app.models import GroupMember
+from django.db.models import Q
+
 
 
 
@@ -31,36 +33,55 @@ Public-view of UserPosts Views
 #View to list all UserPosts based on location.
 class AllPostsByLocationView(ListAPIView):
     serializer_class = AllPostSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Get the distance and user location from the request
+        # Default location: Chicago, IL (latitude: 41.8781, longitude: -87.6298)
+        default_location = Point(-87.6298, 41.8781, srid=4326)  # Set SRID for the default location
+
+        # Get distance and user location from query params
         try:
             distance = float(self.request.query_params.get('distance', 50))  # Default to 50 km
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
+
+        lat = self.request.query_params.get('lat')
+        lng = self.request.query_params.get('lng')
         
-        user = self.request.user
-        if not user.location:
-            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
+        # If lat and lng are provided, use them; otherwise, use the default location
+        if lat and lng:
+            try:
+                user_location = Point(float(lng), float(lat), srid=4326)  # Set SRID for user-provided location
+            except ValueError:
+                raise ValidationError({"error": "Invalid latitude or longitude values."})
+        else:
+            user_location = default_location
 
-        # Ensure user location is a Point
-        if not isinstance(user.location, Point):
-            raise ValidationError({"error": "User location is invalid."})
+        # Get the search query from request
+        search_query = self.request.query_params.get('search', '').strip()
 
-        # Filter posts within the specified distance
-        user_location = user.location
-        return UserPosts.objects.filter(
+        # Base queryset for public and available posts within the distance
+        queryset = UserPosts.objects.filter(
             is_public=True,
             is_available=True
-        ).exclude(
-            user=user  # Exclude posts created by the authenticated user
-        ).annotate(
+        )
+
+        # Exclude user's own posts if authenticated
+        if self.request.user.is_authenticated:
+            queryset = queryset.exclude(user=self.request.user)
+
+        queryset = queryset.annotate(
             distance=Distance('location', user_location)
         ).filter(
             distance__lte=distance * 1000  # Convert km to meters
-        ).order_by('distance')
+        )
+
+        # If a search query is provided, filter based on title or description
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) | Q(description__icontains=search_query)
+            )
+
+        return queryset.order_by('distance')
   
 
 #View to retrieve a single UserPost by ID.
@@ -68,7 +89,7 @@ class SingleUserPostView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    queryset = UserPosts.objects  
+    queryset = UserPosts.objects.filter(is_public=True)  
     serializer_class = PostSerializer
 
 
@@ -208,15 +229,27 @@ Group Posts
 """
 
 class AllGroupMemberUserPostsView(ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = AllPostSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # Get the group ID from the URL
         group_id = self.kwargs.get('pk')
 
+        # Get the authenticated user's location
+        user = self.request.user
+        if not user.location:
+            raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
+
+        # Ensure user location is a Point
+        if not isinstance(user.location, Point):
+            raise ValidationError({"error": "User location is invalid."})
+
+        # Get group members
         group_members = GroupMember.objects.filter(group_id=group_id).values_list('user_id', flat=True)
 
-        return UserPosts.objects.filter(user_id__in=group_members)
-
-
+        # Annotate distance and filter posts by group members
+        return UserPosts.objects.filter(user_id__in=group_members).annotate(
+            distance=Distance('location', user.location)
+        )
 

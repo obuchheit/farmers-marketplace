@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'map_app',
     'garden_app',
     'chat_app',
+    'searchfarms_app'
 ]
 
 REST_FRAMEWORK = {

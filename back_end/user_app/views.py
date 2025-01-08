@@ -141,6 +141,7 @@ class UserSearchView(APIView):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "email": user.email,
+                "profile_picture": f'http://localhost:8000{user.profile_picture.url}' if user.profile_picture else None,
             }
             for user in users
         ]

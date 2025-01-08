@@ -4,7 +4,7 @@
 .card-container {
     display: flex;
     flex-wrap: wrap; 
-    gap: 10px; 
+    gap: 3vh; 
     justify-content: center; 
 }
 
@@ -19,10 +19,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-color: #5E653E !important;
+    background-color: #a5a58d !important;
     transition: transform 0.2s ease-in-out;
     max-width: 250px;
-    margin: 5px auto;
 }
 
 /* Hover effect */
@@ -44,17 +43,18 @@
     text-align: center;
     font-size: 1em;
     margin: 8px 0;
+    color: black;
+    font-weight: bold;
 }
 
 .card p {
     text-align: center;
-    color: white;
+    color: black;
     font-size: 0.9em;
     margin: 4px 0;
 }
 
 .card .distance {
-    font-weight: bold;
     font-size: 0.9em;
 }
 
