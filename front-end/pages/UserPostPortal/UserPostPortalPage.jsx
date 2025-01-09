@@ -1,25 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import axios from "axios";
-import './UserPostPortalPage.css'
+import './UserPostPortalPage.css';
 
-import { MdOutlineVisibility } from "react-icons/md";
-import { MdOutlineVisibilityOff } from "react-icons/md";
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-import { MdOutlineEdit } from "react-icons/md";
-import { TbPhotoEdit } from "react-icons/tb";
-
-
-
-
 
 const UserPostPortalPage = ({ user }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
-    const [showCreateModal, setShowCreateModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
     const [formData, setFormData] = useState({
@@ -52,74 +43,34 @@ const UserPostPortalPage = ({ user }) => {
         fetchUserPosts();
     }, []);
 
-    const handleCreatePost = async () => {
+    const togglePublic = async (post) => {
         try {
-            const form = new FormData();
-            Object.keys(formData).forEach(key => {
-                if (key === "image" && !formData[key]) return; // Skip appending if image is null
-                form.append(key, formData[key]);
-            });
-
-            console.log([...form.entries()]);
-
-            await axios.post('http://localhost:8000/api/v1/posts/user-posts/', form, {
-                headers: {
-                    Authorization: `Token ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setShowCreateModal(false);
-            fetchUserPosts(); // Refresh posts
-            
+            console.log(`Toggling public visibility for post ID: ${post.id}`, { is_public: !post.is_public });
+            await axios.patch(`http://localhost:8000/api/v1/posts/user-posts/${post.id}/`, 
+                { is_public: !post.is_public }, 
+                { headers: { Authorization: `Token ${token}` } }
+            );
+            fetchUserPosts();
         } catch (err) {
-            console.error(err.response?.data || err.message);
-
-            alert('Error creating post. Please try again.');
-        }
-    }
-
-    const openCreateModal = () => {
-        setFormData({ title: '', description: '', address: '', is_available: true, is_public: true, image: null });
-        setShowCreateModal(true);
-    };
-
-    const handleEditPost = async () => {
-        try {
-            const form = new FormData();
-
-            //Append all form fields
-            Object.keys(formData).forEach(key => {
-                if (formData[key] !== null) {
-                    form.append(key, formData[key]);
-                }
-            });
-
-            await axios.put(`http://localhost:8000/api/v1/posts/user-posts/${selectedPost.id}/`, form, {
-                headers: {
-                    Authorization: `Token ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setShowEditModal(false);
-            fetchUserPosts(); // Refresh posts
-        } catch (err) {
-            alert('Error updating post. Please try again.');
-            console.error(err.response?.data || err.message);
+            console.error(err.response || err.message);
+            alert('Error toggling public visibility.');
         }
     };
-
-    const handleDeletePost = async (postId) => {
-        if (!window.confirm('Are you sure you want to delete this post?')) return;
-
+    
+    const toggleAvailable = async (post) => {
         try {
-            await axios.delete(`http://localhost:8000/api/v1/posts/user-posts/${postId}/`, {
-                headers: { Authorization: `Token ${token}` },
-            });
-            fetchUserPosts(); // Refresh posts
+            console.log(`Toggling availability for post ID: ${post.id}`, { is_available: !post.is_available });
+            await axios.patch(`http://localhost:8000/api/v1/posts/user-posts/${post.id}/`, 
+                { is_available: !post.is_available }, 
+                { headers: { Authorization: `Token ${token}` } }
+            );
+            fetchUserPosts();
         } catch (err) {
-            alert('Error deleting post. Please try again.');
+            console.error(err.response || err.message);
+            alert('Error toggling availability.');
         }
     };
+    
 
     const openEditModal = (post) => {
         setSelectedPost(post);
@@ -134,6 +85,28 @@ const UserPostPortalPage = ({ user }) => {
         setShowEditModal(true);
     };
 
+    const handleEditPost = async () => {
+        try {
+            const form = new FormData();
+            Object.keys(formData).forEach(key => {
+                if (formData[key] !== null) {
+                    form.append(key, formData[key]);
+                }
+            });
+
+            await axios.put(`http://localhost:8000/api/v1/posts/user-posts/${selectedPost.id}/`, form, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setShowEditModal(false);
+            fetchUserPosts();
+        } catch (err) {
+            alert('Error updating post. Please try again.');
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         setFormData({
@@ -142,104 +115,45 @@ const UserPostPortalPage = ({ user }) => {
         });
     };
 
-    const handleSwitchChange = (e) => {
-        const { name, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: checked, // Use the `checked` property for boolean values
-        });
-    };
-
-
-  return (
-    <div className="post-portal-page">
+    return (
+        <div className="post-portal-page">
             <div>
-                <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">
-                    Create New Post
-                </Button>
+                <Button variant="primary" className="mb-3 create-button">Create New Post</Button>
             </div>
-    
+
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
 
-            <Row xs={1} md={2} lg={3} className="g-4">
+            <div className="posts-container">
                 {posts.map(post => (
-                    <Col key={post.id}>
-                        <div className="card" onClick={() => onClick(post.id)}>
-                            <img src={post.image} alt={post.title} />
-                            <h2>{post.title}</h2>
-                            <p>{post.description}</p>
-                            <div className="button-container">
-                                <button className="edit-button" variant="info" onClick={() => openEditModal(post)}>Edit</button>{' '}
-                                <button className="delete-button" variant="danger" onClick={() => handleDeletePost(post.id)}>Delete</button>
+                    <div key={post.id} className="post-card">
+                        <img 
+                            src={post.image} 
+                            alt={post.title} 
+                            className="post-image" 
+                            onClick={() => openEditModal(post)}
+                        />
+                        <h2>{post.title}</h2>
+                        <p>{post.description}</p>
+
+                        <div className="action-icons">
+                            <div onClick={() => togglePublic(post)}>
+                                {post.is_public ? 
+                                    <><MdOutlineVisibilityOff /> Make visible to only your groups</> : 
+                                    <><MdOutlineVisibility /> Make visible to everyone</>
+                                }
+                            </div>
+
+                            <div onClick={() => toggleAvailable(post)}>
+                                {post.is_available ? 
+                                    <><CgUnavailable /> Mark as unavailable</> : 
+                                    <><IoIosCheckmarkCircleOutline /> Mark as available</>
+                                }
                             </div>
                         </div>
-                    </Col>
-                    
+                    </div>
                 ))}
-            </Row>
-
-            {/* Create Post Modal */}
-            <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Create New Post</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control type="file" name="image" onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-available-switch"
-                                name="is_available"
-                                label="Is Available"
-                                checked={formData.is_available}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-public-switch"
-                                name="is_public"
-                                label="Is Public"
-                                checked={formData.is_public}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCreatePost}>
-                        Create Post
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            </div>
 
             {/* Edit Post Modal */}
             <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
@@ -270,27 +184,6 @@ const UserPostPortalPage = ({ user }) => {
                             <Form.Label>Image</Form.Label>
                             <Form.Control type="file" name="image" onChange={handleChange} />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-available-switch"
-                                name="is_available"
-                                label="Is Available"
-                                checked={formData.is_available}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-public-switch"
-                                name="is_public"
-                                label="Is Public"
-                                checked={formData.is_public}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -303,7 +196,7 @@ const UserPostPortalPage = ({ user }) => {
                 </Modal.Footer>
             </Modal>
         </div>
-  )
-}
+    );
+};
 
-export default UserPostPortalPage
+export default UserPostPortalPage;

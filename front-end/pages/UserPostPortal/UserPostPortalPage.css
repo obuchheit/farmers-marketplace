@@ -7,23 +7,41 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) !important; 
 }
 
-.button-container {
+.post-portal-page {
+    padding: 8vh 4vh;
+}
+
+.create-button {
+    background-color: #6d634e !important;
+    border: none !important;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2) !important; 
+}
+
+.posts-container {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.edit-button {
-    background-color: #7688aa;
-    border: none;
-    color: white;
-    border-radius: 1vh;
-    margin: 1vh;
+.post-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.delete-button {
-    background-color: #a74d32;
-    border: none;
-    color: white;
-    border-radius: 1vh;
-    margin: 1vh;
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.action-icons div {
+    margin-top: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
