@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMapboxToken } from '/utilities.jsx'; // Adjust the import path as needed
+import './SearchFarmsPage.css'
 
 const SearchFarmsPage = () => {
     const [results, setResults] = useState([]);
@@ -97,7 +98,7 @@ const SearchFarmsPage = () => {
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }} className='search-farms-page'>
             <h1>Search Local Farms</h1>
             <div style={{ marginBottom: '20px' }}>
                 <input

@@ -21,7 +21,7 @@ const FindGroupPage = () => {
   const [viewport, setViewport] = useState({
     latitude: 41.8781, 
     longitude: -87.6298,
-    zoom: 10,
+    zoom: 7,
   });
 
   const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();

@@ -1,3 +1,7 @@
+.crop-detail-page {
+    padding: 8vh 5vh;
+}
+
 #crop-image {
     object-fit: cover;
     height: 20vh;
