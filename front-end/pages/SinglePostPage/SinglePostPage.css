@@ -1,10 +1,15 @@
+.single-post-page {
+  padding: 8vh 5vh;
+  display: flex;
+  justify-content: space-around;
+}
 .post-image {
     display: flex;
-    height: 30vh;
-    width: 40vh;
+    height: 80vh;
+    width: 50vh;
     margin-bottom: 3vh;
-    border-radius: 5vh;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 2vh;
 }
 
 .profile-save-container {

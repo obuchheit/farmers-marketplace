@@ -57,12 +57,20 @@ const SinglePostPage = () => {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <div>
-            <h1>{post.title}</h1>
+        <div className='single-post-page'>
             <div className="post-image">
                 <img className="post-image" src={post.image} alt="" />
             </div>
-            <div className="profile-save-container">
+
+            <div className="info-container">
+                <h2>{post.title}</h2>
+                <p><strong>Description: </strong>{post.description}</p>
+                <p><strong>Location:</strong> {post.address}</p>
+                <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
+                <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
+                <br />
+
+                <div className="profile-save-container">
                 <Link to={`/public-profile-page/${post.user.id}`} className="link-style">
                     <div className="user-div">
                         <img className="user-image" src={post.user.profile_picture} />
@@ -89,12 +97,6 @@ const SinglePostPage = () => {
                     </Link>
                 </div>
             </div>
-
-            <div className="info-container">
-                <p><strong>Description: </strong>{post.description}</p>
-                <p><strong>Location:</strong> {post.address}</p>
-                <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
-                <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
             </div>
         </div>
     );
