@@ -12,6 +12,7 @@ const UserPostPortalPage = ({ user }) => {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -42,6 +43,46 @@ const UserPostPortalPage = ({ user }) => {
     useEffect(() => {
         fetchUserPosts();
     }, []);
+
+    const handleCreatePost = async () => {
+        try {
+            const form = new FormData();
+            Object.keys(formData).forEach(key => {
+                if (key === "image" && !formData[key]) return; // Skip appending if image is null
+                form.append(key, formData[key]);
+            });
+
+            console.log([...form.entries()]);
+
+            await axios.post('http://localhost:8000/api/v1/posts/user-posts/', form, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setShowCreateModal(false);
+            fetchUserPosts(); // Refresh posts
+            
+        } catch (err) {
+            console.error(err.response?.data || err.message);
+
+            alert('Error creating post. Please try again.');
+        }
+    }
+
+    const openCreateModal = () => {
+        setFormData({ title: '', description: '', address: '', is_available: true, is_public: true, image: null });
+        setShowCreateModal(true);
+    };
+
+    const handleSwitchChange = (e) => {
+        const { name, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: checked, // Use the `checked` property for boolean values
+        });
+    };
+
 
     const togglePublic = async (post) => {
         try {
@@ -118,7 +159,7 @@ const UserPostPortalPage = ({ user }) => {
     return (
         <div className="post-portal-page">
             <div>
-                <Button variant="primary" className="mb-3 create-button">Create New Post</Button>
+                <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">Create New Post</Button>
             </div>
 
             {loading && <p>Loading...</p>}
@@ -154,6 +195,67 @@ const UserPostPortalPage = ({ user }) => {
                     </div>
                 ))}
             </div>
+            {/* Create Post Modal */}
+            <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create New Post</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control type="file" name="image" onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-available-switch"
+                                name="is_available"
+                                label="Is Available"
+                                checked={formData.is_available}
+                                onChange={handleSwitchChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Check
+                                type="switch"
+                                id="is-public-switch"
+                                name="is_public"
+                                label="Is Public"
+                                checked={formData.is_public}
+                                onChange={handleSwitchChange}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleCreatePost}>
+                        Create Post
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
             {/* Edit Post Modal */}
             <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
