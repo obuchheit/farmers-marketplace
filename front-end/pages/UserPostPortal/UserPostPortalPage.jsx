@@ -130,7 +130,7 @@ const UserPostPortalPage = ({ user }) => {
                         <img 
                             src={post.image} 
                             alt={post.title} 
-                            className="post-image" 
+                            className="user-post-image" 
                             onClick={() => openEditModal(post)}
                         />
                         <h2>{post.title}</h2>
