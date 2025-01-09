@@ -4,6 +4,17 @@ import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css'
 
+import { MdOutlineVisibility } from "react-icons/md";
+import { MdOutlineVisibilityOff } from "react-icons/md";
+import { CgUnavailable } from "react-icons/cg";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { MdOutlineEdit } from "react-icons/md";
+import { TbPhotoEdit } from "react-icons/tb";
+
+
+
+
+
 const UserPostPortalPage = ({ user }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -141,7 +152,7 @@ const UserPostPortalPage = ({ user }) => {
 
 
   return (
-    <div>
+    <div className="post-portal-page">
             <div>
                 <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">
                     Create New Post

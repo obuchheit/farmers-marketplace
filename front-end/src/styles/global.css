@@ -1,16 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
 
-body, html, #root {
+body, #root {
   min-height: 100vh;
   font-family: 'Lato', sans-serif; 
+  background-color: #dfdccc5d;
+
 }
-
-#root {
-  background-color: #dfdccc4f;
-}
-
-
 
 
 .auth-page-body {
@@ -18,7 +14,6 @@ body, html, #root {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
 }
 
 
