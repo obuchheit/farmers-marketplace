@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import ReactMapGL, { Marker, Source, Layer } from 'react-map-gl';
 import { MdOutlineEditLocationAlt } from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 import HomePageCard from "../../components/HomePageCard/HomePageCard";
 import { useMapboxToken } from "../../utilities";
 import "./HomePage.css";
@@ -16,6 +17,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [userLocation, setUserLocation] = useState({ lng: -87.6298, lat: 41.8781 }); // Default to Chicago, IL
   const [showRadiusModal, setShowRadiusModal] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const navigate = useNavigate();
   const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
@@ -65,6 +67,10 @@ const HomePage = () => {
     setShowRadiusModal(!showRadiusModal);
   };
 
+  const toggleSearchBar = () => {
+    setIsSearchOpen(prev => !prev);
+};
+
   // Function to calculate the circle geometry around the marker
   const generateCircle = (center, radiusInKm, points = 64) => {
     const coordinates = [];
@@ -92,30 +98,36 @@ const HomePage = () => {
 
   return (
     <div className="main-page">
-      <div className="top-content">
-        <h3>Today's Posts</h3>
+         <div className="top-content">
+            <div className="todays-posts">
+                <h4>Today's Posts</h4>
+            </div>
+            <form className="search-form" onSubmit={handleSearchSubmit}>
+                {/* Search Icon */}
+                <MdSearch className="search-icon" onClick={toggleSearchBar} />
 
-        {/* Search Bar */}
-        <form className="search-form" onSubmit={handleSearchSubmit}>
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search for posts..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit" className="search-button">Search</button>
-        </form>
+                {/* Search Bar */}
+                <input
+                    type="text"
+                    className={`search-bar ${isSearchOpen ? 'open' : ''}`}
+                    placeholder="Search for posts..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
 
-        {/* Address and Radius */}
-        <div className="address-radius-container">
-          <MdOutlineEditLocationAlt
-            className="edit-location-icon"
-            onClick={toggleRadiusModal}
-          />
-          <span className="radius-info">Radius: {distance} km</span>
+                {/* Search Button */}
+                <button type="submit" className="search">Search</button>
+            </form>
+
+            {/* Address and Radius Container */}
+            <div className="address-radius-container">
+                <MdOutlineEditLocationAlt
+                    className="edit-location-icon"
+                    onClick={toggleRadiusModal}
+                />
+                <span className="radius-info">Radius: {distance} km</span>
+            </div>
         </div>
-      </div>
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
@@ -156,12 +168,17 @@ const HomePage = () => {
                 />
                 <Source id="circle-source" type="geojson" data={circleData}>
                 <Layer
-                    draggable
-                    id="circle-layer"
                     type="fill"
                     paint={{
                     "fill-color": "#795f4b",
                     "fill-opacity": 0.4,
+                    }}
+                />
+                <Layer
+                    type="line"
+                    paint={{
+                    'line-color': "#795f4b",
+                    'line-width': 2,
                     }}
                 />
                 </Source>

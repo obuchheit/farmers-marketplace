@@ -50,9 +50,9 @@ const RegistrationPage = () => {
   return (
     <>
     <div className="title">
-      <h1>Welcome to Farmers Marketplace</h1>
+      Welcome to Farmers Marketplace
     </div>
-    <div className="registration-page container mt-5">
+    <div className="registration-page container">
       <h2>Sign Up</h2>
       {message && <Alert variant="success">{message}</Alert>}
       {Object.keys(errors).length > 0 && (
