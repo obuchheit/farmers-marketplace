@@ -26,7 +26,6 @@ class Migration(migrations.Migration):
                 ('is_group', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('users', models.ManyToManyField(related_name='conversations', to=settings.AUTH_USER_MODEL)),
-                ('users', models.ManyToManyField(related_name='conversations', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -36,8 +35,6 @@ class Migration(migrations.Migration):
                 ('content', models.TextField()),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('is_read', models.BooleanField(default=False)),
-                ('conversation', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='chat_app.conversation')),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('conversation', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='chat_app.conversation')),
                 ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

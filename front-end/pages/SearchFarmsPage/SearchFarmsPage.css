@@ -1,3 +1,26 @@
 .search-farms-page {
     padding: 8vh 3vh !important;
 }
+
+.mapboxgl-popup-content {
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.popup-content {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: rgba(113, 192, 107, 0.8);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.popup-content h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    color: #000; 
+    font-weight: bold; 
+}
