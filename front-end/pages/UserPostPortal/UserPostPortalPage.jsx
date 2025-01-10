@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Carousel } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
 import { TbPhotoEdit } from "react-icons/tb";
 import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
 import { TbEyeEdit } from "react-icons/tb";
-
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+
+import './UserPostPortalPage.css';
+import { fetchSavedPosts } from '../../utilities.jsx'; // Import fetchSavedPosts
+import './UserPostPortalPage.css';
+
+
 
 const UserPostPortalPage = ({ user }) => {
     const [error, setError] = useState(null);
@@ -15,6 +20,11 @@ const UserPostPortalPage = ({ user }) => {
     const [posts, setPosts] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
+
+    const [showSavedPosts, setShowSavedPosts] = useState(false);
+    const [savedPosts, setSavedPosts] = useState([]);
+
+
     const [selectedPost, setSelectedPost] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -171,6 +181,24 @@ const UserPostPortalPage = ({ user }) => {
         });
     };
 
+    // User Saved Posts
+    const loadSavedPosts = async () => {
+        try {
+            const savedPostsData = await fetchSavedPosts();
+            setSavedPosts(savedPostsData);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const toggleSavedPosts = () => {
+        setShowSavedPosts(!showSavedPosts);
+        if (!showSavedPosts) {
+            loadSavedPosts();
+        }
+    };
+    
+
     return (
         <div className="post-portal-page">
             {/* Header Section */}
@@ -184,58 +212,91 @@ const UserPostPortalPage = ({ user }) => {
                     <Button onClick={openCreateModal} className="header-button">
                         Create Post
                     </Button>
-                    <Button className="header-button">Saved Posts</Button>
+                    <Button onClick={toggleSavedPosts} className="header-button">Saved Posts</Button>
                 </div>
             </div>
 
-    {loading && <p>Loading...</p>}
-    {error && <p>Error: {error}</p>}
+            {/* Saved Posts Carousel */}
+            {showSavedPosts && (
+                <div className="carousel-container">
+                    <button className="carousel-close" onClick={() => setShowSavedPosts(false)}>
+                        ×
+                    </button>
+                    <Carousel interval={null} className="multi-item-carousel">
+                        {savedPosts.map((post, index) => {
+                            if (index % 3 === 0) {
+                                return (
+                                    <Carousel.Item key={index}>
+                                        <div className="carousel-items">
+                                            {savedPosts.slice(index, index + 3).map((subPost) => (
+                                                <div className="user-card" key={subPost.post_details.id}>
+                                                    <img
+                                                        src={subPost.post_details.image}
+                                                        alt={subPost.post_details.title}
+                                                        className="user-post-image"
+                                                    />
+                                                    <h2>{subPost.post_details.title}</h2>
+                                                    <p>{subPost.post_details.address}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Carousel.Item>
+                                );
+                            }
+                            return null;
+                        })}
+                    </Carousel>
+                </div>
+            )}
+            {showSavedPosts && savedPosts.length === 0 && <p>No saved posts available.</p>}
+
 
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
 
-            <div className="posts-container">
-            {posts.map(post => (
-    <div key={post.id} className="user-card">
-        <div className="image-container">
-            <img 
-                src={post.image} 
-                alt={post.title} 
-                className="user-post-image"
-            />
-            <button 
-                className="edit-button"
-                onClick={() => openEditModal(post)}
-            >
-                Edit
-            </button>
-        </div>
-        <h2>{post.title}</h2>
 
-        <div className="action-icons">
-            <div onClick={() => togglePublic(post)}>
-                {post.is_public ? 
-                    <button className="icon-button private-button">
-                        <TbEyeEdit className="icon"/>
-                        Make private
-                        <span className="private-tooltip">
-                            Allow only members of your groups to see this post.
-                        </span>
-                    </button> 
-                    : 
-                    <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
-                }
-            </div>
+                    <div className="posts-container">
+                    {posts.map(post => (
+            <div key={post.id} className="user-card">
+                <div className="image-container">
+                    <img 
+                        src={post.image} 
+                        alt={post.title} 
+                        className="user-post-image"
+                    />
+                    <button 
+                        className="edit-button"
+                        onClick={() => openEditModal(post)}
+                    >
+                        Edit
+                    </button>
+                </div>
+                <h2>{post.title}</h2>
 
-            <div onClick={() => toggleAvailable(post)}>
-                {post.is_available ? 
-                    <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
-                    <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
-                }
+                <div className="action-icons">
+                    <div onClick={() => togglePublic(post)}>
+                        {post.is_public ? 
+                            <button className="icon-button private-button">
+                                <TbEyeEdit className="icon"/>
+                                Make private
+                                <span className="private-tooltip">
+                                    Allow only members of your groups to see this post.
+                                </span>
+                            </button> 
+                            : 
+                            <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
+                        }
+                    </div>
+
+                    <div onClick={() => toggleAvailable(post)}>
+                        {post.is_available ? 
+                            <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
+                            <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
+                        }
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    ))}
+            ))}
 
             </div>
             {/* Create Post Modal */}
