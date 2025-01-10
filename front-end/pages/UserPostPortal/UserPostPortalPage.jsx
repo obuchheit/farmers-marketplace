@@ -173,9 +173,23 @@ const UserPostPortalPage = ({ user }) => {
 
     return (
         <div className="post-portal-page">
-            <div>
-                <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">Create New Post</Button>
+            {/* Header Section */}
+            <div className="header">
+                <div className="stats">
+                    <h4>Total Posts: {posts.length}</h4>
+                    <h4>Available: {posts.filter(post => post.is_available).length}</h4>
+                    <h4>Public: {posts.filter(post => post.is_public).length}</h4>
+                </div>
+                <div className="header-buttons">
+                    <Button onClick={openCreateModal} className="header-button">
+                        Create Post
+                    </Button>
+                    <Button className="header-button">Saved Posts</Button>
+                </div>
             </div>
+
+    {loading && <p>Loading...</p>}
+    {error && <p>Error: {error}</p>}
 
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
