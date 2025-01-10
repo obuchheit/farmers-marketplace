@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
-
+import { TbPhotoEdit } from "react-icons/tb";
 import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
 import { TbEyeEdit } from "react-icons/tb";
@@ -150,6 +150,19 @@ const UserPostPortalPage = ({ user }) => {
         }
     };
 
+    const handleDeletePost = async (postId) => {
+        if (!window.confirm('Are you sure you want to delete this post?')) return;
+
+        try {
+            await axios.delete(`http://localhost:8000/api/v1/posts/user-posts/${postId}/`, {
+                headers: { Authorization: `Token ${token}` },
+            });
+            fetchUserPosts(); // Refresh posts
+        } catch (err) {
+            alert('Error deleting post. Please try again.');
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         setFormData({
@@ -279,11 +292,53 @@ const UserPostPortalPage = ({ user }) => {
                     <Modal.Title>Edit Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <div style={{ position: 'relative', marginBottom: '1rem' }}>
+                        {/* Post Image */}
+                        <img
+                            src={selectedPost?.image}
+                            alt="Post"
+                            style={{
+                                width: '100%',
+                                height: '200px',
+                                objectFit: 'cover',
+                                borderRadius: '8px',
+                            }}
+                        />
+                        {/* Edit Photo Icon */}
+                        <TbPhotoEdit
+                            onClick={() => document.getElementById('image-input').click()}
+                            style={{
+                                position: 'absolute',
+                                bottom: '10px',
+                                right: '10px',
+                                fontSize: '1.5rem',
+                                color: '#fff',
+                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                borderRadius: '50%',
+                                padding: '5px',
+                                cursor: 'pointer',
+                            }}
+                        />
+                        <input
+                            type="file"
+                            id="image-input"
+                            style={{ display: 'none' }}
+                            name="image"
+                            onChange={handleChange}
+                        />
+                    </div>
                     <Form>
+                        {/* Title */}
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
                         </Form.Group>
+                        {/* Description */}
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
                             <Form.Control
@@ -294,13 +349,15 @@ const UserPostPortalPage = ({ user }) => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        {/* Address */}
                         <Form.Group>
                             <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control type="file" name="image" onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -311,8 +368,15 @@ const UserPostPortalPage = ({ user }) => {
                     <Button variant="primary" onClick={handleEditPost}>
                         Save Changes
                     </Button>
+                    <Button
+                        variant="danger"
+                        onClick={() => handleDeletePost(selectedPost.id)}
+                    >
+                        Delete
+                    </Button>
                 </Modal.Footer>
             </Modal>
+
         </div>
     );
 };
