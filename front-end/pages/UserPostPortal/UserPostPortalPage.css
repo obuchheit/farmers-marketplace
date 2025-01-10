@@ -14,7 +14,7 @@
     gap: 20px;
 }
 
-.post-card {
+.user-card {
     cursor: pointer;
     border: none;
     border-radius: 8px;
@@ -25,13 +25,21 @@
     align-items: center;
     justify-content: flex-start;
     background-color: #a5a58d !important;
-    transition: transform 0.2s ease-in-out;
-    max-width: 25vh;
+    max-width: 30vh;
+    padding-bottom: 2vh;
+}
+
+
+
+.user-card h2 {
+    font-size: 2.5vh;
+    text-align: center;
+    margin-top: 1vh;
 }
 
 .user-post-image {
     width: 100%;
-    height: 25vh;
+    height: 30vh;
     border-radius: 8px;
     margin-top: -3px;
     margin-bottom: 0; 
@@ -39,10 +47,67 @@
     object-fit: cover;
 }
 
-.action-icons div {
-    margin-top: 10px;
+.action-icons{
     cursor: pointer;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
+    width: 100%;
 }
+
+.icon-button {
+    width: 25vh;
+    padding: 0.5vh;
+    margin-top: 1vh;
+    border-radius: 0.75vh;
+    text-align: left;
+    background-color: #b6b6a8 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+/* Ensure button is a positioning context for the tooltip */
+.private-button {
+    position: relative; /* Add this */
+    display: inline-block; /* Ensures proper layout for tooltip */
+}
+
+.private-button .private-tooltip {
+    visibility: hidden; /* Initially hidden */
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px; /* Adjust for better spacing */
+    position: absolute;
+    width: 25vh;
+    z-index: 1;
+    bottom: 95%;
+    left: 8%;
+    transform: translateX(-50%); /* Center horizontally */
+    opacity: 0; /* Invisible by default */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.private-button .private-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.private-button:hover .private-tooltip {
+    visibility: visible; /* Show on hover */
+    opacity: 0.8; /* Fade in */
+}
+
+
+.icon {
+    font-size: 3vh;
+}
+
+

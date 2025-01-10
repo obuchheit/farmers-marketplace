@@ -3,8 +3,10 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
 
-import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
+import { TbEyeEdit } from "react-icons/tb";
+
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 const UserPostPortalPage = ({ user }) => {
@@ -167,7 +169,7 @@ const UserPostPortalPage = ({ user }) => {
 
             <div className="posts-container">
                 {posts.map(post => (
-                    <div key={post.id} className="post-card">
+                    <div key={post.id} className="user-card">
                         <img 
                             src={post.image} 
                             alt={post.title} 
@@ -175,20 +177,26 @@ const UserPostPortalPage = ({ user }) => {
                             onClick={() => openEditModal(post)}
                         />
                         <h2>{post.title}</h2>
-                        <p>{post.description}</p>
 
                         <div className="action-icons">
                             <div onClick={() => togglePublic(post)}>
                                 {post.is_public ? 
-                                    <><MdOutlineVisibilityOff /> Make visible to only your groups</> : 
-                                    <><MdOutlineVisibility /> Make visible to everyone</>
+                                    <button className="icon-button private-button">
+                                        <TbEyeEdit className="icon"/>
+                                        Make private
+                                        <span className="private-tooltip">
+                                            Allow only members of your groups to see this post.
+                                        </span>
+                                    </button> 
+                                    : 
+                                    <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
                                 }
                             </div>
 
                             <div onClick={() => toggleAvailable(post)}>
                                 {post.is_available ? 
-                                    <><CgUnavailable /> Mark as unavailable</> : 
-                                    <><IoIosCheckmarkCircleOutline /> Mark as available</>
+                                    <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
+                                    <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
                                 }
                             </div>
                         </div>
