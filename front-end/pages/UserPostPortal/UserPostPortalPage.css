@@ -15,6 +15,7 @@
 }
 
 .user-card {
+    position: relative; /* For proper positioning of child elements */
     cursor: pointer;
     border: none;
     border-radius: 8px;
@@ -27,6 +28,30 @@
     background-color: #a5a58d !important;
     max-width: 30vh;
     padding-bottom: 2vh;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+}
+
+.edit-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.image-container:hover .edit-button {
+    opacity: 1; /* Visible on hover */
 }
 
 

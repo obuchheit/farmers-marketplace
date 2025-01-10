@@ -168,40 +168,48 @@ const UserPostPortalPage = ({ user }) => {
             {error && <p>Error: {error}</p>}
 
             <div className="posts-container">
-                {posts.map(post => (
-                    <div key={post.id} className="user-card">
-                        <img 
-                            src={post.image} 
-                            alt={post.title} 
-                            className="user-post-image" 
-                            onClick={() => openEditModal(post)}
-                        />
-                        <h2>{post.title}</h2>
+            {posts.map(post => (
+    <div key={post.id} className="user-card">
+        <div className="image-container">
+            <img 
+                src={post.image} 
+                alt={post.title} 
+                className="user-post-image"
+            />
+            <button 
+                className="edit-button"
+                onClick={() => openEditModal(post)}
+            >
+                Edit
+            </button>
+        </div>
+        <h2>{post.title}</h2>
 
-                        <div className="action-icons">
-                            <div onClick={() => togglePublic(post)}>
-                                {post.is_public ? 
-                                    <button className="icon-button private-button">
-                                        <TbEyeEdit className="icon"/>
-                                        Make private
-                                        <span className="private-tooltip">
-                                            Allow only members of your groups to see this post.
-                                        </span>
-                                    </button> 
-                                    : 
-                                    <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
-                                }
-                            </div>
+        <div className="action-icons">
+            <div onClick={() => togglePublic(post)}>
+                {post.is_public ? 
+                    <button className="icon-button private-button">
+                        <TbEyeEdit className="icon"/>
+                        Make private
+                        <span className="private-tooltip">
+                            Allow only members of your groups to see this post.
+                        </span>
+                    </button> 
+                    : 
+                    <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
+                }
+            </div>
 
-                            <div onClick={() => toggleAvailable(post)}>
-                                {post.is_available ? 
-                                    <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
-                                    <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <div onClick={() => toggleAvailable(post)}>
+                {post.is_available ? 
+                    <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
+                    <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
+                }
+            </div>
+        </div>
+    </div>
+    ))}
+
             </div>
             {/* Create Post Modal */}
             <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
