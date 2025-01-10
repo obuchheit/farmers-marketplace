@@ -287,11 +287,11 @@ const UserPostPortalPage = ({ user }) => {
             </Modal>
 
             {/* Edit Post Modal */}
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-                <Modal.Header closeButton>
+            <Modal  show={showEditModal} onHide={() => setShowEditModal(false)}>
+                <Modal.Header className="edit-modal-header" closeButton>
                     <Modal.Title>Edit Post</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="edit-modal">
                     <div style={{ position: 'relative', marginBottom: '1rem' }}>
                         {/* Post Image */}
                         <img
@@ -307,17 +307,7 @@ const UserPostPortalPage = ({ user }) => {
                         {/* Edit Photo Icon */}
                         <TbPhotoEdit
                             onClick={() => document.getElementById('image-input').click()}
-                            style={{
-                                position: 'absolute',
-                                bottom: '10px',
-                                right: '10px',
-                                fontSize: '1.5rem',
-                                color: '#fff',
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                borderRadius: '50%',
-                                padding: '5px',
-                                cursor: 'pointer',
-                            }}
+                            className="TbPhotoEdit"
                         />
                         <input
                             type="file"
@@ -333,6 +323,7 @@ const UserPostPortalPage = ({ user }) => {
                             <Form.Label>Title</Form.Label>
                             <Form.Control
                                 type="text"
+                                id="form-control-background"
                                 name="title"
                                 value={formData.title}
                                 onChange={handleChange}
@@ -342,6 +333,8 @@ const UserPostPortalPage = ({ user }) => {
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
                             <Form.Control
+                                className="form-control-background"
+                                id="form-control-background"
                                 as="textarea"
                                 rows={3}
                                 name="description"
@@ -355,25 +348,32 @@ const UserPostPortalPage = ({ user }) => {
                             <Form.Control
                                 type="text"
                                 name="address"
+                                id="form-control-background"
                                 value={formData.address}
                                 onChange={handleChange}
                             />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleEditPost}>
-                        Save Changes
-                    </Button>
-                    <Button
-                        variant="danger"
-                        onClick={() => handleDeletePost(selectedPost.id)}
-                    >
-                        Delete
-                    </Button>
+                <Modal.Footer className="edit-modal-footer">
+                    <div className="footer-buttons">
+                        <div>
+                            <Button
+                                variant="danger"
+                                onClick={() => handleDeletePost(selectedPost.id)}
+                            >
+                                Delete
+                            </Button>
+                        </div>    
+                        <div>
+                            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                                Close
+                            </Button>
+                            <Button className="save-button" variant="primary" onClick={handleEditPost}>
+                                Save Changes
+                            </Button>
+                        </div>    
+                    </div>
                 </Modal.Footer>
             </Modal>
 
