@@ -27,6 +27,7 @@ class StartChatView(TokenReq):
     # get user ids of users in chat
     user_ids = request.data.get('user_ids', [])
     group_name = request.data.get('group_name', None)
+    print(request.data)
     
     if len(user_ids) < 1:
       return JsonResponse({"error": "At least one user ID is required"}, status=HTTP_400_BAD_REQUEST)

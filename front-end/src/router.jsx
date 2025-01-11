@@ -94,6 +94,10 @@ const router = createBrowserRouter([
                 element: <ChatsPage />
             },
             {
+                path: '/chats/:conversationId',
+                // elemet:
+            },
+            {
                 path: '/chats/new-message/:otherUserId',
                 element: <SingleConvoPage />
             },
