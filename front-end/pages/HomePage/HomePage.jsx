@@ -143,7 +143,7 @@ const HomePage = () => {
       </div>
 
       {/* Radius and Location Modal */}
-      <Modal show={showRadiusModal} onHide={toggleRadiusModal}>
+      <Modal show={showRadiusModal} onHide={toggleRadiusModal} id='map-modal'>
         <Modal.Header closeButton>
           <Modal.Title>Set Search Radius and Location</Modal.Title>
         </Modal.Header>

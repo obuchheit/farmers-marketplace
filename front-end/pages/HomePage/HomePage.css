@@ -2,6 +2,11 @@
     padding: 7vh 0;
 }
 
+#map-modal {
+    width: 70vw !important;
+    max-width: none !important;
+}
+
 .top-content {
     display: flex;
     align-items: center;
@@ -10,8 +15,11 @@
     background-color: #dfdccc;
     gap: 2vh;
     width: 100%;
-    padding: 1vh 0vh 2vh 0;
+    padding: 2vh 0vh 3vh 0;
     z-index: 5;
+    border-bottom: 1px solid rgb(175, 185, 171);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .todays-posts {

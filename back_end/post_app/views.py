@@ -172,8 +172,12 @@ class AllUserSavedPostsView(ListAPIView):
     serializer_class = AllUserSavedPostsSerializer
 
     def get_queryset(self):
-        # Only return the saved posts for the authenticated user
+        # Return saved posts for the authenticated user
         return UserSavedPosts.objects.filter(user=self.request.user)
+    
+    def get_serializer_context(self):
+        # Pass the request to the serializer for distance calculation
+        return {'request': self.request}
 
 
 # Allows a user to save, delete, or view a specific saved post

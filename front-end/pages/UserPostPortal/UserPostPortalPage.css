@@ -1,5 +1,5 @@
 .post-portal-page {
-    padding: 8vh 4vh;
+    padding: 10vh 4vh;
 }
 
 .header {
@@ -10,7 +10,14 @@
     padding: 1rem 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+}
+
+.user-card-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 3vh; 
+    justify-content: center; 
+    padding: 3vh 4vh 0 4vh;
 }
 
 .stats {
@@ -78,14 +85,6 @@
     display: flex;
     justify-content: space-around;
     gap: 1rem;
-}
-
-
-
-.posts-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
 }
 
 .user-card {
