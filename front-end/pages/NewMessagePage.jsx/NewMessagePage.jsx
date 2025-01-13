@@ -19,18 +19,27 @@ const NewMessagePage = () => {
     e.preventDefault();
     const createConversation = async () => {
       const token = localStorage.getItem('token')
-      const response = await axios.post("http://localhost:8000/api/v1/chat/start-chat/", {
-        user_ids: [parseInt(otherUserId), user.user.id],
-        message: messageInput
-      }, {
+      const response1 = await axios.get("http://localhost:8000/api/v1/users/profile", {
         headers: {
           'Authorization': `Token ${token}`
         }
       })
-      if (response.data.conversation_id) {
-        navigate(`/chats/${response.data.conversation_id}`)
-      } else {
-        console.error("Failed to create chat:", response.data)
+
+      if (response1.data.id) {
+
+        const response2 = await axios.post("http://localhost:8000/api/v1/chat/start-chat/", {
+          user_ids: [parseInt(otherUserId), response1.data.id],
+          message: messageInput
+        }, {
+          headers: {
+            'Authorization': `Token ${token}`
+          }
+        })
+        if (response2.data.conversation_id) {
+          navigate(`/chats/${response2.data.conversation_id}`)
+        } else {
+          console.error("Failed to create chat:", response2.data)
+        }
       }
     }
     

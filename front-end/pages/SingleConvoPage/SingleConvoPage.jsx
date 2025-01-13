@@ -12,7 +12,9 @@ const SingleConvoPage = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [ws, setWs] = useState(null);
-      
+     
+  console.log(messages)
+
   const fetchMessages = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -37,18 +39,25 @@ const SingleConvoPage = () => {
     
     if (messageInput.trim()) { 
       const token = localStorage.getItem('token'); 
+      
       const messageData = { 
         message: messageInput,
-        token: token      // Alternatively, pass the token if necessary for security purposes
       };
 
-      ws.send(JSON.stringify(messageData))
-      
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "user", content: messageInput }
-      ]);
+      ws.send(JSON.stringify({ message: messageInput }))
+
+      // setMessages((prevMessages) => [
+      //   ...prevMessages,
+      //   { sender: "user", content: messageInput }
+      // ]);
       setMessageInput('')
+
+      const response = await axios.post(`http://localhost:8000/api/v1/chat/${conversationId}/`, messageData, {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
+      })
+
     }
   };
   
@@ -63,9 +72,10 @@ const SingleConvoPage = () => {
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
+      console.log('Recieved message:', data.message)
       setMessages((prevMessages) => [
           ...prevMessages, 
-          { sender: 'other', text: data.message },
+          { sender: 'other', content: data.message },
       ]);
     };
 
@@ -74,7 +84,7 @@ const SingleConvoPage = () => {
     return () => {
       socket.close();
     }
-  }, [])
+  }, [conversationId])
 
   return (
     <>

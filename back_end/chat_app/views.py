@@ -110,7 +110,24 @@ class SingleChatView(TokenReq):
     messages = Message.objects.filter(conversation=conversation).order_by('timestamp')
     serializer = MessageSerializer(messages, many=True)
     return JsonResponse({"messages": serializer.data})
-    pass
+  
+  def post(self, request, conversation_id):
+    print("adding message to conversation")
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+
+    message_content = request.data.get('message')
+    if not message_content:
+      return JsonResponse({"error": "Message content is required"}, status=HTTP_400_BAD_REQUEST)
+
+    message = Message.objects.create(
+      sender=request.user,
+      conversation=conversation,
+      content=message_content,
+      is_read=False
+    )
+    message_serializer = MessageSerializer(message)
+    
+    return JsonResponse({"message": message_serializer.data}, status=HTTP_201_CREATED)
 
 class MessageView(TokenReq):
 
