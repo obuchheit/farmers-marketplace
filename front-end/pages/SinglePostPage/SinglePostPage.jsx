@@ -98,7 +98,7 @@ const SinglePostPage = () => {
                 </button>
                 </div>
                 <p className="post-address"><IoLocationOutline /> {post.address}</p>
-                <div className="map-container">
+                <div className="post-map-container">
                 <ReactMapGL
                     {...viewport}
                     mapboxAccessToken={mapboxToken}
