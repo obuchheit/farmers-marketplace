@@ -21,6 +21,7 @@ import ChatsPage from "../pages/ChatsPage/ChatsPage.jsx";
 import SingleConvoPage from "../pages/SingleConvoPage/SingleConvoPage.jsx";
 import SearchFarmsPage from "../pages/SearchFarmsPage/SearchFarmsPage.jsx";
 import { getInfo } from "../utilities.jsx";
+import NewMessagePage from "../pages/NewMessagePage.jsx/NewMessagePage.jsx";
 
 
 
@@ -95,8 +96,12 @@ const router = createBrowserRouter([
                 element: <ChatsPage />
             },
             {
-                path: '/chats/new-message/:otherUserId',
+                path: '/chats/:conversationId',
                 element: <SingleConvoPage />
+            },
+            {
+                path: '/chats/new-message/:userFullName/:otherUserId',
+                element: <NewMessagePage />
             },
             {
                 path: '/search-farms',

@@ -39,9 +39,12 @@ const SinglePostPage = () => {
         setIsSaved(!isSaved); // Toggle the local state
     };
 
+    
     const handleStartConversation = async () => {
-        console.log()
-        navigate(`/chats/new-message/${post.user.id}`)
+        const userFullName = `${post.user.first_name} ${post.user.last_name}`
+        const otherUserId = post.user.id
+        console.log(userFullName)
+        navigate(`/chats/new-message/${userFullName}/${otherUserId}`)
     }
 
     useEffect(() => {

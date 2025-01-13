@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import StartChatView, ChatView
+from .views import ChatView, SingleChatView
 
 urlpatterns = [
-    path('start-chat/', StartChatView.as_view(), name='start-chat'),  # Create a new chat
-    path('conversations/<int:conversation_id>/messages/', ChatView.as_view(), name='send-message'),  # Send a message to a specific conversation
+    path('chats/', ChatView.as_view(), name='get-chats'), # List all chats
+    path('start-chat/', ChatView.as_view(), name='start-chat'),  # Create a new chat
+    path('<int:conversation_id>/', SingleChatView.as_view(), name='single-chat') # View single chat
 ]
