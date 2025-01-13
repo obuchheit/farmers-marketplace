@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import ChatFormComponent from '../../components/ChatFormComponent';
 import axios from 'axios';
+import './SingleConvoPage.css';
+
 
 const SingleConvoPage = () => {
 
@@ -77,7 +79,7 @@ const SingleConvoPage = () => {
   }, [])
 
   return (
-    <>
+    <div className='single-convo-page'>
       <h1>Conversation</h1>
       <div>
         {/* Display for messages*/}
@@ -92,7 +94,7 @@ const SingleConvoPage = () => {
         handleInputChange={handleInputChange} 
         handleSubmit={handleSubmit}
        />
-    </>
+    </div>
   )
 }
 

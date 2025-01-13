@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { Modal, Button, Form, Carousel } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
-import { TbPhotoEdit } from "react-icons/tb";
+import { TbPhotoEdit, TbEyeEdit } from "react-icons/tb";
 import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
-import { TbEyeEdit } from "react-icons/tb";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-
+import { useNavigate } from 'react-router-dom';
 import './UserPostPortalPage.css';
 import { fetchSavedPosts } from '../../utilities.jsx'; // Import fetchSavedPosts
 import './UserPostPortalPage.css';
@@ -25,7 +24,6 @@ const UserPostPortalPage = ({ user }) => {
     const [showSavedPosts, setShowSavedPosts] = useState(false);
     const [savedPosts, setSavedPosts] = useState([]);
 
-
     const [selectedPost, setSelectedPost] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -35,6 +33,7 @@ const UserPostPortalPage = ({ user }) => {
         is_public: true,
         image: null,
     });
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     const fetchUserPosts = async () => {
@@ -211,6 +210,10 @@ const UserPostPortalPage = ({ user }) => {
             loadSavedPosts();
         }
     };
+
+    const handlePostClick = (postId) => {
+        navigate(`/post/${postId}`);
+    };
     
 
     return (
@@ -244,7 +247,7 @@ const UserPostPortalPage = ({ user }) => {
                                     <Carousel.Item key={index}>
                                         <div className="carousel-items">
                                             {savedPosts.slice(index, index + 3).map((subPost) => (
-                                                <div className="user-card" key={subPost.post_details.id}>
+                                                <div className="user-card" key={subPost.post_details.id} onClick={() => handlePostClick(subPost.post_details.id)}>
                                                     <img
                                                         src={subPost.post_details.image}
                                                         alt={subPost.post_details.title}

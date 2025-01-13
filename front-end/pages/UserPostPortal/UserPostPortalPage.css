@@ -60,7 +60,7 @@
 
 .carousel-container {
     position: relative;
-    margin: 9vh 0;
+    margin: 10vh 0;
     background-color: #f4f4f2;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -88,6 +88,7 @@
     justify-content: space-around;
     gap: 1rem;
 }
+
 
 .user-card {
     position: relative; /* For proper positioning of child elements */

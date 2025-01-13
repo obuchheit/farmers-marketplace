@@ -7,6 +7,7 @@ import { GrMapLocation } from "react-icons/gr";
 
 import axios from "axios";
 import { useMapboxToken } from "../../../utilities";
+import RadiusLocationModal from "../../../components/RadiusLocationModal/RadiusLocationModal";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./FindGroupPage.css";
 
@@ -254,47 +255,17 @@ const FindGroupPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* Radius Modal */}
-      <Modal show={showRadiusModal} onHide={toggleRadiusModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Location and Radius</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ReactMapGL
-            initialViewState={{
-              longitude: userLocation.lng,
-              latitude: userLocation.lat,
-              zoom: 7,
-            }}
-            style={{ width: "100%", height: "50vh" }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
-            mapboxAccessToken={mapboxToken}
-          >
-            <Marker
-              longitude={userLocation.lng}
-              latitude={userLocation.lat}
-              draggable
-              onDragEnd={handleMarkerDragEnd}
-            />
-          </ReactMapGL>
-          <input
-            type="range"
-            min="1"
-            max="100"
-            value={distance}
-            onChange={(e) => setDistance(e.target.value)}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={toggleRadiusModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={fetchGroups}>
-            Apply
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <RadiusLocationModal
+        show={showRadiusModal}
+        onClose={() => setShowRadiusModal(false)}
+        distance={distance}
+        setDistance={setDistance}
+        userLocation={userLocation}
+        setUserLocation={setUserLocation}
+        mapboxToken={mapboxToken}
+        fetchPosts={fetchGroups}
+      />
+     
     </div>
   );
 };
