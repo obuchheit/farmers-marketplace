@@ -37,9 +37,9 @@ const UserGroupsPage = () => {
   
     return (
       <div className="user-groups-page">
-        <header className="header">
+        <div className="top-content ug-header">
           <h1>Your Groups</h1>
-        </header>
+        </div>
         {groups.length === 0 ? (
           <p>You are not a member of any groups yet.</p>
         ) : (

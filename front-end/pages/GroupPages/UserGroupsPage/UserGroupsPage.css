@@ -1,13 +1,10 @@
 .user-groups-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 8vh 5vh;
+    padding: 7vh 0;
   }
   
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.ug-header {
+  padding-left: 4vh;
+}
   
 
   
