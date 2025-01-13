@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Form, Carousel } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
-import { TbPhotoEdit, TbEyeEdit } from "react-icons/tb";
+import { TbEyeEdit } from "react-icons/tb";
 import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import './UserPostPortalPage.css';
 import { fetchSavedPosts } from '../../utilities.jsx'; // Import fetchSavedPosts
-import './UserPostPortalPage.css';
+import { CreatePostModal, SavedPostsCarousel, EditPostModal } from "../../components/CreatePostModal/CreatePostModal.jsx";
 
 
 
@@ -236,36 +236,11 @@ const UserPostPortalPage = ({ user }) => {
 
             {/* Saved Posts Carousel */}
             {showSavedPosts && (
-                <div className="carousel-container">
-                    <button className="carousel-close" onClick={() => setShowSavedPosts(false)}>
-                        ×
-                    </button>
-                    <Carousel interval={null} className="multi-item-carousel">
-                        {savedPosts.map((post, index) => {
-                            if (index % 3 === 0) {
-                                return (
-                                    <Carousel.Item key={index}>
-                                        <div className="carousel-items">
-                                            {savedPosts.slice(index, index + 3).map((subPost) => (
-                                                <div className="user-card" key={subPost.post_details.id} onClick={() => handlePostClick(subPost.post_details.id)}>
-                                                    <img
-                                                        src={subPost.post_details.image}
-                                                        alt={subPost.post_details.title}
-                                                        className="user-post-image"
-                                                    />
-                                                    <h2>{subPost.post_details.title}</h2>
-                                                    <p>{subPost.post_details.address}</p>
-                                                    <p><strong>Distance: </strong>{subPost.distance}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </Carousel.Item>
-                                );
-                            }
-                            return null;
-                        })}
-                    </Carousel>
-                </div>
+                <SavedPostsCarousel
+                    savedPosts={savedPosts}
+                    handlePostClick={(postId) => navigate(`/post/${postId}`)}
+                    onClose={() => setShowSavedPosts(false)}
+                />
             )}
             {showSavedPosts && savedPosts.length === 0 && <p>No saved posts available.</p>}
 
@@ -318,184 +293,27 @@ const UserPostPortalPage = ({ user }) => {
                     ))}
 
                 </div>
-            {/* Create Post Modal */}
-            <Modal  show={showCreateModal} onHide={() => setShowCreateModal(false)} >
-                <Modal.Header closeButton className="edit-modal-header">
-                    <Modal.Title>Create New Post</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edit-modal'>
-                <div style={{ position: 'relative', marginBottom: '1rem' }}>
-                    {/* Post Image */}
-                    <img
-                        src={imagePreview}
-                        alt="Post Preview"
-                        style={{
-                            width: '100%',
-                            height: '200px',
-                            objectFit: 'cover',
-                            borderRadius: '8px',
-                        }}
-                    />
-                    {/* Edit Photo Icon */}
-                    <TbPhotoEdit
-                        onClick={() => document.getElementById('image-input').click()}
-                        className="TbPhotoEdit"
-                    />
-                    <input
-                        type="file"
-                        id="image-input"
-                        style={{ display: 'none' }}
-                        name="image"
-                        onChange={handleChange}
-                    />
-                </div>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange}                                 id="form-control-background"
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control
-                                id="form-control-background"
-                                as="textarea"
-                                rows={3}
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange}                                 id="form-control-background"
-                            />
-                        </Form.Group>
 
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-available-switch"
-                                name="is_available"
-                                label="Is Available"
-                                checked={formData.is_available}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
+            {/* Modals */}
+            <CreatePostModal
+                show={showCreateModal}
+                onClose={() => setShowCreateModal(false)}
+                formData={formData}
+                setFormData={setFormData}
+                handleCreatePost={handleCreatePost}
+                imagePreview={imagePreview}
+                handleChange={handleChange}
+            />
 
-                        <Form.Group>
-                            <Form.Check
-                                type="switch"
-                                id="is-public-switch"
-                                name="is_public"
-                                label="Is Public"
-                                checked={formData.is_public}
-                                onChange={handleSwitchChange}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer className="edit-modal-footer">
-                    <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCreatePost}>
-                        Create Post
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Edit Post Modal */}
-            <Modal  show={showEditModal} onHide={() => setShowEditModal(false)}>
-                <Modal.Header className="edit-modal-header" closeButton>
-                    <Modal.Title>Edit Post</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="edit-modal">
-                    <div style={{ position: 'relative', marginBottom: '1rem' }}>
-                        {/* Post Image */}
-                        <img
-                            src={selectedPost?.image}
-                            alt="Post"
-                            style={{
-                                width: '100%',
-                                height: '200px',
-                                objectFit: 'cover',
-                                borderRadius: '8px',
-                            }}
-                        />
-                        {/* Edit Photo Icon */}
-                        <TbPhotoEdit
-                            onClick={() => document.getElementById('image-input').click()}
-                            className="TbPhotoEdit"
-                        />
-                        <input
-                            type="file"
-                            id="image-input"
-                            style={{ display: 'none' }}
-                            name="image"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <Form>
-                        {/* Title */}
-                        <Form.Group>
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                id="form-control-background"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        {/* Description */}
-                        <Form.Group>
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control
-                                className="form-control-background"
-                                id="form-control-background"
-                                as="textarea"
-                                rows={3}
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        {/* Address */}
-                        <Form.Group>
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="address"
-                                id="form-control-background"
-                                value={formData.address}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer className="edit-modal-footer">
-                    <div className="footer-buttons">
-                        <div>
-                            <Button
-                                variant="danger"
-                                onClick={() => handleDeletePost(selectedPost.id)}
-                            >
-                                Delete
-                            </Button>
-                        </div>    
-                        <div>
-                            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-                                Close
-                            </Button>
-                            <Button className="save-button" variant="primary" onClick={handleEditPost}>
-                                Save Changes
-                            </Button>
-                        </div>    
-                    </div>
-                </Modal.Footer>
-            </Modal>
-
+            <EditPostModal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                formData={formData}
+                setFormData={setFormData}
+                handleEditPost={handleEditPost}
+                selectedPost={selectedPost}
+                handleDeletePost={handleDeletePost}
+            />
         </div>
     );
 };
