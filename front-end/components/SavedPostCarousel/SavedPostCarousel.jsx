@@ -1,4 +1,5 @@
 import { Carousel } from "react-bootstrap";
+import './SavedPostCarousel.css';
 
 const SavedPostsCarousel = ({ savedPosts, handlePostClick, onClose }) => (
     <div className="carousel-container">

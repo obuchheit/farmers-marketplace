@@ -58,37 +58,6 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
-.carousel-container {
-    position: relative;
-    margin: 10vh 0;
-    background-color: #f4f4f2;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-}
-
-.carousel-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    color: #333;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.carousel-close:hover {
-    color: #000;
-}
-
-.multi-item-carousel .carousel-items {
-    display: flex;
-    justify-content: space-around;
-    gap: 1rem;
-}
-
 
 .user-card {
     position: relative; /* For proper positioning of child elements */
@@ -209,56 +178,5 @@
 
 .icon {
     font-size: 3vh;
-}
-
-.edit-modal-header {
-    border-bottom: 1px solid #a5a58d !important ;
-
-}
-.edit-modal {
-    background-color: #a5a58d !important;
-    border: 1px solid #a5a58d !important ;
-}
-/* Ensure proper styling for the edit icon */
-#image-input {
-    display: none; /* File input is hidden */
-}
-
-.TbPhotoEdit {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    font-size: 1.75rem;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    border-radius: 50%;
-    padding: 5px;
-    cursor: pointer;
-    transition: font-size 0.3s ease;
-}
-
-.TbPhotoEdit:hover {
-    font-size: 2rem;
-}
-
-#form-control-background {
-    background-color: #d8d8be !important;
-    border: none !important;
-    margin-bottom: 1vh;
-}
-
-.edit-modal-footer {
-    border-top: 1px solid #a5a58d !important ;
-    background-color: #a5a58d !important;
-}
-
-.footer-buttons {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-}
-
-.save-button {
-    margin-left: 2vh;
 }
 

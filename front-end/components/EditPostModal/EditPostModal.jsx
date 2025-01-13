@@ -1,5 +1,6 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import { TbPhotoEdit } from "react-icons/tb";
+import './EditPostModal.css'
 
 const EditPostModal = ({
     show,

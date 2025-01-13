@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button } from 'react-bootstrap';
 import axios from "axios";
-import './UserPostPortalPage.css';
 import { TbEyeEdit } from "react-icons/tb";
 import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import './UserPostPortalPage.css';
-import { fetchSavedPosts } from '../../utilities.jsx'; // Import fetchSavedPosts
-import { CreatePostModal, SavedPostsCarousel, EditPostModal } from "../../components/CreatePostModal/CreatePostModal.jsx";
-
+import { fetchSavedPosts } from '../../utilities.jsx';
+import CreatePostModal from "../../components/CreatePostModal/CreatePostModal.jsx";
+import SavedPostsCarousel from "../../components/SavedPostCarousel/SavedPostCarousel.jsx";
+import EditPostModal from "../../components/EditPostModal/EditPostModal.jsx";
 
 
 const UserPostPortalPage = ({ user }) => {
