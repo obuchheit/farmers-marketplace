@@ -64,7 +64,10 @@ class SignOutView(TokenReq):
 
 class UserProfileView(TokenReq):
     def get(self, request):
-        return Response({"email": request.user.email})
+        return Response({
+            "email": request.user.email,
+            "id": request.user.id
+        })
     
 class UserProfilePublicView(TokenReq):
     def get(self, request, user_id):

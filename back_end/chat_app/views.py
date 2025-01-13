@@ -17,76 +17,127 @@ class TokenReq(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-class StartChatView(TokenReq):
-  # start new chat with user
-  def generate_random_name(self, length=8):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-  
-  def post(self, request, *args, **kwargs):
-    print('Here in StartChatView')
-    # get user ids of users in chat
-    user_ids = request.data.get('user_ids', [])
-    group_name = request.data.get('group_name', None)
-    print(request.data)
-    
-    if len(user_ids) < 1:
-      return JsonResponse({"error": "At least one user ID is required"}, status=HTTP_400_BAD_REQUEST)
-    
-    # private chat (two users)
-    if len(user_ids) == 1:
-      other_user = get_object_or_404(User, id=user_ids[0])
-      if request.user == other_user:
-        return JsonResponse({"error": "You cannot start a chat with yourself"}, status=HTTP_400_BAD_REQUEST)
-
-      existing_chat = Conversation.objects.filter(
-        Q(users=request.user) & Q(users=other_user)
-      )
-      if existing_chat.exists():
-        return JsonResponse({"message": "Chat already exists"}, status=HTTP_400_BAD_REQUEST)
-      
-      conversation = Conversation.objects.create(is_group=False)
-      conversation.users.add(request.user, other_user)
-
-    # private chat (multiple)
-    else:
-      
-      # Logic here for setting up auto group name instead?
-      if not group_name:
-        return JsonResponse({"error": "Group name is required for group chats"}, status=HTTP_400_BAD_REQUEST)
-
-      existing_group_chat = Conversation.objects.filter(is_group=True, name=group_name)
-      if existing_group_chat.exists():
-        return JsonResponse({"message": "Group chat with this name already exists"}, status=HTTP_400_BAD_REQUEST)
-
-      conversation = Conversation.objects.create(name=group_name, is_group=True)
-      conversation.users.add(request.user, *user_ids)
-
-    return JsonResponse({
-      'message': 'Chat started',
-      'conversation_id': conversation.id
-    })
+def generate_random_name(length=16):
+  return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 class ChatView(TokenReq):
-  # sending message in chat conversation
-  def post(self, request, conversation_id):
-    conversation = get_object_or_404(Conversation, id=conversation_id)
-    message_content = request.data.get('message', '')
+  # start new chat with user
+  def post(self, request, *args, **kwargs):
+    print('Here in post StartChatView')
+    print(request.data)
+       
+    # get user ids of users in chat
+    users = request.data.get('user_ids', [])
+    name = generate_random_name()
     
-    if not message_content:
-      return JsonResponse({"error": "Message content is required"}, status=HTTP_400_BAD_REQUEST) 
+    print(f"Generated name: {name}")
+    
+    if len(users) != 2:
+      return JsonResponse({"error": "At least two user IDs are required"}, status=HTTP_400_BAD_REQUEST)
+    
+    # check that userids are not the same
+    other_user = get_object_or_404(User, id=users[0])
+    if request.user == other_user:
+      return JsonResponse({"error": "You cannot start a chat with yourself"}, status=HTTP_400_BAD_REQUEST)
+    
+    # private chat (2 user ids, self and other)
+    if len(users) == 2:
+      
+      print(other_user)
+      print(request.user)
 
-    message = Message.objects.create(
-       user=request.user,
-       conversation=conversation,
-       content=message_content
-    )
-    serializer = MessageSerializer(message)
-    return Response(serializer.data, status=HTTP_201_CREATED)
-  
+      existing_chat = Conversation.objects.filter(
+        is_group=False,  # Ensure it's a private conversation (not a group chat)
+      ).filter(
+        Q(users=request.user)   # Ensure both users are in the same chat
+      ).filter(
+        Q(users=other_user)
+      )
+
+      print(existing_chat)
+
+      if existing_chat.exists():
+        print("existing chat found")
+        return JsonResponse({"message": "Chat already exists"}, status=HTTP_400_BAD_REQUEST)
+      
+      conversation = Conversation.objects.create(is_group=False, name=name)
+      conversation.users.add(request.user, other_user)
+
+      message = Message.objects.create(
+        sender=request.user,  # Logged-in user
+        conversation=conversation,  # The conversation just created
+        content=request.data.get('message', ''),  # Message content from the request
+      )
+
+      return JsonResponse({
+        'message': 'Chat started and message sent',
+        'conversation_id': conversation.id,
+        'message_id': message.id
+      })
+
+    # private group chat (multiple users)
+    # for later
+    else:
+      pass
+
+  def get(self, request):
+    print('here in get chats')
+    conversations = Conversation.objects.filter(users=request.user)
+    print(conversations)
+
+    chats_data = []
+    for conversation in conversations:
+      # Get other users in the conversation
+      other_users = conversation.users.exclude(id=request.user.id)
+
+      # Collect the user information for the other participants
+      chat_info = {
+        "conversation_id": conversation.id,
+        "is_group": conversation.is_group,
+        "name": conversation.name,
+        "other_users": [{"id": user.id, "full_name": f"{user.first_name} {user.last_name}"} for user in other_users]
+      }
+
+      chats_data.append(chat_info)
+    
+    return JsonResponse({"chats": chats_data})
+
+class SingleChatView(TokenReq):
+
   def get(self, request, conversation_id):
-    # get all messages
-    conversation = Conversation.objects.get(id=conversation_id)
+    print("here in single chat view")
+    conversation = get_object_or_404(Conversation, id=conversation_id)
     messages = Message.objects.filter(conversation=conversation).order_by('timestamp')
     serializer = MessageSerializer(messages, many=True)
-    return Response(serializer.data)
+    return JsonResponse({"messages": serializer.data})
+    pass
+
+class MessageView(TokenReq):
+
+  def post(self, request):
+    
+    pass
+# class ChatView(TokenReq):
+#   # sending message in chat conversation
+#   def post(self, request, conversation_id):
+#     conversation = get_object_or_404(Conversation, id=conversation_id)
+#     message_content = request.data.get('message', '')
+    
+#     if not message_content:
+#       return JsonResponse({"error": "Message content is required"}, status=HTTP_400_BAD_REQUEST) 
+
+#     message = Message.objects.create(
+#        user=request.user,
+#        conversation=conversation,
+#        content=message_content
+#     )
+#     serializer = MessageSerializer(message)
+#     return Response(serializer.data, status=HTTP_201_CREATED)
+  
+#   def get(self, request, conversation_id):
+#     # get all messages
+#     conversation = Conversation.objects.get(id=conversation_id)
+#     messages = Message.objects.filter(conversation=conversation).order_by('timestamp')
+#     serializer = MessageSerializer(messages, many=True)
+#     return Response(serializer.data)
     

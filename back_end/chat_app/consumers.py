@@ -31,7 +31,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     message_data = json.loads(text_data)
     message_content = message_data["message"]
-    username = message_data["username"]
+    # username = message_data["username"]
     # token = message_data["token"]
     # print(token)
 
@@ -54,7 +54,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
       {
         'type': 'chat_message',
         'message': message_content,
-        'sender': username
+        # 'sender': username
       }
     )
 

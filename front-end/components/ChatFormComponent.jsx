@@ -1,9 +1,8 @@
+import { useState } from 'react';
 import { Form  } from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
 
-const ChatFormComponent = ({ messageInput, handleInputChange, handleSubmit }) => {
-
-  
+const ChatFormComponent = ({ messageInput, handleInputChange, handleSubmit}) => {
 
   return (
     <>
@@ -23,4 +22,4 @@ const ChatFormComponent = ({ messageInput, handleInputChange, handleSubmit }) =>
   )
 };
 
-export default ChatFormComponent
+export default ChatFormComponent;
