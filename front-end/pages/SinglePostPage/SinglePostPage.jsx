@@ -27,13 +27,15 @@ const SinglePostPage = () => {
     });
     const navigate = useNavigate();
 
-    const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
-
-
-    // Determine if the post is saved on load
-    const isInitiallySaved = savedPosts.includes(postId);
+    const savedPostIds = savedPosts.map((savedPost) => savedPost.post_details.id);
+    const isInitiallySaved = savedPostIds.includes(Number(postId)); // Ensure postId matches the type
     const [isSaved, setIsSaved] = useState(isInitiallySaved);
 
+
+
+    const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
+
+    // Determine if the post is saved on load
     const handleSaveToggle = async () => {
         await toggleSavedPost(postId); // Call toggleSavedPost from App.jsx
         setIsSaved(!isSaved); // Toggle the local state
@@ -51,6 +53,8 @@ const SinglePostPage = () => {
         const fetchPost = async () => {
             try {
                 const token = localStorage.getItem('token');
+                const savedPostIds = savedPosts.map((savedPost) => savedPost.post_details.id);
+                setIsSaved(savedPostIds.includes(Number(postId))); // Ensure postId matches the type
                 const response = await axios.get(`http://localhost:8000/api/v1/posts/${postId}/`, {
                     headers: { Authorization: `Token ${token}` },
                 });
@@ -74,10 +78,7 @@ const SinglePostPage = () => {
         fetchPost();
     }, [postId]);
 
-    useEffect(() => {
-        // Update the saved state when savedPosts changes
-        setIsSaved(savedPosts.includes(postId));
-    }, [savedPosts, postId]);
+   
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -85,7 +86,13 @@ const SinglePostPage = () => {
     return (
         <div className='single-post-page'>
             <div className="post-details">
+            <div className="image-container">
                 <img className="post-image" src={post.image} alt="Post" />
+                <div className="save-icon" onClick={handleSaveToggle}>
+                    <span className="tooltip">{isSaved ? 'Unsave Post' : 'Save Post'}</span>
+                    {isSaved ? <FaStar className="saved-icon" /> : <FaRegStar className="unsaved-icon" />}
+                </div>
+                </div>                
                 <h2 className="post-title">{post.title}</h2>
                 <p className="post-description">{post.description}</p>
             </div>
@@ -102,21 +109,21 @@ const SinglePostPage = () => {
                 </div>
                 <p className="post-address"><IoLocationOutline /> {post.address}</p>
                 <div className="post-map-container">
-                <ReactMapGL
-                    {...viewport}
-                    mapboxAccessToken={mapboxToken}
-                    onMove={(evt) => setViewport(evt.viewState)}
-                    mapStyle="mapbox://styles/mapbox/streets-v11"
-                    dragPan={false}  
-                    scrollZoom={false}  
-                    doubleClickZoom={false}  
-                    touchZoomRotate={false} 
-                >
-                    <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
-                        <FaMapMarkerAlt size={40} color="#795f4b" /> 
-                        <NavigationControl position="top-right" />
-                    </Marker>
-                </ReactMapGL>
+                    <ReactMapGL
+                        {...viewport}
+                        mapboxAccessToken={mapboxToken}
+                        onMove={(evt) => setViewport(evt.viewState)}
+                        mapStyle="mapbox://styles/mapbox/streets-v11"
+                        dragPan={false}  
+                        scrollZoom={false}  
+                        doubleClickZoom={false}  
+                        touchZoomRotate={false} 
+                    >
+                        <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
+                            <FaMapMarkerAlt size={40} color="#795f4b" /> 
+                            <NavigationControl position="top-right" />
+                        </Marker>
+                    </ReactMapGL>
 
                 </div>
             </div>
