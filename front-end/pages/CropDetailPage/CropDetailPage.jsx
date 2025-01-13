@@ -33,7 +33,7 @@ const CropDetailPage = () => {
     if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="crop-detail-page">
       <h1>{results.attributes.name}</h1>
       <p><strong>Binomial Name: </strong>{results.attributes.binomial_name}</p>
       <img

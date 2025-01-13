@@ -22,7 +22,7 @@ const LogInPage = () => {
 
   return (
     <>
-    <div className="header">
+    <div className="auth-header">
         <h1>Welcome to Farmers Marketplace</h1>
     </div>
     <div className="page">

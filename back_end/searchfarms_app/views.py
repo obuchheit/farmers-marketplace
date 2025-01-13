@@ -2,30 +2,25 @@ from django.shortcuts import render
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.http import JsonResponse
-import requests
 from .models import Farm
-
-def geocode_city(city):
-    api_key = 'C44937693B20C348AEB67B6A51649BCF'
-    url = f'https://pcmiler.alk.com/apis/rest/v1.0/Service.svc/locations?query={city}&region=NA&apiKey={api_key}'
-    response = requests.get(url)
-    if response.status_code != 200:
-        return None, f'Geocoding API error: {response.status_code} - {response.text}'
-    data = response.json()
-    if not data['Locations']:
-        return None, 'City not found'
-    location = data['Locations'][0]['Coords']
-    return {'latitude': location['Lat'], 'longitude': location['Lon']}, None
+from marketplace_proj.utils import get_coordinates_from_address  # Import the new function
 
 def farms_within_radius(request):
     try:
-        # Fetch user's latitude and longitude
-        user_lat = float(request.GET.get('latitude', 37.7749))  # Default to San Francisco
-        user_lon = float(request.GET.get('longitude', -122.4194))  # Default to San Francisco
+        city = request.GET.get('city')
         radius = float(request.GET.get('radius', 10))  # Default radius is 10 miles
 
+        if not city:
+            return JsonResponse({'error': 'City parameter is required'}, status=400)
+
+        # Use the new function to get coordinates
+        latitude, longitude = get_coordinates_from_address(city)
+        print(f"Geocoded coordinates for {city}: {latitude}, {longitude}")
+        if latitude is None or longitude is None:
+            return JsonResponse({'error': 'Could not geocode the city'}, status=400)
+
         # Create user location point
-        user_location = Point(user_lon, user_lat, srid=4326)
+        user_location = Point(longitude, latitude, srid=4326)
 
         # Find farms within the radius
         farms = (
@@ -33,6 +28,7 @@ def farms_within_radius(request):
             .filter(distance__lte=radius * 1609.34)  # Convert miles to meters
             .order_by('distance')  # Closest first
         )
+        print(f"Number of farms found: {farms.count()}")
 
         # Prepare response data
         farms_data = [

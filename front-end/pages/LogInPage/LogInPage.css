@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     height: 70vh;
-    padding-top: 20vh;
+    padding-top: 25vh;
 }
 
 .container {
@@ -11,11 +11,12 @@
     align-items: center;
 }
 
-.header {
+.auth-header {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 0;
+    padding: 2vh 0 0 0;
 }
 
 .buttons-container {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaPencilAlt } from 'react-icons/fa'; 
+import { TbPhotoEdit } from "react-icons/tb";
 import "./ProfilePage.css"
 
 const ProfilePage = () => {
@@ -137,7 +138,7 @@ const ProfilePage = () => {
       {/* Upload Profile Picture */}
       <div className="upload-section">
         <label htmlFor="profile-picture-upload" className="upload-label">
-          <FaPencilAlt /> 
+          <TbPhotoEdit /> 
         </label>
         <input
           type="file"
