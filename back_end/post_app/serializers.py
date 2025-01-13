@@ -85,18 +85,27 @@ class PostDetailSerializer(ModelSerializer):
 
     class Meta:
         model = UserPosts
-        fields = ['id', 'image', 'title', 'address']  # Limited fields for saved posts
+        fields = ['id', 'image', 'title', 'address', 'location']  # Limited fields for saved posts
 
 
 
 class AllUserSavedPostsSerializer(ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     post_details = PostDetailSerializer(source='post', read_only=True)
+    distance = SerializerMethodField()
 
     class Meta:
         model = UserSavedPosts
-        fields = ['id', 'user', 'post_details', 'saved_at']
+        fields = ['id', 'user', 'post_details', 'saved_at', 'distance']
 
+    def get_distance(self, obj):
+        # Ensure the user location and post location are Points and calculate the distance
+        request = self.context.get('request')
+        if request and request.user.location and obj.post.location:
+            user_location = request.user.location
+            post_location = obj.post.location
+            return round(user_location.distance(post_location) * 100, 2)  # Convert to kilometers if in degrees
+        return None
 
 
 class UserSavedPostSerializer(ModelSerializer):
