@@ -18,6 +18,7 @@ const SinglePostPage = () => {
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
     const [viewport, setViewport] = useState({
         latitude: 41.888424,
         longitude: -87.78796,
@@ -31,9 +32,6 @@ const SinglePostPage = () => {
     const isInitiallySaved = savedPostIds.includes(Number(postId)); // Ensure postId matches the type
     const [isSaved, setIsSaved] = useState(isInitiallySaved);
 
-
-
-    const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
 
     // Determine if the post is saved on load
     const handleSaveToggle = async () => {
@@ -76,7 +74,7 @@ const SinglePostPage = () => {
             }
         };
         fetchPost();
-    }, [postId]);
+    }, [postId, savedPosts]);
 
    
 
