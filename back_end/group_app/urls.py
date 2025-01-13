@@ -13,7 +13,7 @@ from .views import (
     NotificationListView,
     MarkNotificationAsReadView,
     UserGroupsView,
-    GroupJoinRequestsView
+    GroupJoinRequestsView,
 )
 from post_app.views import AllGroupMemberUserPostsView
 
