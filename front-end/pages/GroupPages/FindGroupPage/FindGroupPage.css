@@ -8,7 +8,7 @@
   justify-content: space-between;
   position: fixed;
   background-color: #dfdccc;
-  gap: 2vh;
+  gap: 1vh;
   width: 100%;
   padding: 2vh 0vh 3vh 0;
   z-index: 5;
@@ -16,6 +16,57 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 }
+
+.find-groups {
+  width: 15%;
+  padding-left: 8vh;
+}
+
+.create-group-button {
+  display: flex;
+  align-items: center; /* Align icon and text vertically */
+  justify-content: flex-end; /* Start with the icon aligned to the right */
+  overflow: hidden; /* Ensures elements don't overflow */
+  width: 10%; /* Adjust based on your desired size */
+  height: 50px; /* Adjust based on your design */
+  z-index: 10;
+
+}
+
+.create-group-text {
+  font-size: 1rem; /* Adjust text size */
+  margin-right: 0; /* Space between text and icon */
+  opacity: 0; /* Hidden by default */
+  transform: translateX(-20px); /* Positioned off-screen to the left */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.create-group-icon {
+  font-size: 4vh;
+  border: solid 1px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  transform: translateX(0); /* Default position */
+}
+
+.create-group-button:hover .create-group-icon {
+  font-size: 3.5vh; /* Makes the icon smaller */
+  border: none; /* Removes border */
+  box-shadow: none; /* Removes shadow */
+  transform: translateX(-20px); /* Slides icon to the left */
+}
+
+.create-group-button:hover .create-group-text {
+  opacity: 1; /* Text becomes visible */
+  transform: translateX(0); /* Moves text into position */
+}
+
+
+
+
 
 .group-address-radius-container {
   display: flex;
@@ -51,22 +102,6 @@
 .map-icon:hover {
   font-size: 5vh;
   color: #5E653E;
-}
-
-
-.create-group-button {
-  background-color: #6b705c;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.create-group-button:hover {
-  background-color: #a5a58d;
 }
 
 .group-list {

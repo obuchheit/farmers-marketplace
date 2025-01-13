@@ -68,6 +68,7 @@ const HomePage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <button type="submit" className="search">Search</button>
         </form>
         <div
           className="address-radius-container"
