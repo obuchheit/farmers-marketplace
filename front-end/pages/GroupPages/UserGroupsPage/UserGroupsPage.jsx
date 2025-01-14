@@ -29,11 +29,16 @@ const UserGroupsPage = () => {
     }
   };
 
+  const handleNav = (groupId) => {
+    navigate(`/group-member-page/${groupId}`);
+  }
+
   const fetchNotifications = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/v1/groups/notifications/", {
         headers: { Authorization: `Token ${userToken}` },
       });
+      console.log(response.data)
       setNotifications(response.data);
       setUnreadCount(response.data.filter((notif) => !notif.is_read).length);
     } catch (err) {
@@ -41,39 +46,47 @@ const UserGroupsPage = () => {
     }
   };
 
-  const markNotificationsAsRead = async () => {
+  const markNotificationAsRead = async (id) => {
     try {
-      // Mark notifications as read locally
-      setNotifications((prevNotifications) =>
-        prevNotifications.map((notif) => ({ ...notif, is_read: true }))
-      );
-      setUnreadCount(0); // Reset unread count
-  
-      // Send requests to mark notifications as read in the backend
-      for (const notif of notifications) {
-        if (!notif.is_read) {
-          await axios.post(
-            `http://127.0.0.1:8000/api/groups/v1/notifications/${notif.id}/read/`,
-            {},
-            {
-              headers: { Authorization: `Token ${userToken}` },
-            }
-          );
+      await axios.post(
+        `http://127.0.0.1:8000/api/v1/groups/notifications/${id}/read/`,
+        {},
+        {
+          headers: { Authorization: `Token ${userToken}` },
         }
-      }
+      );
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notif) =>
+          notif.id === id ? { ...notif, is_read: true } : notif
+        )
+      );
+      setUnreadCount((prevCount) => prevCount - 1);
     } catch (err) {
-      console.error("Failed to mark notifications as read.", err);
+      console.error("Failed to mark notification as read.", err);
     }
   };
   
+
   
 
   const toggleNotificationsModal = () => {
     setShowNotificationsModal(!showNotificationsModal);
     if (!showNotificationsModal) {
-      markNotificationsAsRead();
     }
   };
+
+  const formatTimestamp = (isoTimestamp) => {
+    if (!isoTimestamp) return "No Date Available";
+    const date = new Date(isoTimestamp); // Parse the ISO timestamp
+    return new Intl.DateTimeFormat("en-US", {
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true, // 12-hour format
+    }).format(date);
+  };
+  
 
   return (
     <div className="user-groups-page">
@@ -90,7 +103,7 @@ const UserGroupsPage = () => {
           <p>You are not a member of any groups yet.</p>
         ) : (
           groups.map((group) => (
-            <div key={group.id} className="group-card">
+            <div key={group.id} className="group-card" onClick={() => handleNav(group.id)}>
               <img src={group.group_image} alt={group.name} className="group-image" />
               <div className="group-details">
                 <h2>{group.name}</h2>
@@ -110,20 +123,33 @@ const UserGroupsPage = () => {
             <p>No notifications.</p>
           ) : (
             notifications.map((notif) => (
-              <div key={notif.id} className={`notification-item ${notif.is_read ? "read" : "unread"}`}>
+              <div
+                key={notif.id}
+                className={`notification-item ${notif.is_read ? "read" : "unread"}`}
+              >
                 <p>{notif.message}</p>
-                <span>{new Date(notif.timestamp).toLocaleString()}</span>
+                <span>{formatTimestamp(notif.created_at)}</span>
+
+                {!notif.is_read && (
+                  <button
+                    className="mark-read-button"
+                    onClick={() => markNotificationAsRead(notif.id)}
+                  >
+                    X
+                  </button>
+                )}
               </div>
             ))
           )}
         </Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={toggleNotificationsModal}>
             Close
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+     </div>
   );
 };
 

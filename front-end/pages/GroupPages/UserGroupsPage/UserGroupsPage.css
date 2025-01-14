@@ -53,3 +53,16 @@
   font-size: 1rem;
   text-align: center;
 }
+
+.mark-read-button {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.mark-read-button:hover {
+  color: #ff4949;
+}

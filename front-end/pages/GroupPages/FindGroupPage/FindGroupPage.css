@@ -24,13 +24,11 @@
 
 .create-group-button {
   display: flex;
-  align-items: center; /* Align icon and text vertically */
-  justify-content: flex-end; /* Start with the icon aligned to the right */
-  overflow: hidden; /* Ensures elements don't overflow */
-  width: 10%; /* Adjust based on your desired size */
-  height: 50px; /* Adjust based on your design */
+  align-items: center; 
+  justify-content: flex-end; 
+  width: 10%; 
+  height: 100%;
   z-index: 10;
-
 }
 
 .create-group-text {
