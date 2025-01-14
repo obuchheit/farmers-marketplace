@@ -1,17 +1,24 @@
 import { Form  } from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ChatFormComponent from '../../components/ChatFormComponent';
 import axios from 'axios';
+import './SingleConvoPage.css'
 
 const SingleConvoPage = () => {
 
   const { conversationId } = useParams();
-  const user = useOutletContext();
+  const [conversation, setConversation] = useState(null)
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [ws, setWs] = useState(null);
+  const [users, setUsers] = useState([])
+  const [userData, setUserData] = useState(null);
+  const [otherUserData, setOtherUserData] = useState(null);
+  const [otherUserId, setOtherUserId] = useState(null);
+
+
      
   console.log(messages)
 
@@ -24,6 +31,8 @@ const SingleConvoPage = () => {
         },
       });
       setMessages(response.data.messages)
+      setConversation(response.data.conversation)
+      setUsers(response.data.conversation.users)
       console.log(response.data)
     } catch (error) {
       console.error('Error fetching messages:', error)
@@ -39,17 +48,15 @@ const SingleConvoPage = () => {
     
     if (messageInput.trim()) { 
       const token = localStorage.getItem('token'); 
-      
+      const userId = userData.id;
+
       const messageData = { 
         message: messageInput,
+        senderId: userId,
       };
 
-      ws.send(JSON.stringify({ message: messageInput }))
+      ws.send(JSON.stringify(messageData))
 
-      // setMessages((prevMessages) => [
-      //   ...prevMessages,
-      //   { sender: "user", content: messageInput }
-      // ]);
       setMessageInput('')
 
       const response = await axios.post(`http://localhost:8000/api/v1/chat/${conversationId}/`, messageData, {
@@ -72,10 +79,13 @@ const SingleConvoPage = () => {
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
+      console.log(data)
       console.log('Recieved message:', data.message)
       setMessages((prevMessages) => [
           ...prevMessages, 
-          { sender: 'other', content: data.message },
+          { sender: data.senderId, 
+            content: data.message,
+          },
       ]);
     };
 
@@ -84,24 +94,65 @@ const SingleConvoPage = () => {
     return () => {
       socket.close();
     }
-  }, [conversationId])
+  }, [])
+
+
+  useEffect(() => {  
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        const response1 = await axios.get("http://localhost:8000/api/v1/users/profile", {
+          headers: { 'Authorization': `Token ${token}` }
+        });
+        console.log(response1.data)
+        const user_id  = response1.data.id;
+        const selectOtherUserId = (users, user_id) => users.find(id => id !== user_id);
+        const otherUser_id = selectOtherUserId(users, user_id)
+
+        const response2 = await axios.get(`http://localhost:8000/api/v1/users/user/${user_id}`, {
+          headers: { 'Authorization': `Token ${token}` }
+        });
+        setUserData(response2.data);
+        console.log(response2.data); 
+
+        
+        setOtherUserId(otherUser_id)
+        console.log(otherUser_id);
+
+        const response3 = await axios.get(`http://localhost:8000/api/v1/users/user/${otherUser_id}`, {
+          headers: { 'Authorization': `Token ${token}` }
+        });
+        console.log(response3.data)
+        setOtherUserData(response3.data)
+
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+    fetchData();
+  }, [messages, users])
 
   return (
     <>
-      <h1>Conversation</h1>
-      <div>
-        {/* Display for messages*/}
-        {messages.map((msg, index) => (
-          <div key={index} className={msg.sender === "user" ? "user-message" : "other-message"}>
-            {msg.content}
-          </div>
-        ))}
+      <div className="chat-container">
+        <h1>Conversation with {otherUserData ? (`${otherUserData.first_name} ${otherUserData.last_name}`) : 'Loading...'}</h1>
+        <div className="chat-messages">
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender === userData?.id ? 'user-message' : 'other-message'}`}>
+              <strong>
+                {msg.sender === userData?.id ? userData.first_name : (msg.sender === otherUserData?.id ? otherUserData.first_name : 'Unknown')}:
+              </strong> 
+              {msg.content}
+            </div>
+          ))}
+        </div>
+        <ChatFormComponent 
+          messageInput={messageInput} 
+          handleInputChange={handleInputChange} 
+          handleSubmit={handleSubmit}
+        />
       </div>
-      <ChatFormComponent 
-        messageInput={messageInput} 
-        handleInputChange={handleInputChange} 
-        handleSubmit={handleSubmit}
-       />
     </>
   )
 }

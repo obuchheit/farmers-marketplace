@@ -52,6 +52,7 @@ export const userLogIn = async (formData) => {
 };
 
 
+
 export const signOut = async () => {
     try {
         let response = await api.post("users/auth/signout/");
@@ -84,23 +85,6 @@ export const getInfo = async() => {
     else {
         return null
     }
-}
-
-// Get user id number
-export const getUserId = async() => {
-    let token = localStorage.getItem('token')
-    if (token){
-        api.defaults.headers.common['Authorization'] = `Token ${token}`
-        let response = await api.get("users/profile/")
-        if (response.status === 200) {
-            return response.data.user.id
-        }
-        return null
-    }
-    else {
-        return null
-    }
-
 }
 
 //Get profile picture for NavBar
