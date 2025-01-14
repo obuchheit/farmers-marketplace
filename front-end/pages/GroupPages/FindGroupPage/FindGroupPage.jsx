@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { MdOutlineEditLocationAlt, MdSearch } from "react-icons/md";
 import { IoAddSharp } from "react-icons/io5";
 import { GrMapLocation } from "react-icons/gr";
+import { TbPhotoEdit } from "react-icons/tb";
 import axios from "axios";
 import { useMapboxToken } from "../../../utilities";
 import RadiusLocationModal from "../../../components/RadiusLocationModal/RadiusLocationModal";
@@ -173,47 +174,95 @@ const FindGroupPage = () => {
         </div>
       )}
 
-      {/* Create Group Modal */}
       <Modal show={showModal} onHide={handleModalClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="edit-modal-header">
           <Modal.Title>Create New Group</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <input
-            type="text"
-            name="name"
-            placeholder="Group Name"
-            value={newGroup.name}
-            onChange={(e) => setNewGroup({ ...newGroup, name: e.target.value })}
-          />
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={newGroup.description}
-            onChange={(e) => setNewGroup({ ...newGroup, description: e.target.value })}
-          ></textarea>
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            value={newGroup.address}
-            onChange={(e) => setNewGroup({ ...newGroup, address: e.target.value })}
-          />
-          <input
-            type="file"
-            name="group_image"
-            onChange={(e) => setNewGroup({ ...newGroup, group_image: e.target.files[0] })}
-          />
+        <Modal.Body className="edit-modal">
+          <div style={{ position: "relative", marginBottom: "1rem" }}>
+            {newGroup.group_image ? (
+              <img
+                src={URL.createObjectURL(newGroup.group_image)}
+                alt="Group Preview"
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  backgroundColor: "#e9ecef",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "8px",
+                  fontSize: "1.5rem",
+                  color: "#6c757d",
+                }}
+              >
+                No Image Selected
+              </div>
+            )}
+            <TbPhotoEdit
+              onClick={() => document.getElementById("group-image-input").click()}
+              className="TbPhotoEdit"
+            />
+            <input
+              type="file"
+              id="group-image-input"
+              style={{ display: "none" }}
+              onChange={(e) => setNewGroup({ ...newGroup, group_image: e.target.files[0] })}
+            />
+          </div>
+          <Form>
+            <Form.Group>
+              <Form.Label>Group Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={newGroup.name}
+                onChange={(e) => setNewGroup({ ...newGroup, name: e.target.value })}
+                id="form-control-background"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="description"
+                value={newGroup.description}
+                onChange={(e) => setNewGroup({ ...newGroup, description: e.target.value })}
+                id="form-control-background"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                name="address"
+                value={newGroup.address}
+                onChange={(e) => setNewGroup({ ...newGroup, address: e.target.value })}
+                id="form-control-background"
+              />
+            </Form.Group>
+          </Form>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="edit-modal-footer">
           <Button variant="secondary" onClick={handleModalClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleCreateGroup}>
-            Create
+            Create Group
           </Button>
         </Modal.Footer>
       </Modal>
+
 
       {/* Map Modal */}
       <Modal show={showMap} onHide={handleCloseMap} size="lg" centered>
