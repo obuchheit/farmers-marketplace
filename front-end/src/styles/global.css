@@ -16,6 +16,21 @@ body, #root {
   background-position: center;
 }
 
+.window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+}
+
+.outlet-content {
+  padding-top: 50px;
+}
+
 
 
 

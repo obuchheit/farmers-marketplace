@@ -19,8 +19,8 @@ const NavBar = ({ user, setUser }) => {
         getImage();
     }, []);
 
-  return (
-    <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
+    return (
+        <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
             <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -43,7 +43,7 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <Button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</Button>
+                            <button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</button>
                             <Link to="/profile"><img id="profile-picture" src={profileImage} alt="Profile" /></Link>
                         </>
                     ) : (

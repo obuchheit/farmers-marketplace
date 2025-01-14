@@ -83,12 +83,14 @@ useEffect(() => {
 }, [location.pathname, user, navigate]);
 
   return (
-    <>
+    <div className="window">
       {!nullUserPages.includes(location.pathname) && (
       <NavBar user={user} setUser={setUser} />
       )}      
-      <Outlet context={{ user, setUser, savedPosts, toggleSavedPost }}/>
-    </>
+      <div className="outlet-content">
+        <Outlet context={{ user, setUser, savedPosts, toggleSavedPost }}/>
+      </div>
+    </div>
   )
 }
 

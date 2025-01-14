@@ -1,4 +1,4 @@
-import ChatFormComponent from "../../components/ChatFormComponent";
+import ChatFormComponent from "../../components/ChatInputForm/ChatFormComponent";
 import { useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
