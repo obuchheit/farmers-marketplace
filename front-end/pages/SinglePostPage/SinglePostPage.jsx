@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { FaRegStar, FaStar } from 'react-icons/fa';
+import { FaRegStar, FaStar, FaMapMarkerAlt } from 'react-icons/fa'
+import ReactMapGL, { Marker } from "react-map-gl";
+import { useMapboxToken } from "../../utilities";
+import { NavigationControl } from 'react-map-gl';
+import { IoLocationOutline } from "react-icons/io5";
+
 import { useNavigate } from 'react-router-dom';
 import './SinglePostPage.css';
+
 
 const SinglePostPage = () => {
     const { postId } = useParams();
@@ -12,7 +18,17 @@ const SinglePostPage = () => {
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [viewport, setViewport] = useState({
+        latitude: 41.888424,
+        longitude: -87.78796,
+        zoom: 12,
+        width: '100%',
+        height: '100%',
+    });
     const navigate = useNavigate();
+
+    const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
+
 
     // Determine if the post is saved on load
     const isInitiallySaved = savedPosts.includes(postId);
@@ -23,9 +39,12 @@ const SinglePostPage = () => {
         setIsSaved(!isSaved); // Toggle the local state
     };
 
+    
     const handleStartConversation = async () => {
-        console.log()
-        navigate(`/chats/new-message/${post.user.id}`)
+        const userFullName = `${post.user.first_name} ${post.user.last_name}`
+        const otherUserId = post.user.id
+        console.log(userFullName)
+        navigate(`/chats/new-message/${userFullName}/${otherUserId}`)
     }
 
     useEffect(() => {
@@ -33,10 +52,18 @@ const SinglePostPage = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get(`http://localhost:8000/api/v1/posts/${postId}/`, {
-                    headers: {
-                        Authorization: `Token ${token}`,
-                    },
+                    headers: { Authorization: `Token ${token}` },
                 });
+                const { location } = response.data;
+                await fetchToken()
+                
+                const [lng, lat] = location.replace('SRID=4326;POINT (', '').replace(')', '').split(' ');
+                setViewport({
+                    ...viewport,
+                    latitude: parseFloat(lat),
+                    longitude: parseFloat(lng),
+                });                
+                console.log(response.data)
                 setPost(response.data);
             } catch (err) {
                 setError(err.response ? err.response.data : 'An error occurred');
@@ -44,7 +71,6 @@ const SinglePostPage = () => {
                 setLoading(false);
             }
         };
-
         fetchPost();
     }, [postId]);
 
@@ -58,27 +84,44 @@ const SinglePostPage = () => {
 
     return (
         <div className='single-post-page'>
-            <div className="post-image">
-                <img className="post-image" src={post.image} alt="" />
+            <div className="post-details">
+                <img className="post-image" src={post.image} alt="Post" />
+                <h2 className="post-title">{post.title}</h2>
+                <p className="post-description">{post.description}</p>
             </div>
 
-            <div className="info-container">
-                <h2>{post.title}</h2>
-                <p><strong>Description: </strong>{post.description}</p>
-                <p><strong>Location:</strong> {post.address}</p>
-                <p><strong>Posted At:</strong> {Date(post.time_posted).toLocaleString()}</p>
-                <p><strong>Available:</strong> {post.is_available ? 'Yes' : 'No'}</p>
-                <br />
-
-                <div className="profile-save-container">
-                <Link to={`/public-profile-page/${post.user.id}`} className="link-style">
-                    <div className="user-div">
-                        <img className="user-image" src={post.user.profile_picture} />
-                        <div>{post.user.first_name} {post.user.last_name}</div>
-                    </div>
+            <div className="post-info">
+                <Link to={`/public-profile-page/${post.user.id}`} className="user-div">
+                    <img className="user-image" src={post.user.profile_picture} alt="User" />
+                    <div>{post.user.first_name} {post.user.last_name}</div>
                 </Link>
+                <div className='message-button-div'>
+                <button className="message-user-button" onClick={()=> handleStartConversation(post.user.id)}>
+                     Message User
+                </button>
+                </div>
+                <p className="post-address"><IoLocationOutline /> {post.address}</p>
+                <div className="post-map-container">
+                <ReactMapGL
+                    {...viewport}
+                    mapboxAccessToken={mapboxToken}
+                    onMove={(evt) => setViewport(evt.viewState)}
+                    mapStyle="mapbox://styles/mapbox/streets-v11"
+                    dragPan={false}  
+                    scrollZoom={false}  
+                    doubleClickZoom={false}  
+                    touchZoomRotate={false} 
+                >
+                    <Marker latitude={viewport.latitude} longitude={viewport.longitude}>
+                        <FaMapMarkerAlt size={40} color="#795f4b" /> 
+                        <NavigationControl position="top-right" />
+                    </Marker>
+                </ReactMapGL>
+
+                </div>
+            </div>
                 {/* Save Post section */}
-                <div className="save-post-container" onClick={handleSaveToggle}>
+                {/* <div className="save-post-container" onClick={handleSaveToggle}>
                     {isSaved ? (
                         <>
                             <FaStar className="saved-icon" />
@@ -95,9 +138,8 @@ const SinglePostPage = () => {
                     <Link onClick={handleStartConversation}>
                         <p>message user</p>
                     </Link>
-                </div>
-            </div>
-            </div>
+                </div> */}
+
         </div>
     );
 };

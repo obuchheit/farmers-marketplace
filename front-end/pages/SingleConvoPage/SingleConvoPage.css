@@ -1,0 +1,79 @@
+/* Container for the chat page */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f1f1f1;
+  padding: 7vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Display area for the conversation */
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 5vh;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual message styles */
+.message {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Styles for user's messages */
+.user-message {
+  background-color: #daf8da;
+  align-self: flex-end; /* Align the user's message to the right */
+  text-align: right;
+}
+
+/* Styles for the other user's messages */
+.other-message {
+  background-color: #f0f0f0;
+  align-self: flex-start; /* Align the other user's message to the left */
+}
+
+/* Input area */
+.chat-input {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Input field styles */
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Send button styles */
+.chat-input button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Send button hover effect */
+.chat-input button:hover {
+  background-color: #45a049;
+}

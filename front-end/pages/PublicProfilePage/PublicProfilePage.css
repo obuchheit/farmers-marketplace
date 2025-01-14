@@ -1,4 +1,6 @@
-  
+  .public-profile-page {
+    padding: 10vh 5vh 0 5vh;
+  }
   .profile-container {
     display: flex;
     justify-content: center;

@@ -3,9 +3,9 @@ from pathlib import Path
 from dotenv import dotenv_values
 import os 
 
-import logging
+# import logging
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 env = dotenv_values(".env")
 

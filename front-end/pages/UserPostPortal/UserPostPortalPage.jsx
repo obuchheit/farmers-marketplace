@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Carousel } from 'react-bootstrap';
 import axios from "axios";
 import './UserPostPortalPage.css';
-
-import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { TbPhotoEdit } from "react-icons/tb";
+import { MdOutlineVisibility } from "react-icons/md";
 import { CgUnavailable } from "react-icons/cg";
+import { TbEyeEdit } from "react-icons/tb";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+
+import './UserPostPortalPage.css';
+import { fetchSavedPosts } from '../../utilities.jsx'; // Import fetchSavedPosts
+import './UserPostPortalPage.css';
+
+
 
 const UserPostPortalPage = ({ user }) => {
     const [error, setError] = useState(null);
@@ -13,6 +20,12 @@ const UserPostPortalPage = ({ user }) => {
     const [posts, setPosts] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [imagePreview, setImagePreview] = useState("http://127.0.0.1:8000/media/post_images/default_post_image.jpg");
+
+    const [showSavedPosts, setShowSavedPosts] = useState(false);
+    const [savedPosts, setSavedPosts] = useState([]);
+
+
     const [selectedPost, setSelectedPost] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -70,6 +83,8 @@ const UserPostPortalPage = ({ user }) => {
         }
     }
 
+    
+
     const openCreateModal = () => {
         setFormData({ title: '', description: '', address: '', is_available: true, is_public: true, image: null });
         setShowCreateModal(true);
@@ -82,6 +97,8 @@ const UserPostPortalPage = ({ user }) => {
             [name]: checked, // Use the `checked` property for boolean values
         });
     };
+
+    
 
 
     const togglePublic = async (post) => {
@@ -148,67 +165,197 @@ const UserPostPortalPage = ({ user }) => {
         }
     };
 
+    const handleDeletePost = async (postId) => {
+        if (!window.confirm('Are you sure you want to delete this post?')) return;
+
+        try {
+            await axios.delete(`http://localhost:8000/api/v1/posts/user-posts/${postId}/`, {
+                headers: { Authorization: `Token ${token}` },
+            });
+            fetchUserPosts(); // Refresh posts
+        } catch (err) {
+            alert('Error deleting post. Please try again.');
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files ? files[0] : value,
-        });
+        if (name === "image" && files && files[0]) {
+            const file = files[0];
+            setFormData({ ...formData, image: file });
+
+            // Generate preview URL
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
+
+    // User Saved Posts
+    const loadSavedPosts = async () => {
+        try {
+            const savedPostsData = await fetchSavedPosts();
+            setSavedPosts(savedPostsData);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const toggleSavedPosts = () => {
+        setShowSavedPosts(!showSavedPosts);
+        if (!showSavedPosts) {
+            loadSavedPosts();
+        }
+    };
+    
 
     return (
         <div className="post-portal-page">
-            <div>
-                <Button onClick={openCreateModal} variant="primary" className="mb-3 create-button">Create New Post</Button>
+            {/* Header Section */}
+            <div className="header">
+                <h2>Post Dashboard</h2>
+                <div className="stats">
+                    <h4>Total Posts: {posts.length}</h4>
+                    <h4>Available: {posts.filter(post => post.is_available).length}</h4>
+                    <h4>Public: {posts.filter(post => post.is_public).length}</h4>
+                </div>
+                <div className="header-buttons">
+                    <Button onClick={openCreateModal} className="header-button">
+                        Create Post
+                    </Button>
+                    <Button onClick={toggleSavedPosts} className="header-button">Saved Posts</Button>
+                </div>
             </div>
+
+            {/* Saved Posts Carousel */}
+            {showSavedPosts && (
+                <div className="carousel-container">
+                    <button className="carousel-close" onClick={() => setShowSavedPosts(false)}>
+                        ×
+                    </button>
+                    <Carousel interval={null} className="multi-item-carousel">
+                        {savedPosts.map((post, index) => {
+                            if (index % 3 === 0) {
+                                return (
+                                    <Carousel.Item key={index}>
+                                        <div className="carousel-items">
+                                            {savedPosts.slice(index, index + 3).map((subPost) => (
+                                                <div className="user-card" key={subPost.post_details.id}>
+                                                    <img
+                                                        src={subPost.post_details.image}
+                                                        alt={subPost.post_details.title}
+                                                        className="user-post-image"
+                                                    />
+                                                    <h2>{subPost.post_details.title}</h2>
+                                                    <p>{subPost.post_details.address}</p>
+                                                    <p><strong>Distance: </strong>{subPost.distance}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Carousel.Item>
+                                );
+                            }
+                            return null;
+                        })}
+                    </Carousel>
+                </div>
+            )}
+            {showSavedPosts && savedPosts.length === 0 && <p>No saved posts available.</p>}
+
 
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
 
-            <div className="posts-container">
-                {posts.map(post => (
-                    <div key={post.id} className="post-card">
-                        <img 
-                            src={post.image} 
-                            alt={post.title} 
-                            className="user-post-image" 
-                            onClick={() => openEditModal(post)}
-                        />
-                        <h2>{post.title}</h2>
-                        <p>{post.description}</p>
 
-                        <div className="action-icons">
-                            <div onClick={() => togglePublic(post)}>
-                                {post.is_public ? 
-                                    <><MdOutlineVisibilityOff /> Make visible to only your groups</> : 
-                                    <><MdOutlineVisibility /> Make visible to everyone</>
-                                }
+                <div className="user-card-container ">
+                    {posts.map(post => (
+                        <div key={post.id} className="user-card">
+                            <div className="image-container">
+                                <img 
+                                    src={post.image} 
+                                    alt={post.title} 
+                                    className="user-post-image"
+                                />
+                                <button 
+                                    className="edit-button"
+                                    onClick={() => openEditModal(post)}
+                                >
+                                    Edit
+                                </button>
                             </div>
+                            <h2>{post.title}</h2>
 
-                            <div onClick={() => toggleAvailable(post)}>
-                                {post.is_available ? 
-                                    <><CgUnavailable /> Mark as unavailable</> : 
-                                    <><IoIosCheckmarkCircleOutline /> Mark as available</>
-                                }
+                            <div className="action-icons">
+                                <div onClick={() => togglePublic(post)}>
+                                    {post.is_public ? 
+                                        <button className="icon-button private-button">
+                                            <TbEyeEdit className="icon"/>
+                                            Make private
+                                            <span className="private-tooltip">
+                                                Allow only members of your groups to see this post.
+                                            </span>
+                                        </button> 
+                                        : 
+                                        <button className="icon-button"><MdOutlineVisibility className="icon"/>Make Public</button>
+                                    }
+                                </div>
+
+                                <div onClick={() => toggleAvailable(post)}>
+                                    {post.is_available ? 
+                                        <button className="icon-button"><CgUnavailable className="icon"/>Mark as unavailable</button> : 
+                                        <button className="icon-button"><IoIosCheckmarkCircleOutline className="icon"/>Mark as available</button>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+
+                </div>
             {/* Create Post Modal */}
-            <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
-                <Modal.Header closeButton>
+            <Modal  show={showCreateModal} onHide={() => setShowCreateModal(false)} >
+                <Modal.Header closeButton className="edit-modal-header">
                     <Modal.Title>Create New Post</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className='edit-modal'>
+                <div style={{ position: 'relative', marginBottom: '1rem' }}>
+                    {/* Post Image */}
+                    <img
+                        src={imagePreview}
+                        alt="Post Preview"
+                        style={{
+                            width: '100%',
+                            height: '200px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                        }}
+                    />
+                    {/* Edit Photo Icon */}
+                    <TbPhotoEdit
+                        onClick={() => document.getElementById('image-input').click()}
+                        className="TbPhotoEdit"
+                    />
+                    <input
+                        type="file"
+                        id="image-input"
+                        style={{ display: 'none' }}
+                        name="image"
+                        onChange={handleChange}
+                    />
+                </div>
                     <Form>
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange}                                 id="form-control-background"
+                            />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
                             <Form.Control
+                                id="form-control-background"
                                 as="textarea"
                                 rows={3}
                                 name="description"
@@ -218,12 +365,10 @@ const UserPostPortalPage = ({ user }) => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
+                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange}                                 id="form-control-background"
+                            />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control type="file" name="image" onChange={handleChange} />
-                        </Form.Group>
+
                         <Form.Group>
                             <Form.Check
                                 type="switch"
@@ -247,7 +392,7 @@ const UserPostPortalPage = ({ user }) => {
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="edit-modal-footer">
                     <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
                         Close
                     </Button>
@@ -258,19 +403,54 @@ const UserPostPortalPage = ({ user }) => {
             </Modal>
 
             {/* Edit Post Modal */}
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-                <Modal.Header closeButton>
+            <Modal  show={showEditModal} onHide={() => setShowEditModal(false)}>
+                <Modal.Header className="edit-modal-header" closeButton>
                     <Modal.Title>Edit Post</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="edit-modal">
+                    <div style={{ position: 'relative', marginBottom: '1rem' }}>
+                        {/* Post Image */}
+                        <img
+                            src={selectedPost?.image}
+                            alt="Post"
+                            style={{
+                                width: '100%',
+                                height: '200px',
+                                objectFit: 'cover',
+                                borderRadius: '8px',
+                            }}
+                        />
+                        {/* Edit Photo Icon */}
+                        <TbPhotoEdit
+                            onClick={() => document.getElementById('image-input').click()}
+                            className="TbPhotoEdit"
+                        />
+                        <input
+                            type="file"
+                            id="image-input"
+                            style={{ display: 'none' }}
+                            name="image"
+                            onChange={handleChange}
+                        />
+                    </div>
                     <Form>
+                        {/* Title */}
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                id="form-control-background"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
                         </Form.Group>
+                        {/* Description */}
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
                             <Form.Control
+                                className="form-control-background"
+                                id="form-control-background"
                                 as="textarea"
                                 rows={3}
                                 name="description"
@@ -278,25 +458,41 @@ const UserPostPortalPage = ({ user }) => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        {/* Address */}
                         <Form.Group>
                             <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control type="file" name="image" onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                name="address"
+                                id="form-control-background"
+                                value={formData.address}
+                                onChange={handleChange}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleEditPost}>
-                        Save Changes
-                    </Button>
+                <Modal.Footer className="edit-modal-footer">
+                    <div className="footer-buttons">
+                        <div>
+                            <Button
+                                variant="danger"
+                                onClick={() => handleDeletePost(selectedPost.id)}
+                            >
+                                Delete
+                            </Button>
+                        </div>    
+                        <div>
+                            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                                Close
+                            </Button>
+                            <Button className="save-button" variant="primary" onClick={handleEditPost}>
+                                Save Changes
+                            </Button>
+                        </div>    
+                    </div>
                 </Modal.Footer>
             </Modal>
+
         </div>
     );
 };

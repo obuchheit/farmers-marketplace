@@ -33,22 +33,24 @@ const PublicProfilePage = () => {
     if (error) return <p>Error: {error}</p>
     
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        <div className="profile-header">
-          <img
-            src={`http://127.0.0.1:8000${data.profile_picture}`}
-            alt={`${data.first_name} ${data.last_name}`}
-            className="profile-picture"
-          />
-        </div>
-        <div className="profile-details">
-          <h1 className="profile-name">{`${data.first_name} ${data.last_name}`}</h1>
-          <p className="profile-email">{data.email}</p>
-          <p className="profile-bio">{data.bio || "No bio provided."}</p>
-          <p className="profile-address">
-            <strong>Address:</strong> {data.address || "Not available"}
-          </p>
+    <div className='public-profile-page'>
+      <div className="profile-container">
+        <div className="profile-card">
+          <div className="profile-header">
+            <img
+              src={`http://127.0.0.1:8000${data.profile_picture}`}
+              alt={`${data.first_name} ${data.last_name}`}
+              className="profile-picture"
+            />
+          </div>
+          <div className="profile-details">
+            <h1 className="profile-name">{`${data.first_name} ${data.last_name}`}</h1>
+            <p className="profile-email">{data.email}</p>
+            <p className="profile-bio">{data.bio || "No bio provided."}</p>
+            <p className="profile-address">
+              <strong>Address:</strong> {data.address || "Not available"}
+            </p>
+          </div>
         </div>
       </div>
     </div>
