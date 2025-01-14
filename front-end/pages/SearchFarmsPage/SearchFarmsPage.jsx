@@ -61,6 +61,10 @@ const SearchFarmsPage = () => {
                             </div>
                         `)
                         .addTo(mapRef.current);
+                    const closeButton = document.querySelector('.mapboxgl-popup-close-button');
+                    if(closeButton) {
+                        closeButton.removeAttribute('aria-hidden');
+                    }
                 });
 
                 marker.getElement().addEventListener('mouseleave', () => {
@@ -156,22 +160,22 @@ const SearchFarmsPage = () => {
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }} className='search-farms-page'>
+        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', justifyContent: 'center' }} className='search-farms-page'>
             <h1>Search Local Farms</h1>
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px', justifyContent: 'center' }}>
                 <input
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Enter city"
-                    style={{ marginRight: '10px' }}
+                    style={{ marginRight: '10px', width: '25%', justifyContent: 'center' }}
                 />
                 <input
                     type="text"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                     placeholder="Enter state"
-                    style={{ marginRight: '10px' }}
+                    style={{ marginRight: '10px', width: '10%', justifyContent: 'center' }}
                 />
                 <input
                     type="number"

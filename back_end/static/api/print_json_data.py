@@ -33,6 +33,13 @@ def print_all_data():
     for key, value in all_data.items():
         print(f"\nCategory: {key}")
         print(json.dumps(value, indent=4))  # Pretty-print JSON data
+    
+    print("\nLength of entries in each category:")
+    for key, value in all_data.items():
+        if isinstance(value, list):
+            print(f"{key}: {len(value)} entries")
+        else:
+            print(f"{key}: {len(value) if isinstance(value, dict) else 'N/A'} entries")
 
 # Run the script
 if __name__ == "__main__":
