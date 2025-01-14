@@ -114,7 +114,11 @@ const UserGroupsPage = () => {
         )}
       </div>
 
-      <Modal show={showNotificationsModal} onHide={toggleNotificationsModal}>
+      <Modal
+        show={showNotificationsModal}
+        onHide={toggleNotificationsModal}
+        className="notifications-modal"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Notifications</Modal.Title>
         </Modal.Header>
@@ -129,7 +133,6 @@ const UserGroupsPage = () => {
               >
                 <p>{notif.message}</p>
                 <span>{formatTimestamp(notif.created_at)}</span>
-
                 {!notif.is_read && (
                   <button
                     className="mark-read-button"
@@ -142,13 +145,13 @@ const UserGroupsPage = () => {
             ))
           )}
         </Modal.Body>
-
         <Modal.Footer>
           <Button variant="secondary" onClick={toggleNotificationsModal}>
             Close
           </Button>
         </Modal.Footer>
       </Modal>
+
      </div>
   );
 };
