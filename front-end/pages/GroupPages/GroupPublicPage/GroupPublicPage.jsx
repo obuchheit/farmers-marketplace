@@ -50,7 +50,7 @@ const GroupPublicPage = () => {
   if (error) return <p className="error">{error}</p>;
 
   return (
-    <div className="group-detail-page">
+    <div className="group-public-page">
       <header className="header">
         <h1>{group.name}</h1>
       </header>

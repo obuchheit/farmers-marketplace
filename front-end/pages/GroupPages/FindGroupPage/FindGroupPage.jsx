@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { MdOutlineEditLocationAlt, MdSearch } from "react-icons/md";
+import { IoAddSharp } from "react-icons/io5";
 import { GrMapLocation } from "react-icons/gr";
-
 import axios from "axios";
 import { useMapboxToken } from "../../../utilities";
+import RadiusLocationModal from "../../../components/RadiusLocationModal/RadiusLocationModal";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./FindGroupPage.css";
 
@@ -119,9 +120,14 @@ const FindGroupPage = () => {
     <div className="find-group-page">
       {/* Header Section */}
       <div className="group-top-content">
-        <div className="todays-posts">
+        <div className="find-groups">
           <h4>Find Groups</h4>
         </div>
+        <div className="create-group-button" onClick={() => setShowModal(true)}>
+          <IoAddSharp className="create-group-icon" />
+          <span className="create-group-text">Create Group</span>
+        </div>
+
         <form className="search-form" onSubmit={handleSearchSubmit}>
           <MdSearch className="search-icon" />
           <input
@@ -166,13 +172,6 @@ const FindGroupPage = () => {
           ))}
         </div>
       )}
-
-      {/* Buttons */}
-      <div className="button-container">
-        <Button className="create-group-button" onClick={() => setShowModal(true)}>
-          + Create Group
-        </Button>
-      </div>
 
       {/* Create Group Modal */}
       <Modal show={showModal} onHide={handleModalClose}>
@@ -254,47 +253,17 @@ const FindGroupPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* Radius Modal */}
-      <Modal show={showRadiusModal} onHide={toggleRadiusModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Location and Radius</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ReactMapGL
-            initialViewState={{
-              longitude: userLocation.lng,
-              latitude: userLocation.lat,
-              zoom: 7,
-            }}
-            style={{ width: "100%", height: "50vh" }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
-            mapboxAccessToken={mapboxToken}
-          >
-            <Marker
-              longitude={userLocation.lng}
-              latitude={userLocation.lat}
-              draggable
-              onDragEnd={handleMarkerDragEnd}
-            />
-          </ReactMapGL>
-          <input
-            type="range"
-            min="1"
-            max="100"
-            value={distance}
-            onChange={(e) => setDistance(e.target.value)}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={toggleRadiusModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={fetchGroups}>
-            Apply
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <RadiusLocationModal
+        show={showRadiusModal}
+        onClose={() => setShowRadiusModal(false)}
+        distance={distance}
+        setDistance={setDistance}
+        userLocation={userLocation}
+        setUserLocation={setUserLocation}
+        mapboxToken={mapboxToken}
+        fetchPosts={fetchGroups}
+      />
+     
     </div>
   );
 };
