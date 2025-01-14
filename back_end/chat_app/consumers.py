@@ -24,43 +24,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Leave the room group
     await self.channel_layer.group_discard(
       self.convo_name,
-       self.channel_name
+      self.channel_name
     )
 
   async def receive(self, text_data):
-
+    print('in recieve')
     message_data = json.loads(text_data)
     message_content = message_data["message"]
-    # username = message_data["username"]
-    # token = message_data["token"]
-    # print(token)
+    sender_id = message_data['senderId']
+    print(message_content)
 
-    # user = await sync_to_async(User.objects.get)(email=username)
-    # print(user)
-    # conversation = await sync_to_async(Conversation.objects.get)(id=self.convo_name)
-    # sender = self.scope['user']
-    # print(sender)
-
-    # # Create a new message
-    # new_message = await sync_to_async(Message.objects.create)(
-    #   sender=sender,
-    #   conversation=conversation,
-    #   content=message_content
-    # )
-
-    # Send message to the room group
     await self.channel_layer.group_send(
       self.convo_name,
       {
         'type': 'chat_message',
         'message': message_content,
-        # 'sender': username
+        'senderId': sender_id,
       }
     )
 
   async def chat_message(self, event):
+    print("in chat_message")
     # Send message to WebSocket
     message = event['message']
+    sender_id = event['senderId']
+
     await self.send(text_data=json.dumps({
-      'message': message
+      'message': message,
+      'senderId': sender_id,
     }))
