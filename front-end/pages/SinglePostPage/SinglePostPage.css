@@ -13,14 +13,68 @@
   height: 80vh;
 }
 
+.image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
 .post-image {
   max-height: 60vh;
   width: 100%;
   border-radius: 8px;
   object-fit: fill;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
 }
+
+.save-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.saved-icon,
+.unsaved-icon {
+  font-size: 1.5rem;
+  color: #ffc107; /* Gold for saved */
+}
+
+.unsaved-icon {
+  color: #ccc; /* Gray for unsaved */
+}
+
+.save-icon:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip {
+  position: absolute;
+  top: 5vh;
+  right: -5vh;
+  transform: translateX(50%);
+  background-color: #333333d0;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  width: 12vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+
 
 .post-title {
   font-size: 2rem;
