@@ -24,7 +24,7 @@ const NewMessagePage = () => {
           'Authorization': `Token ${token}`
         }
       })
-
+      console.log(response1.data)
       if (response1.data.id) {
 
         const response2 = await axios.post("http://localhost:8000/api/v1/chat/start-chat/", {

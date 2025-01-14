@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import Message, Conversation
-from .serializers import MessageSerializer
+from .serializers import MessageSerializer, ConversationSerializer
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from user_app.models import User
 from django.http import JsonResponse
@@ -107,9 +107,13 @@ class SingleChatView(TokenReq):
   def get(self, request, conversation_id):
     print("here in single chat view")
     conversation = get_object_or_404(Conversation, id=conversation_id)
+    conversation_serialized = ConversationSerializer(conversation)
     messages = Message.objects.filter(conversation=conversation).order_by('timestamp')
-    serializer = MessageSerializer(messages, many=True)
-    return JsonResponse({"messages": serializer.data})
+    message_serialized = MessageSerializer(messages, many=True)
+    return JsonResponse({
+      "conversation": conversation_serialized.data,
+      "messages": message_serialized.data
+    })
   
   def post(self, request, conversation_id):
     print("adding message to conversation")
