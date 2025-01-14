@@ -115,7 +115,7 @@ class AllUserPostsView(ListAPIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 #Allows users to get, update, or delete one of their posts based on it's id
-class ManageUserPostView(TokenReq): 
+class ManageUserPostView(TokenReq, APIView): 
 
     def get(self, request, post_id):
         try:
@@ -133,12 +133,23 @@ class ManageUserPostView(TokenReq):
             return Response({"error": "Post not found."}, status=HTTP_404_NOT_FOUND)
         
         serializer = UserPostSerializer(post, data=request.data, partial=True)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-        
+    
+    def patch(self, request, post_id):
+        try:
+            post = UserPosts.objects.get(pk=post_id, user=request.user)
+        except UserPosts.DoesNotExist:
+            return Response({"error": "Post not found."}, status=HTTP_404_NOT_FOUND)
+
+        # Update specific fields
+        serializer = UserPostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, post_id):
         try:
@@ -147,9 +158,7 @@ class ManageUserPostView(TokenReq):
             return Response({"error": "Post not found."}, status=HTTP_404_NOT_FOUND)
         
         post.delete()
-
         return Response({"message": "Post deleted successfully."}, status=HTTP_200_OK)
-
 
 """
 User Saved Post Views
@@ -163,8 +172,12 @@ class AllUserSavedPostsView(ListAPIView):
     serializer_class = AllUserSavedPostsSerializer
 
     def get_queryset(self):
-        # Only return the saved posts for the authenticated user
+        # Return saved posts for the authenticated user
         return UserSavedPosts.objects.filter(user=self.request.user)
+    
+    def get_serializer_context(self):
+        # Pass the request to the serializer for distance calculation
+        return {'request': self.request}
 
 
 # Allows a user to save, delete, or view a specific saved post

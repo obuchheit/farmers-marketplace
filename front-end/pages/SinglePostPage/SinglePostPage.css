@@ -1,87 +1,167 @@
-.post-image {
-    display: flex;
-    height: 30vh;
-    width: 40vh;
-    margin-bottom: 3vh;
-    border-radius: 5vh;
-    object-fit: cover;
-}
-
-.profile-save-container {
+.single-post-page {
   display: flex;
-  cursor: pointer;
+  flex-wrap: wrap;
+  gap: 10vh;
+  padding: 10vh 10vh;
 }
 
-.user-div {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 3vh;
-    padding: 1vh;
-    border-radius: 4vh;
-    transition: box-shadow 0.3s ease;
-}
-
-.user-div:hover {
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
-}
-
-.user-image {
-    height: 5vh;
-    width: 5vh;
-    border-radius: 50%;
-    margin-right: 2vh;
-}
-
-.link-style {
-    text-decoration: none; /* Removes the underline */
-    color: inherit; /* Inherits the color from the parent */
-}
-
-.link-style:hover {
-    text-decoration: none; /* Ensures no underline appears on hover */
-}
-
-.save-post-container {
+.post-details {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100%;
-  margin: 2vh 0 0 1vh;
+  gap: 1rem;
+  height: 80vh;
 }
 
-.saved-icon {
-  color: #ada052;
-  height: 1.5rem;
-  width: 1.5rem;
+.image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.post-image {
+  max-height: 60vh;
+  width: 100%;
+  border-radius: 8px;
+  object-fit: fill;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.save-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.saved-icon,
+.unsaved-icon {
+  font-size: 1.5rem;
+  color: #ffc107; /* Gold for saved */
 }
 
 .unsaved-icon {
-  color: black;
-  height: 1.5rem;
-  width: 1.5rem;
+  color: #ccc; /* Gray for unsaved */
 }
 
-.info-container {
-    background-color: #96a38c; 
-    border: 1px solid #96a38cb2; 
-    border-radius: 8px; 
-    padding: 16px; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    font-family: 'Arial', sans-serif; 
-    max-width: 400px; 
-  }
-  
-  .info-container p {
-    margin: 8px 0; /* Spacing between paragraphs */
-    line-height: 1.5; /* Improved readability */
-    color: #333; /* Dark gray text for good contrast */
-  }
-  
-  .info-container strong {
-    color: #344429; /* Accent color for labels */
-  }
-  
-  .info-container p:last-child {
-    font-weight: bold; /* Highlight the last piece of info */
-  }
-  
+.save-icon:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip {
+  position: absolute;
+  top: 5vh;
+  right: -5vh;
+  transform: translateX(50%);
+  background-color: #333333d0;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  width: 12vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+
+
+.post-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #344429;
+}
+
+.post-description {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.post-info {
+  flex: 1;
+  max-width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: #f7f7f7;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-image {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 2px solid #5E653E;
+  object-fit: cover;
+}
+
+.message-button-div {
+  display: flex;
+  justify-content: center;
+}
+
+.message-user-button {
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #5E653E;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.message-user-button:hover {
+  background-color: #795f4b;
+  transform: scale(1.05);
+}
+
+.post-address {
+  font-size: 1rem;
+  color: #344429;
+}
+
+.post-map-container {
+  width: 100%;
+  height: 20vh;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Custom Marker Icon */
+.marker-icon {
+  transform: translate(-50%, -100%); /* Centers the icon on the location */
+  color: #795f4b; /* Match earthy color palette */
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.marker-icon:hover {
+  transform: translate(-50%, -100%) scale(1.1); /* Slight hover effect */
+  color: #5E653E; /* Slightly brighter */
+}

@@ -156,7 +156,6 @@ Group Public Views
 class GroupListView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
     def get_queryset(self):
@@ -165,7 +164,9 @@ class GroupListView(ListAPIView):
         except ValueError:
             raise ValidationError({"error": "Invalid distance parameter. It must be a number."})
 
+        search = self.request.query_params.get('search', '').strip()
         user = self.request.user
+
         if not user.location:
             raise ValidationError({"error": "User location is not set. Set User location in your profile settings."})
 
@@ -174,11 +175,17 @@ class GroupListView(ListAPIView):
         
         user_location = user.location
 
-        return Group.objects.filter().annotate(
+        queryset = Group.objects.filter().annotate(
             distance=Distance('location', user_location)
         ).filter(
             distance__lte=distance * 1000
         ).order_by('distance')
+
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+
+        return queryset
+
 
 #Detailed View of group for non group members
 class GroupDetailPublicView(RetrieveAPIView):

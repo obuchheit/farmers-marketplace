@@ -1,0 +1,139 @@
+.slider-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #5E653E; /* Use the thumb color for consistency */
+}
+
+.slider-button {
+    background-color: #795f4b;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.slider-button:hover {
+    background-color: #5E653E;
+    transform: scale(1.05);
+}
+
+#distance-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%; /* Full width */
+    height: 6px; /* Sleek track */
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+/* Modern slider track */
+#distance-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    background: #856f61a1;
+}
+
+/* Modern slider thumb */
+#distance-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5E653E;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    margin-top: -7px;
+}
+
+#distance-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Firefox thumb */
+#distance-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #5E653E;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+#distance-slider:active::-webkit-slider-runnable-track,
+#distance-slider:active::-moz-range-track {
+    background: #856f61; /* Slightly darker on active */
+}
+
+
+
+/* Modal Styles */
+.modal-header {
+    background-color: #795f4b;
+    color: white;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modal-background {
+    background-color: #f8f4f0 !important;
+}
+
+.modal-footer {
+    background-color: #f8f4f0 !important;
+    border-top: none;
+}
+
+/* Map Container Styles */
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #795f4b;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.modal-apply-button {
+    background-color: #795f4b !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
+}
+
+.modal-apply-button:hover {
+    background-color: #5E653E !important;
+    transform: scale(1.05) !important;
+}
+
+.modal-close-button {
+    background-color: transparent !important;
+    color: #795f4b !important;
+    border: none !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, color 0.2s ease !important;
+}
+
+.modal-close-button:hover {
+    color: #5E653E !important;
+    transform: scale(1.05) !important;
+}

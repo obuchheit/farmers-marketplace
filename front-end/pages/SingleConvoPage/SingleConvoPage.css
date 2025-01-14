@@ -1,0 +1,56 @@
+/* whole page */
+.whole-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Header for Single Convo Page*/
+.chat-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Container for the chat page */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 7vh;
+}
+
+/* Display area for the conversation */
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 5vh;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual message styles */
+.message {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  /* max-width: 0%; */
+  word-wrap: break-word;
+}
+
+/* Styles for user's messages */
+.user-message {
+  background-color: #daf8da;
+  align-self: flex-end; /* Align the user's message to the right */
+  text-align: right;
+}
+
+/* Styles for the other user's messages */
+.other-message {
+  background-color: #f0f0f0;
+  align-self: flex-start; /* Align the other user's message to the left */
+}

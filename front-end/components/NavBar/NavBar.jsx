@@ -19,8 +19,8 @@ const NavBar = ({ user, setUser }) => {
         getImage();
     }, []);
 
-  return (
-    <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
+    return (
+        <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
             <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -30,6 +30,7 @@ const NavBar = ({ user, setUser }) => {
                     <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
                     <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
                     <Nav.Link as={Link} to="/search-farms">Search Farms</Nav.Link> {/* Added link to Search Farms */}
+                    <Nav.Link as={Link} to="/chats">Chats</Nav.Link>
                     <NavDropdown title="Groups" id="basic-nav-dropdown">
                         <NavDropdown.Item as={Link} to="/find-groups">Find Groups</NavDropdown.Item>
                         <NavDropdown.Item as={Link} to="/users-groups">
@@ -42,7 +43,7 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <Button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</Button>
+                            <button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</button>
                             <Link to="/profile"><img id="profile-picture" src={profileImage} alt="Profile" /></Link>
                         </>
                     ) : (

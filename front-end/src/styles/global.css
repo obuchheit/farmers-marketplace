@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
 
-body, html, #root {
-  background-color: #c8c2b479; 
+body, #root {
   min-height: 100vh;
   font-family: 'Lato', sans-serif; 
+  background-color: #dfdccc5d;
+
 }
+
 
 .auth-page-body {
   background-image: url('http://127.0.0.1:8000/media/project_images/LoadImage.jpg');
@@ -14,14 +16,21 @@ body, html, #root {
   background-position: center;
 }
 
-#root {
-  background-color: #c8c2b479;
+.window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+}
+
+.outlet-content {
+  padding-top: 50px;
 }
 
 
 
-@media (max-height: 700px) {
-  html {
-      padding: 8vh 2vw;
-  }
-}
+

@@ -1,48 +1,79 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import { MdOutlineEditLocationAlt, MdSearch } from "react-icons/md";
+import { IoAddSharp } from "react-icons/io5";
+import { GrMapLocation } from "react-icons/gr";
 import axios from "axios";
 import { useMapboxToken } from "../../../utilities";
-import 'mapbox-gl/dist/mapbox-gl.css';
-import './FindGroupPage.css'
+import RadiusLocationModal from "../../../components/RadiusLocationModal/RadiusLocationModal";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "./FindGroupPage.css";
 
 const FindGroupPage = () => {
   const [distance, setDistance] = useState(50);
+  const [searchQuery, setSearchQuery] = useState("");
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [newGroup, setNewGroup] = useState({ name: "", description: "", address: "", group_image: null });
-  const navigate = useNavigate();
-  const userToken = localStorage.getItem('token');
-
+  const [newGroup, setNewGroup] = useState({
+    name: "",
+    description: "",
+    address: "",
+    group_image: null,
+  });
+  const [userLocation, setUserLocation] = useState({
+    lng: -87.6298,
+    lat: 41.8781,
+  }); // Default to Chicago, IL
+  const [showRadiusModal, setShowRadiusModal] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [viewport, setViewport] = useState({
-    latitude: 41.8781, 
+    latitude: 41.8781,
     longitude: -87.6298,
-    zoom: 10,
+    zoom: 7,
   });
 
+  const navigate = useNavigate();
+  const userToken = localStorage.getItem("token");
   const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
 
-  useEffect(() => {
-    fetchGroups();
-  }, []);
 
   const fetchGroups = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/v1/groups/public/", {
         headers: { Authorization: `Token ${userToken}` },
-        params: { distance },
+        params: { distance, search: searchQuery },
       });
-      console.log(response.data);
+      console.log(response.data)
       setGroups(response.data);
-      setLoading(false);
     } catch (err) {
       setError("Failed to fetch groups.");
+    } finally {
       setLoading(false);
     }
+  };
+
+  useEffect (() => {
+    fetchGroups()
+  }, [])
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    fetchGroups();
+  };
+
+  const toggleRadiusModal = async () => {
+    await fetchToken();
+    setShowRadiusModal(!showRadiusModal);
+  };
+
+  const handleMarkerDragEnd = (event) => {
+    setUserLocation({ lng: event.lngLat.lng, lat: event.lngLat.lat });
   };
 
   const handleCreateGroup = async () => {
@@ -59,17 +90,16 @@ const FindGroupPage = () => {
         "http://127.0.0.1:8000/api/v1/groups/create/",
         formData,
         {
-          headers: { 
-            Authorization: `Token ${userToken}`, 
-            "Content-Type": "multipart/form-data"
-          }
+          headers: {
+            Authorization: `Token ${userToken}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       alert("Group created successfully!");
       setGroups([...groups, response.data]); // Optimistic update
       handleModalClose();
     } catch (err) {
-      console.log(err)
       alert("Failed to create group.");
     }
   };
@@ -79,52 +109,48 @@ const FindGroupPage = () => {
     setNewGroup({ name: "", description: "", address: "", group_image: null });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewGroup((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    setNewGroup((prev) => ({ ...prev, group_image: e.target.files[0] }));
-  };
-
-
-  //Mapbox functions
   const handleOpenMap = async () => {
-    await fetchToken(); 
+    await fetchToken();
     setShowMap(true);
   };
 
   const handleCloseMap = () => setShowMap(false);
 
   return (
-    <div className="group-list-page">
-      <header className="header">
-        <h1>Find Groups</h1>
-        <div className="slider-container">
-          <div className="slider-header">
-            <label htmlFor="distance-slider" className="slider-label">Radius: {distance} km</label>
-            <button onClick={fetchGroups} className="slider-button">Search</button>
-          </div>
-          <input
-            id="distance-slider"
-            type="range"
-            min="1"
-            max="100"
-            value={distance}
-            onChange={(e) => setDistance(e.target.value)}
-            className="modern-slider"
-          />
+    <div className="find-group-page">
+      {/* Header Section */}
+      <div className="group-top-content">
+        <div className="find-groups">
+          <h4>Find Groups</h4>
         </div>
-        <button className="create-group-button" onClick={() => setShowModal(true)}>
-          + Create Group
-        </button>
-      </header>
+        <div className="create-group-button" onClick={() => setShowModal(true)}>
+          <IoAddSharp className="create-group-icon" />
+          <span className="create-group-text">Create Group</span>
+        </div>
 
-      <Button variant="primary" onClick={handleOpenMap} className="mt-4">
-        Show Groups on Map
-      </Button>
+        <form className="search-form" onSubmit={handleSearchSubmit}>
+          <MdSearch className="search-icon" />
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search for groups..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="search" onClick={fetchGroups}>
+            Search
+          </button>
+        </form>
+        <div className="group-address-radius-container">
+          <MdOutlineEditLocationAlt className="edit-location-icon" onClick={toggleRadiusModal} />
+          <span className="radius-info">Radius: {distance} km</span>
+        </div>
+        <div className="map-icon-div">
+          <GrMapLocation className="map-icon" onClick={handleOpenMap}/>
+        </div>
+      </div>
 
+      {/* Group List Section */}
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -132,12 +158,12 @@ const FindGroupPage = () => {
       ) : (
         <div className="group-list">
           {groups.map((group) => (
-            <div key={group.id} className="group-card" onClick={() => navigate(`/group-public-view/${group.id}`)}>
-              <img
-                src={group.group_image}
-                alt={group.name}
-                className="group-image"
-              />
+            <div
+              key={group.id}
+              className="group-card"
+              onClick={() => navigate(`/group-public-view/${group.id}`)}
+            >
+              <img src={group.group_image} alt={group.name} className="group-image" />
               <div className="group-details">
                 <h2>{group.name}</h2>
                 <p>{group.description}</p>
@@ -147,55 +173,41 @@ const FindGroupPage = () => {
         </div>
       )}
 
+      {/* Create Group Modal */}
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create New Group</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="groupName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={newGroup.name}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="groupDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="description"
-                value={newGroup.description}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="groupAddress">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type="text"
-                name="address"
-                value={newGroup.address}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="groupImage">
-              <Form.Label>Group Image</Form.Label>
-              <Form.Control
-                type="file"
-                name="group_image"
-                onChange={handleFileChange}
-              />
-            </Form.Group>
-          </Form>
+          <input
+            type="text"
+            name="name"
+            placeholder="Group Name"
+            value={newGroup.name}
+            onChange={(e) => setNewGroup({ ...newGroup, name: e.target.value })}
+          />
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={newGroup.description}
+            onChange={(e) => setNewGroup({ ...newGroup, description: e.target.value })}
+          ></textarea>
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={newGroup.address}
+            onChange={(e) => setNewGroup({ ...newGroup, address: e.target.value })}
+          />
+          <input
+            type="file"
+            name="group_image"
+            onChange={(e) => setNewGroup({ ...newGroup, group_image: e.target.files[0] })}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalClose}>
-            Cancel
+            Close
           </Button>
           <Button variant="primary" onClick={handleCreateGroup}>
             Create
@@ -203,6 +215,7 @@ const FindGroupPage = () => {
         </Modal.Footer>
       </Modal>
 
+      {/* Map Modal */}
       <Modal show={showMap} onHide={handleCloseMap} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Group Locations</Modal.Title>
@@ -221,13 +234,6 @@ const FindGroupPage = () => {
             >
               {groups.map((group) => {
                 const { latitude, longitude } = group;
-
-                // Validate if coordinates are correct before rendering
-                if (typeof latitude !== "number" || typeof longitude !== "number" || isNaN(latitude) || isNaN(longitude)) {
-                  console.error(`Invalid coordinates for group ${group.id}:`, latitude, longitude);
-                  return null; // Skip rendering if coordinates are invalid
-                }
-
                 return (
                   <Marker key={group.id} longitude={longitude} latitude={latitude}>
                     <div className="map-div">
@@ -247,6 +253,17 @@ const FindGroupPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <RadiusLocationModal
+        show={showRadiusModal}
+        onClose={() => setShowRadiusModal(false)}
+        distance={distance}
+        setDistance={setDistance}
+        userLocation={userLocation}
+        setUserLocation={setUserLocation}
+        mapboxToken={mapboxToken}
+        fetchPosts={fetchGroups}
+      />
+     
     </div>
   );
 };

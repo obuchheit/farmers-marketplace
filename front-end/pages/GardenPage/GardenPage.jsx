@@ -30,7 +30,7 @@ const GardenPage = () => {
 
 
   return (
-    <div>
+    <div className="garden-page">
       <InputGroup className="mb-2 input-group">
         <InputGroup.Text className="icon">
           <Search className="icon" />

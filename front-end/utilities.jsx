@@ -87,7 +87,6 @@ export const getInfo = async() => {
     }
 }
 
-
 //Get profile picture for NavBar
 export const getProfilePicture = async() => {
     let token = localStorage.getItem('token')

@@ -11,10 +11,11 @@ class Farm(gis_models.Model):
     listing_desc = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.listing_name
+        return f"{self.listing_name} (ID: {self.listing_id}, Address: {self.location_address})"
+
     
     def save(self, *args, **kwargs):
-        # Prevent duplicates by checking existing records
+        print(f"Saving Farm: {self.listing_name}, Address: {self.location_address}, Location: {self.location}")
         if Farm.objects.filter(listing_name=self.listing_name, location_address=self.location_address).exists():
             raise ValueError("Duplicate listing: This combination of name and address already exists.")
         super().save(*args, **kwargs)

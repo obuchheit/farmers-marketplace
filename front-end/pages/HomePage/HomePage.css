@@ -1,238 +1,163 @@
-.main-page {
-    padding: 8vh 5vh;
+/* .main-page {
+    padding: 50px 0;
+} */
+
+#map-modal {
+    width: 70vw !important;
+    max-width: none !important;
 }
 
 .top-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    top: 50px;
+    background-color: #dfdccc;
+    /* gap: 2vh; */
+    width: 100%;
+    padding: 2vh 0vh 2vh 0;
+    z-index: 5;
+    border-bottom: 1px solid rgb(175, 185, 171);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
+.todays-posts {
+    width: 25%;
+    padding-left: 8vh;
+}
+/* Search Form Styles */
 .search-form {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    width: 50vw;
+    position: relative;
+    width: 40%; 
+    margin: auto; /* Center the search bar */
 }
 
+/* Search Bar */
 .search-bar {
     flex: 1;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    height: 5vh;
+    padding: 0.8vh 5vh !important; /* Add padding for left icon and overall height */
+    font-size: 2vh; /* Larger font size for better readability */
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 50px !important; /* Rounded corners */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.search-button {
-    background-color: #795f4b;
+.search-bar:focus {
+    border-color: #5E653E;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Search Button */
+.search {
+    position: absolute;
+    height: 5vh;
+    right: 0; /* Slight padding from the right */
+    bottom: 0;
+    padding: 0.75vh 2.5vh;
+    font-size: 2vh;
+    font-weight: bold;
     color: white;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
+    background-color: #795f4b;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.search-button:hover {
+.search:hover {
     background-color: #5E653E;
     transform: scale(1.05);
 }
+
+/* Search Icon Inside Search Bar */
+.search-icon {
+    position: absolute;
+    left: 1.5vh; /* Space from the left edge */
+    font-size: 3vh; /* Larger icon size */
+    color: #5E653E; /* Contrast color for visibility */
+    pointer-events: none; /* Prevent interaction */
+    margin-top: 1vh;
+}
+
+/* Address and Radius Container */
+.address-radius-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding-top: 2vh;
+    width: 25%;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    height: 100%;
+}
+
+.edit-location-icon {
+    font-size: 3vh; /* Larger icon size */
+    color: #795f4b;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.address-radius-container .edit-location-icon:hover {
+    transform: scale(1.1);
+    color: #5E653E;
+
+}
+
+
+
+.radius-info {
+    color: #555;
+    font-style: italic;
+    font-size: 1.8vh; /* Slightly larger text */
+    white-space: nowrap; /* Prevent wrapping */
+    font-weight: bold;
+}
+
 
 .slider-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem; /* Modern spacing */
-    width: 15vw; /* Take full width of parent */
+    width: 100%; /* Take full width of parent */
     margin: auto; /* Center on the page */
 }
 
-/* Slider header */
-.slider-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-/* Updated label */
-.slider-label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #5E653E; /* Use the thumb color for consistency */
-}
-
-/* Updated button */
-.slider-button {
-    background-color: #795f4b;
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.slider-button:hover {
-    background-color: #5E653E;
-    transform: scale(1.05);
-}
-
-/* Modern slider */
-#distance-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%; /* Full width */
-    height: 6px; /* Sleek track */
-    background: #ddd;
-    border-radius: 3px;
-    outline: none;
-    transition: background 0.3s ease;
-}
-
-/* Modern slider track */
-#distance-slider::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 3px;
-    background: #856f61a1;
-}
-
-/* Modern slider thumb */
-#distance-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #5E653E;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-    margin-top: -7px;
-}
-
-#distance-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-}
-
-/* Firefox thumb */
-#distance-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #5E653E;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-}
-
-#distance-slider:active::-webkit-slider-runnable-track,
-#distance-slider:active::-moz-range-track {
-    background: #856f61; /* Slightly darker on active */
-}
 
 
+@media (max-width: 768px) {
+    .main-page {
+        padding: 7vh 0;
+        overflow: hidden;
+    }
+    .top-content {
+        flex-wrap: wrap;
+        z-index: 10;
+        width: 100%;
+        gap: 0;
+        padding: 1vh;
+    }
+  
+    .address-radius-container {
+        order: 1;
+        width: 45%;
+        padding: 0;
+    }
 
+    .search-form {
+        order: 3;
+        width: 100%;
+    }
 
-.address-radius-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 1rem;
-}
+    .todays-posts {
+        width: 50%;
+        padding-left: 2vh;
+    }
 
-.edit-location-icon {
-    font-size: 1.5rem;
-    color: #795f4b;
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.edit-location-icon:hover {
-    color: #5E653E;
-    transform: scale(1.1);
-}
-
-.user-address {
-    font-weight: bold;
-    color: #333;
-}
-
-.radius-info {
-    color: #555;
-    font-style: italic;
-}
-
-/* Modal and Map styling */
-
-/* Modal Styles */
-.modal-header {
-    background-color: #795f4b;
-    color: white;
-    border-bottom: none;
-}
-
-.modal-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.modal-background {
-    background-color: #f8f4f0 !important;
-}
-
-.modal-footer {
-    background-color: #f8f4f0 !important;
-    border-top: none;
-}
-
-/* Map Container Styles */
-.map-container {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    border: 2px solid #795f4b;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 1rem;
-}
-
-
-
-
-/* Apply and Close Buttons */
-.modal-apply-button {
-    background-color: #795f4b !important;
-    color: white !important;
-    border: none !important;
-    padding: 0.5rem 1rem !important;
-    font-weight: bold !important;
-    border-radius: 8px !important;
-    transition: transform 0.2s ease, background-color 0.2s ease !important;
-}
-
-.modal-apply-button:hover {
-    background-color: #5E653E !important;
-    transform: scale(1.05) !important;
-}
-
-.modal-close-button {
-    background-color: transparent !important;
-    color: #795f4b !important;
-    border: none !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    transition: transform 0.2s ease, color 0.2s ease !important;
-}
-
-.modal-close-button:hover {
-    color: #5E653E !important;
-    transform: scale(1.05) !important;
 }

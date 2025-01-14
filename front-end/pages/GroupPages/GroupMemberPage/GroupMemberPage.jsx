@@ -105,7 +105,7 @@ const GroupMemberPage = () => {
   };
 
   return (
-    <div>
+    <div className="group-member-page">
       {loadingDetails ? (
         <p>Loading group details...</p>
       ) : errorDetails ? (
