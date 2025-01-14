@@ -9,11 +9,9 @@ import './SinglePostPage.css';
 
 const SinglePostPage = () => {
     const { postId } = useParams();
-    const { savedPosts, toggleSavedPost } = useOutletContext(); 
+    const { savedPosts, toggleSavedPost } = useOutletContext(); // Access context
     const [post, setPost] = useState(null);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isSaved, setIsSaved] = useState(false);
     const { token: mapboxToken, fetchToken, loading: loadingToken, error: errorToken } = useMapboxToken();
     const [viewport, setViewport] = useState({
         latitude: 41.888424,
@@ -23,57 +21,43 @@ const SinglePostPage = () => {
         height: '100%',
     });
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
+    // Fetch Map token once
     useEffect(() => {
-        const getMapToken = async() => {
-            await fetchToken()
-        }
-        getMapToken()
-    }, [])
-    // Extract saved post IDs for quick lookup
+        const getMapToken = async () => {
+            await fetchToken();
+        };
+        getMapToken();
+    }, []);
+
+    // Fetch post details on page load
     useEffect(() => {
         const fetchPost = async () => {
-            try {
-                console.log("Fetching post...");
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:8000/api/v1/posts/${postId}/`, {
-                    headers: { Authorization: `Token ${token}` },
-                });
-                console.log("Post fetched:", response.data);
-
-
-                const { location } = response.data;
-                const [lng, lat] = location.replace('SRID=4326;POINT (', '').replace(')', '').split(' ');
-
-                setViewport((prev) => ({
-                    ...prev,
-                    latitude: parseFloat(lat),
-                    longitude: parseFloat(lng),
-                }));
-                setPost(response.data);
-
-                // Check if the post is saved
-                const isPostSaved = savedPosts.some((savedPost) => savedPost.post_details.id === Number(postId));
-                console.log("Is post saved:", isPostSaved);
-                setIsSaved(isPostSaved);
-            } catch (err) {
-                console.error("Error fetching post:", err);
-
-                setError(err.response?.data || 'An error occurred while fetching the post.');
-            } finally {
-                setLoading(false);
-            }
+          try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8000/api/v1/posts/${postId}/`, {
+              headers: { Authorization: `Token ${token}` },
+            });
+            setPost(response.data);
+          } catch (err) {
+            setError(err.response?.data || 'An error occurred while fetching the post.');
+          } finally {
+            setLoading(false);
+          }
         };
-
+    
         fetchPost();
-    }, [postId, savedPosts]);
+      }, [postId]);
+    
+    // Directly check savedPosts from context
+    const isPostSaved = savedPosts.includes(postId);
 
-    // Toggle saved state
     const handleSaveToggle = async () => {
-        await toggleSavedPost(postId);
-        setIsSaved((prev) => !prev); // Update local state
+        await toggleSavedPost(postId); // Toggle save state
+        console.log('Updated saved posts:', savedPosts); // Verify the saved state after toggling
     };
-
+      
     const handleStartConversation = () => {
         if (post && post.user) {
             const userFullName = `${post.user.first_name} ${post.user.last_name}`;
@@ -82,6 +66,10 @@ const SinglePostPage = () => {
         }
     };
 
+    useEffect(() => {
+        // When savedPosts changes, this will update the UI to reflect the new state
+        console.log('Saved posts updated:', savedPosts);
+    }, [savedPosts]); // Make sure to listen for changes in savedPosts
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -92,8 +80,8 @@ const SinglePostPage = () => {
                 <div className="image-container">
                     {post?.image && <img className="post-image" src={post.image} alt="Post" />}
                     <div className="save-icon" onClick={handleSaveToggle}>
-                        <span className="tooltip">{isSaved ? 'Unsave Post' : 'Save Post'}</span>
-                        {isSaved ? <FaStar className="saved-icon" /> : <FaRegStar className="unsaved-icon" />}
+                        <span className="tooltip">{isPostSaved ? 'Unsave Post' : 'Save Post'}</span>
+                        {isPostSaved ? <FaStar className="saved-icon" /> : <FaRegStar className="unsaved-icon" />}
                     </div>
                 </div>
                 <h2 className="post-title">{post?.title}</h2>
