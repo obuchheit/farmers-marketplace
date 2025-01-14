@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import HomePageCard from "../../components/HomePageCard/HomePageCard";
 import './PublicProfilePage.css'
 
 const PublicProfilePage = () => {
@@ -9,6 +10,7 @@ const PublicProfilePage = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
     useEffect(() => {
       const fetchData = async () => {
@@ -50,16 +52,20 @@ const PublicProfilePage = () => {
               </p>
           </div>
 
-          {/* User Posts Section */}
-          <div className="user-posts-grid">
-              {userPosts.map((post) => (
-                  <div key={post.id} className="post-card">
-                      <img src={post.image} alt={post.title} className="post-image" />
-                      <h3 className="post-title">{post.title}</h3>
-                      <p className="post-address">{post.address}</p>
-                      <p className="post-distance">{post.distance} km away</p>
-                  </div>
-              ))}
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error}</p>}
+          <div className="card-container">
+            {userPosts.length > 0 ? (
+              userPosts.map((post) => (
+                <HomePageCard
+                  key={post.id}
+                  post={post}
+                  onClick={() => navigate(`/post/${post.id}`)}
+                />
+              ))
+            ) : (
+              <p>No posts available.</p>
+            )}
           </div>
       </div>
   );
