@@ -1,0 +1,54 @@
+
+.chat-form {
+  display: flex;
+  border-color: #5E653E;
+  background-color: #dfdccc;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+}
+
+.text-area-container {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.text-area {
+  display: flex;
+  width: 100%;
+  resize: none;
+  overflow-y: hidden;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+
+  font-size: 16px;
+  min-height: 40px;
+  max-height: 150px;
+  line-height: 1.4;
+  transition: height 0.2s ease;
+}
+
+.text-area:focus {
+  outline: none;
+  border-color: #795f4b; /* Add focus border color */
+}
+
+.send-button {
+  color: white;
+  background-color: #795f4b;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.send-button:hover {
+  background-color: #5E653E;
+  transform: scale(1.05);
+}
+
+.send-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

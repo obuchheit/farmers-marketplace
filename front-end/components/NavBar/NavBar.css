@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: space-around;
     background-color: #9b9e87 !important;
-    height: 7vh;
-    padding: 0 5vh !important;
+    height: 50px;
+    padding: 15px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -49,7 +49,14 @@
     gap: 1rem; 
 }
 
-
+.sign-out {
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 8px;
+    color: whitesmoke;
+    border:#9B9E87;
+    background-color:#6b6d5c
+}
 
 #profile-picture {
     height: 5vh;
