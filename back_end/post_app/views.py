@@ -15,7 +15,8 @@ from .serializers import (
     UserSavedPostSerializer, 
     PostSerializer, 
     PostDetailSerializer,
-    AllPostSerializer
+    AllPostSerializer,
+    UserPublicPostSerializer,
     )
 
 from django.contrib.gis.db.models.functions import Distance
@@ -92,7 +93,22 @@ class SingleUserPostView(RetrieveAPIView):
     queryset = UserPosts.objects.filter(is_public=True)  
     serializer_class = PostSerializer
 
+#View for retrieving all posts from a single user
+class AllPostsByUserView(ListAPIView):
+    serializer_class = UserPublicPostSerializer
 
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')  # Get user_id from URL
+        user_location = self.request.user.location  # Assuming user has a `location` field of type Point
+        
+        # Default to a Point if the user location is not set
+        if not user_location:
+            user_location = Point(0.0, 0.0)  # Replace with a valid default location if necessary
+        
+        return (
+            UserPosts.objects.filter(user=user_id)
+            .annotate(distance=Distance('location', user_location))  # Annotate with the distance
+        )
 """
 Private View of UserPosts for Users
 """

@@ -1,93 +1,79 @@
-  .public-profile-page {
-    padding: 10vh 5vh 0 5vh;
-  }
-  .profile-container {
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: transparent;
-    padding: 20px;
-  }
-  
-  /* Card Styles */
-  .profile-card {
-    background: #857255;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    height: 80vh;
-    max-width: 400px;
-    text-align: center;
-    padding: 20px;
+.public-profile-page {
+  padding: 8vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
 }
 
-  
-  /* Header Styles */
-  .profile-header {
-    margin-bottom: 20px;
-  }
-  
-  .profile-picture {
-    width: 30vh;
-    height: 30vh;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #567a57;
-  }
-  
-  /* Details Styles */
-  .profile-details {
-    text-align: left;
-  }
-  
-  .profile-name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #273328;
-    margin: 0;
-  }
-  
-  .profile-email {
-    font-size: 16px;
-    color: #000000;
-    margin: 10px 0;
-  }
-  
-  .profile-bio {
-    font-size: 14px;
-    margin: 15px 0;
-    color: #2b2626;
-  }
-  
-  .profile-address {
-    font-size: 14px;
-    margin-top: 10px;
-    color: #2b2626;
-  }
-  
-  .profile-address strong {
-    color: #273328;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 600px) {
-    .profile-card {
-      padding: 15px;
-    }
-  
-    .profile-picture {
-      width: 100px;
-      height: 100px;
-    }
-  
-    .profile-name {
-      font-size: 20px;
-    }
-  
-    .profile-email, .profile-bio, .profile-address {
-      font-size: 12px;
-    }
-  }
-  
+.profile-info {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #857255;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #567a57;
+  margin-bottom: 15px;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #273328;
+  margin: 5px 0;
+}
+
+.profile-bio, .profile-address {
+  font-size: 14px;
+  color: #2b2626;
+}
+
+.user-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.post-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.post-card:hover {
+  transform: scale(1.05);
+}
+
+.post-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #273328;
+}
+
+.post-address, .post-distance {
+  font-size: 14px;
+  color: #2b2626;
+  margin: 5px 0;
+}
