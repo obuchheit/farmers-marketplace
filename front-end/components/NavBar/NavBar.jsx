@@ -1,12 +1,12 @@
-import { Link, NavLink } from "react-router-dom";
-import { Dropdown, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Dropdown, Nav, Navbar } from "react-bootstrap";
 import { signOut, getProfilePicture } from "../../utilities";
 import './NavBar.css';
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const NavBar = ({ user, setUser }) => {
     const [profileImage, setProfileImage] = useState(null);
+    const location = useLocation();
 
     const logOut = async () => {
         setUser(await signOut(user));
@@ -19,6 +19,10 @@ const NavBar = ({ user, setUser }) => {
         getImage();
     }, []);
 
+    const isActive = (pathKeywords) => {
+        return pathKeywords.some((keyword) => location.pathname.includes(keyword));
+    };
+
     return (
         <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
             <div className="navbar-container">
@@ -29,11 +33,35 @@ const NavBar = ({ user, setUser }) => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
                         <Nav className="nav-links">
-                            <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
-                            <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
-                            <Nav.Link as={Link} to="/search-farms">Search Farms</Nav.Link>
-                            <Nav.Link as={Link} to="/chats">Chats</Nav.Link>
-                            <Nav.Link as={Link} to="/users-groups">Your Groups</Nav.Link>
+                            <Nav.Link 
+                                as={Link} 
+                                to="/user-post-portal" 
+                                className={isActive(["user-post-portal"]) ? "active-link" : ""}
+                            >
+                                Your Posts
+                            </Nav.Link>
+                            
+                            <Nav.Link 
+                                as={Link} 
+                                to="/search-farms" 
+                                className={isActive(["search-farms"]) ? "active-link" : ""}
+                            >
+                                Search Farms
+                            </Nav.Link>
+                            <Nav.Link 
+                                as={Link} 
+                                to="/chats" 
+                                className={isActive(["chats"]) ? "active-link" : ""}
+                            >
+                                Chats
+                            </Nav.Link>
+                            <Nav.Link 
+                                as={Link} 
+                                to="/users-groups" 
+                                className={isActive(["group", "groups"]) ? "active-link" : ""}
+                            >
+                                Groups
+                            </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </div>
@@ -62,11 +90,9 @@ const NavBar = ({ user, setUser }) => {
                             <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>
                         )}
                     </Nav>
-                </div>
-            </div>
+                </div> 
+            </div>    
         </Navbar>
-
-
     );
 };
 
