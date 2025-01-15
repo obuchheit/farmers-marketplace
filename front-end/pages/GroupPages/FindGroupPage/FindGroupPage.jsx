@@ -34,7 +34,7 @@ const FindGroupPage = () => {
   const [viewport, setViewport] = useState({
     latitude: 41.8781,
     longitude: -87.6298,
-    zoom: 7,
+    zoom: 9,
   });
 
   const navigate = useNavigate();
