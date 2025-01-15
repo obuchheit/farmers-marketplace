@@ -1,12 +1,13 @@
 .find-group-page {
-    padding: 7vh 0;
-  }
+    padding: 0vh 0;
+}
 
 .group-top-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 65px;
   background-color: #dfdccc;
   gap: 1vh;
   width: 100%;
