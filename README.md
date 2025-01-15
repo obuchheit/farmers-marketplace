@@ -1,7 +1,6 @@
-# This is Heading
-Famers Marketplace
+# Famers Marketplace
 
-## Frame
+## Frameworks
 
 ## Instructions for Auto Adding Users and UserPosts
 
