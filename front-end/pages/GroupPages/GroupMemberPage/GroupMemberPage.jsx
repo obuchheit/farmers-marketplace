@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Modal, Button, Form } from "react-bootstrap";
-import './GroupMemberPage.css';
+import { Modal, Form } from "react-bootstrap";
+import "./GroupMemberPage.css";
 import HomePageCard from "../../../components/HomePageCard/HomePageCard";
 
 const GroupMemberPage = () => {
-  const { pk } = useParams(); 
-  const navigate = useNavigate(); 
+  const { pk } = useParams();
+  const navigate = useNavigate();
   const [groupDetails, setGroupDetails] = useState(null);
   const [groupPosts, setGroupPosts] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(true);
@@ -18,8 +18,7 @@ const GroupMemberPage = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [inviteError, setInviteError] = useState(null); 
-
+  const [inviteError, setInviteError] = useState(null);
 
   useEffect(() => {
     fetchGroupDetails();
@@ -31,6 +30,7 @@ const GroupMemberPage = () => {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
+      console.log(response.data)
       setGroupDetails(response.data);
       setLoadingDetails(false);
     } catch (err) {
@@ -69,7 +69,6 @@ const GroupMemberPage = () => {
         params: { query: searchTerm },
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
-      console.log(response.data)
       setSearchResults(response.data);
     } catch (err) {
       console.error("Failed to search users.");
@@ -84,17 +83,15 @@ const GroupMemberPage = () => {
         { headers: { Authorization: `Token ${localStorage.getItem("token")}` } }
       );
       setInviteStatus("Invitation sent successfully.");
-      setInviteError(null); // Clear any previous error
+      setInviteError(null);
     } catch (err) {
-      // Capture the error message from the response
       if (err.response && err.response.data && err.response.data.detail) {
         setInviteError(err.response.data.detail);
       } else {
-        setInviteError("An unexpected error occurred."); // Fallback for unexpected errors
+        setInviteError("An unexpected error occurred.");
       }
     }
   };
-  
 
   const handleAdminPortal = () => {
     navigate(`/groups/${pk}/admin-portal`);
@@ -104,6 +101,15 @@ const GroupMemberPage = () => {
     navigate(`/post/${postId}`);
   };
 
+  const handleStartConversation = () => {
+    if (post && post.user) {
+        const userFullName = `${post.user.first_name} ${post.user.last_name}`;
+        const otherUserId = post.user.id;
+        navigate(`/chats/new-message/${userFullName}/${otherUserId}`);
+    }
+
+};
+
   return (
     <div className="group-member-page">
       {loadingDetails ? (
@@ -111,14 +117,50 @@ const GroupMemberPage = () => {
       ) : errorDetails ? (
         <p>{errorDetails}</p>
       ) : (
-        <div>
-          <h1>{groupDetails.name}</h1>
-          <p>{groupDetails.description}</p>
-          <Button onClick={handleInviteModalOpen}>Send Invite</Button>
-          {inviteStatus && <p>{inviteStatus}</p>}
-          {(groupDetails.role === "admin" || groupDetails.role === "creator") && (
-            <Button onClick={handleAdminPortal}>Admin Page</Button>
-          )}
+        <div className="group-header">
+          <div className="group-image" style={{ backgroundImage: `url(${groupDetails.group_image})` }}></div>
+          <div className="group-header-details"> 
+
+            <div className="group-info">
+              <div>
+                <h2>{groupDetails.name}</h2>
+                <p>{groupDetails.address}</p>
+                <p>{groupDetails.description}</p>
+              </div>
+            </div>
+          </div>
+          <div className="group-header-buttons">
+            <div className="member-dropdown">
+              <button className="dropdown-toggle">Members ({groupDetails.members.length})</button>
+              <div className="dropdown-menu">
+                {groupDetails.members.map((member) => (
+                <div key={member.id} className="member-item">
+                  <div className="group-member-profile">
+                    <Link to={`/public-profile-page/${member.id}`} style={{ textDecoration: 'none', color: "inherit"  }}>
+                      <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
+                      <span>{member.first_name} {member.last_name}</span>
+                    </Link>
+                  </div>
+                  <div>
+                    <button className="message-button">Message</button>
+                  </div>
+                </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="group-actions">
+                {groupDetails.role === "admin" && (
+                  <button className="admin-button" onClick={handleAdminPortal}>
+                    Admin Page
+                  </button>
+                )}
+                <button className="invite-button" onClick={handleInviteModalOpen}>
+                  Invite 
+                </button>
+            </div>
+          </div>
+          
         </div>
       )}
 
@@ -127,12 +169,11 @@ const GroupMemberPage = () => {
       ) : errorPosts ? (
         <p>{errorPosts}</p>
       ) : (
-        <div>
-          <h2>Group Posts</h2>
+        <div className="card-container">
           {groupPosts.length === 0 ? (
             <p>No posts in this group yet.</p>
           ) : (
-            groupPosts.map(post => (
+            groupPosts.map((post) => (
               <HomePageCard key={post.id} post={post} onClick={handlePostClick} />
             ))
           )}
@@ -144,10 +185,10 @@ const GroupMemberPage = () => {
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <div>
-          {inviteStatus && <p className="success-message">{inviteStatus}</p>}
-          {inviteError && <p className="error-message">{inviteError}</p>}
-        </div>
+          <div>
+            {inviteStatus && <p className="success-message">{inviteStatus}</p>}
+            {inviteError && <p className="error-message">{inviteError}</p>}
+          </div>
           <Form>
             <Form.Group controlId="searchTerm">
               <Form.Label>Search by name or email:</Form.Label>
@@ -158,29 +199,29 @@ const GroupMemberPage = () => {
                 placeholder="Enter name or email"
               />
             </Form.Group>
-            <Button variant="primary" onClick={handleSearch} className="mt-2">
+            <button className="search-button" onClick={handleSearch}>
               Search
-            </Button>
+            </button>
           </Form>
-          <div className="search-results mt-3">
+          <div className="search-results">
             {searchResults.length === 0 ? (
               <p>No users found.</p>
             ) : (
               searchResults.map((user) => (
-                <div key={user.id} className="user-card d-flex justify-content-between align-items-center mb-2">
+                <div key={user.id} className="user-card">
                   <span>{user.first_name} {user.last_name} ({user.email})</span>
-                  <Button variant="success" onClick={() => handleSendInvite(user.id)}>
+                  <button className="send-invite-button" onClick={() => handleSendInvite(user.id)}>
                     Send Invite
-                  </Button>
+                  </button>
                 </div>
               ))
             )}
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleInviteModalClose}>
+          <button className="close-button" onClick={handleInviteModalClose}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>
