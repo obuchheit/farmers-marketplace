@@ -1,6 +1,4 @@
-/* .main-page {
-    padding: 50px 0;
-} */
+
 
 #map-modal {
     width: 70vw !important;
@@ -11,8 +9,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
-    top: 50px;
+    position: fixed;
+    top: 65px;
     background-color: #dfdccc;
     /* gap: 2vh; */
     width: 100%;
