@@ -46,22 +46,28 @@ class GroupDetailSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Group
         fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_by', 'created_at', 'members', 'role']
 
     def get_members(self, obj):
-        members = GroupMember.objects.filter(group=obj, is_approved=True)
-        return UserProfilePublicSerializer(members.values('user'), many=True).data
-    
+        """
+        Fetch all approved members for the group and serialize user details.
+        """
+        approved_members = GroupMember.objects.filter(group=obj, is_approved=True).select_related('user')
+        return UserProfilePublicSerializer([member.user for member in approved_members], many=True).data
+
     def get_role(self, obj):
+        """
+        Fetch the role of the requesting user in the group.
+        """
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             group_member = GroupMember.objects.filter(group=obj, user=request.user).first()
             if group_member:
                 return group_member.role  
-        return None  
+        return None
+
 
 
 
