@@ -62,18 +62,20 @@ const GroupPublicPage = () => {
           </div>
         </div>
         <div className="group-public-buttons">
-          <button className="dropdown-toggle">Members ({group.members.length})</button>
-            <div className="dropdown-menu">
-              {group.members.map((member) => (
-              <div key={member.id} className="member-item">
-                <div className="group-member-profile">
-                  <Link to={`/public-profile-page/${member.id}`} style={{ textDecoration: 'none', color: "inherit"  }}>
-                    <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
-                    <span>{member.first_name} {member.last_name}</span>
-                  </Link>
+        <div className="member-dropdown">
+              <button className="dropdown-toggle">Members ({group.members.length})</button>
+              <div className="dropdown-menu">
+                {group.members.map((member) => (
+                <div key={member.id} className="member-item">
+                  <div className="group-member-profile">
+                    <Link to={`/public-profile-page/${member.id}`} style={{ textDecoration: 'none', color: "inherit"  }}>
+                      <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
+                      <span>{member.first_name} {member.last_name}</span>
+                    </Link>
+                  </div>
                 </div>
+                ))}
               </div>
-              ))}
             </div>
           <button className="join-group-button" onClick={handleJoinRequest}>
             Request to Join Group

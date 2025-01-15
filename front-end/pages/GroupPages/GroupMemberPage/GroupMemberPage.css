@@ -41,6 +41,7 @@
 .group-info {
     display: flex;
     justify-content: space-between;
+    text-align: center;
 }
 
 .group-info p {

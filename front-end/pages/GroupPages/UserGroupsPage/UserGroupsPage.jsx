@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import "./UserGroupsPage.css";
@@ -92,27 +92,37 @@ const UserGroupsPage = () => {
     <div className="user-groups-page">
       <header className="header">
         <h1>Your Groups</h1>
-        <div className="notifications-icon-container" onClick={toggleNotificationsModal}>
-          <IoIosNotificationsOutline className="notifications-icon" />
-          {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+        <div className="ug-header-end">
+          <div className="notifications-icon-container" onClick={toggleNotificationsModal}>
+            <IoIosNotificationsOutline className="notif-icon" />
+            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+          </div>
+          <Link to={'/find-groups'}>
+            <button className="find-groups-button">Find Groups</button>
+          </Link>
         </div>
       </header>
 
-      <div className="group-list">
+      
         {groups.length === 0 ? (
-          <p>You are not a member of any groups yet.</p>
+          <div className="no-groups-text">
+            <p>You are not a member of any groups yet.</p>
+          </div>
         ) : (
-          groups.map((group) => (
+        <div className="card-container">
+          {groups.map((group) => (
+          
             <div key={group.id} className="group-card" onClick={() => handleNav(group.id)}>
               <img src={group.group_image} alt={group.name} className="group-image" />
               <div className="group-details">
                 <h2>{group.name}</h2>
-                <p>{group.description}</p>
               </div>
             </div>
-          ))
+          
+          ))}
+          </div>
         )}
-      </div>
+      
 
       <Modal
         show={showNotificationsModal}

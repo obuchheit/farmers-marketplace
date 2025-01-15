@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Modal, Form } from "react-bootstrap";
+import { Modal, Form, Button } from "react-bootstrap";
 import "./GroupMemberPage.css";
 import HomePageCard from "../../../components/HomePageCard/HomePageCard";
 
@@ -69,6 +69,7 @@ const GroupMemberPage = () => {
         params: { query: searchTerm },
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
+      console.log(response.data)
       setSearchResults(response.data);
     } catch (err) {
       console.error("Failed to search users.");
@@ -83,12 +84,13 @@ const GroupMemberPage = () => {
         { headers: { Authorization: `Token ${localStorage.getItem("token")}` } }
       );
       setInviteStatus("Invitation sent successfully.");
-      setInviteError(null);
+      setInviteError(null); // Clear any previous error
     } catch (err) {
+      // Capture the error message from the response
       if (err.response && err.response.data && err.response.data.detail) {
         setInviteError(err.response.data.detail);
       } else {
-        setInviteError("An unexpected error occurred.");
+        setInviteError("An unexpected error occurred."); // Fallback for unexpected errors
       }
     }
   };
@@ -169,15 +171,15 @@ const GroupMemberPage = () => {
         </div>
       )}
 
-      <Modal show={showInviteModal} onHide={handleInviteModalClose} centered>
+<Modal show={showInviteModal} onHide={handleInviteModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>
-            {inviteStatus && <p className="success-message">{inviteStatus}</p>}
-            {inviteError && <p className="error-message">{inviteError}</p>}
-          </div>
+        <div>
+          {inviteStatus && <p className="success-message">{inviteStatus}</p>}
+          {inviteError && <p className="error-message">{inviteError}</p>}
+        </div>
           <Form>
             <Form.Group controlId="searchTerm">
               <Form.Label>Search by name or email:</Form.Label>
@@ -188,29 +190,29 @@ const GroupMemberPage = () => {
                 placeholder="Enter name or email"
               />
             </Form.Group>
-            <button className="search-button" onClick={handleSearch}>
+            <Button variant="primary" onClick={handleSearch} className="mt-2">
               Search
-            </button>
+            </Button>
           </Form>
-          <div className="search-results">
+          <div className="search-results mt-3">
             {searchResults.length === 0 ? (
               <p>No users found.</p>
             ) : (
               searchResults.map((user) => (
-                <div key={user.id} className="user-card">
+                <div key={user.id} className="user-card d-flex justify-content-between align-items-center mb-2">
                   <span>{user.first_name} {user.last_name} ({user.email})</span>
-                  <button className="send-invite-button" onClick={() => handleSendInvite(user.id)}>
+                  <Button variant="success" onClick={() => handleSendInvite(user.id)}>
                     Send Invite
-                  </button>
+                  </Button>
                 </div>
               ))
             )}
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <button className="close-button" onClick={handleInviteModalClose}>
+          <Button variant="secondary" onClick={handleInviteModalClose}>
             Close
-          </button>
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
