@@ -25,6 +25,11 @@
     width: 25%;
     padding-left: 8vh;
 }
+
+.todays-posts h4 {
+    margin-bottom: 0px;
+}
+
 /* Search Form Styles */
 .search-form {
     display: flex;
@@ -38,7 +43,7 @@
 .search-bar {
     flex: 1;
     height: 5vh;
-    padding: 0.8vh 5vh !important; /* Add padding for left icon and overall height */
+    padding: 0vh 5vh !important; /* Add padding for left icon and overall height */
     font-size: 2vh; /* Larger font size for better readability */
     border: 1px solid #ddd;
     border-radius: 50px !important; /* Rounded corners */
@@ -88,7 +93,7 @@
     display: flex;
     justify-content: center;
     align-items: end;
-    padding-top: 2vh;
+    padding-top: 0;
     width: 25%;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;

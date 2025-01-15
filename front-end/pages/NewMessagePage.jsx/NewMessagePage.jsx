@@ -51,12 +51,16 @@ const NewMessagePage = () => {
 
   return (
     <div className="new-message-page">
-      <h1>New Message Request for {userFullName}</h1>
-      <ChatFormComponent 
-        messageInput={messageInput}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}  
-      />
+      <div>
+        <h1>New Message Request for {userFullName}</h1>
+      </div>
+      <div className='chat-component'>
+        <ChatFormComponent 
+          messageInput={messageInput}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}  
+        />
+      </div>
     </div>
   )
 }

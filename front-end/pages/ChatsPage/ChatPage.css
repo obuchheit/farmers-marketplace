@@ -1,0 +1,52 @@
+.top-content {
+  position: fixed;
+  top: 65px;
+  padding: 20px;
+}
+
+.top-content h1 {
+  margin: 0;
+}
+
+/* Chat list container */
+.chat-list-display {
+  margin-top: 120px; /* Ensures the list doesn't overlap with the fixed header */
+  padding: 10px;
+  
+}
+
+/* Link styling */
+.chat-link {
+  text-decoration: none;
+  background-color: rgb(151, 175, 141); /* Card-like effect */
+  padding: 10px;
+  display: flex;
+  margin-bottom: 0px;
+  justify-content: center;
+  align-items: center;
+  color: inherit; /* Inherit color from parent (black or dark color) */
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.chat-link h3 {
+  margin: 0;  /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
+}
+
+h3:hover {
+  height: 100%;
+  width: 100%;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 2px;
+  border-radius: 5px;
+  /* margin-right: -1vh; */
+}
+
+/* Content inside each chat item */
+.chat-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
