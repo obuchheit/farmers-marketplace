@@ -1,6 +1,7 @@
 .group-public-page {
   padding: 7vh 0;
 }
+
 .group-detail {
     display: flex;
     flex-direction: column;
