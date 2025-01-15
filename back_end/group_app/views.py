@@ -205,6 +205,13 @@ class GroupDetailPublicView(RetrieveAPIView):
 Invitaiton Views
 """
 
+class ListInvitationsView(ListAPIView):
+    serializer_class = InvitationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Invitation.objects.filter(invitee=self.request.user)
+
 class InviteMemberView(APIView):
     permission_classes = [IsAuthenticated]
 
