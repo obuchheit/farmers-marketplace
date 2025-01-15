@@ -37,11 +37,12 @@ const GroupPublicPage = () => {
           { 'group': pk },
           {headers: { Authorization: `Token ${token}` },
         });
-      console.log(response)
       setJoinRequestStatus("Request sent successfully.");
+      alert('Request sent succesfully')
     } catch (err) {
       console.log(err)
       setJoinRequestStatus("Failed to send join request.");
+      alert('Failed to send join request.')
     }
   };
 

@@ -143,7 +143,7 @@ const GroupMemberPage = () => {
             <div className="group-actions">
                 {groupDetails.role === "admin" && (
                   <button className="admin-button" onClick={handleAdminPortal}>
-                    Admin Page
+                    View Requests
                   </button>
                 )}
                 <button className="invite-button" onClick={handleInviteModalOpen}>
