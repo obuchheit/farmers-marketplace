@@ -1,0 +1,51 @@
+.edit-modal-header {
+    border-bottom: 1px solid #a5a58d !important ;
+
+}
+.edit-modal {
+    background-color: #a5a58d !important;
+    border: 1px solid #a5a58d !important ;
+}
+/* Ensure proper styling for the edit icon */
+#image-input {
+    display: none; /* File input is hidden */
+}
+
+.TbPhotoEdit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1.75rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    transition: font-size 0.3s ease;
+}
+
+.TbPhotoEdit:hover {
+    font-size: 2rem;
+}
+
+#form-control-background {
+    background-color: #d8d8be !important;
+    border: none !important;
+    margin-bottom: 1vh;
+}
+
+.edit-modal-footer {
+    border-top: 1px solid #a5a58d !important ;
+    background-color: #a5a58d !important;
+}
+
+.footer-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.save-button {
+    margin-left: 2vh;
+}
+

@@ -15,51 +15,53 @@ function App() {
   
   useEffect(() => {
     const loadSavedPosts = async () => {
-      if (user) {
-        const posts = await fetchSavedPosts();
-        setSavedPosts(posts);
+      const posts = await fetchSavedPosts(); // Fetch saved posts from the API
+      if (posts.length > 0) {
+        setSavedPosts(posts); // Update saved posts state if posts are found
+        localStorage.setItem("savedPosts", JSON.stringify(posts)); // Save to local storage
+      } else {
+        const storedPosts = JSON.parse(localStorage.getItem("savedPosts")) || [];
+        setSavedPosts(storedPosts); // Initialize with local storage if API fails
       }
     };
 
-    loadSavedPosts();
-  }, []);
+    loadSavedPosts(); // Call it when the app loads or user changes
 
+  }, [user]); // Dependency on user
 
   // Function to add or remove a saved post
   const toggleSavedPost = async (postId) => {
     try {
-        const token = localStorage.getItem('token');
-        const isAlreadySaved = savedPosts.includes(postId);
-        
-        // Determine the API endpoint and method
-        const method = isAlreadySaved ? 'DELETE' : 'POST';
-        const url = `http://localhost:8000/api/v1/posts/user-saved-posts/${postId}/`;
+      const token = localStorage.getItem('token');
+      const isAlreadySaved = savedPosts.includes(postId);
 
-        // Send request to toggle the saved status
-        const response = await axios({
-            method,
-            url,
-            headers: {
-                Authorization: `Token ${token}`,
-            },
-        });
+      const method = isAlreadySaved ? 'DELETE' : 'POST';
+      const url = `http://localhost:8000/api/v1/posts/user-saved-posts/${postId}/`;
 
-        if (response.status === 200 || response.status === 204 || response.status === 201) {
-            // Update local state only if the server confirms success
-            setSavedPosts((prev) =>
-                isAlreadySaved
-                    ? prev.filter((id) => id !== postId) // Remove post ID
-                    : [...prev, postId] // Add post ID
-            );
-        } else {
-            alert('Failed to update saved status. Please try again.');
-        }
+      const response = await axios({
+        method,
+        url,
+        headers: { Authorization: `Token ${token}` },
+      });
+
+      if (response.status === 200 || response.status === 204 || response.status === 201) {
+        const updatedSavedPosts = isAlreadySaved
+          ? savedPosts.filter((id) => id !== postId) // Remove post ID
+          : [...savedPosts, postId]; // Add post ID
+
+        setSavedPosts(updatedSavedPosts); // Update saved posts in state
+        localStorage.setItem("savedPosts", JSON.stringify(updatedSavedPosts)); // Update local storage
+        return true; // Indicate success
+      } else {
+        alert('Failed to update saved status. Please try again.');
+        return false; // Indicate failure
+      }
     } catch (error) {
-        console.error('Error toggling saved post:', error);
-        alert('An error occurred. Please try again.');
+      console.error('Error toggling saved post:', error);
+      alert('An error occurred. Please try again.');
+      return false; // Indicate failure
     }
-};
-
+  };
 
 
 useEffect(() => {
@@ -81,12 +83,14 @@ useEffect(() => {
 }, [location.pathname, user, navigate]);
 
   return (
-    <>
+    <div className="window">
       {!nullUserPages.includes(location.pathname) && (
       <NavBar user={user} setUser={setUser} />
       )}      
-      <Outlet context={{ user, setUser, savedPosts, toggleSavedPost }}/>
-    </>
+      <div className="outlet-content">
+        <Outlet context={{ user, setUser, savedPosts, toggleSavedPost }}/>
+      </div>
+    </div>
   )
 }
 

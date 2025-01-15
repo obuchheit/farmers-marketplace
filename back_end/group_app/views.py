@@ -69,12 +69,12 @@ class GroupDetailView(RetrieveUpdateDestroyAPIView):
 
         if request.method == 'GET':
             # Allow if the user is a member or an admin
-            if not group.members.filter(user=request.user).exists():
+            if not group.members.filter(user=request.user, is_approved=True).exists():
                 raise PermissionDenied("You don't have permission to view this group.")
 
         elif request.method in ['PUT', 'PATCH', 'DELETE']:
             # Allow only admins to update or delete
-            if not group.members.filter(user=request.user, role='admin').exists():
+            if not group.members.filter(user=request.user, role='admin', is_approved=True).exists():
                 raise PermissionDenied("Only admins can update or delete this group.")
 
         super().check_permissions(request)
@@ -88,6 +88,7 @@ class GroupDetailView(RetrieveUpdateDestroyAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
     """
     Join Request Views
     """
@@ -203,6 +204,13 @@ class GroupDetailPublicView(RetrieveAPIView):
 """
 Invitaiton Views
 """
+
+class ListInvitationsView(ListAPIView):
+    serializer_class = InvitationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Invitation.objects.filter(invitee=self.request.user)
 
 class InviteMemberView(APIView):
     permission_classes = [IsAuthenticated]

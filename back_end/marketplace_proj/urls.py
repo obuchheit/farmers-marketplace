@@ -22,6 +22,7 @@ from django.contrib import admin
 from .views import MapboxTokenView
 from .views import MapboxTokenView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('user_app.urls')),

@@ -1,0 +1,15 @@
+.new-message-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+}
+
+.chat-component {
+    padding-top: 20px;
+    width: 80%;
+}

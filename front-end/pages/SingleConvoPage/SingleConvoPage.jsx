@@ -1,8 +1,6 @@
-import { Form  } from 'react-bootstrap';
-import Button from "react-bootstrap/Button";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ChatFormComponent from '../../components/ChatFormComponent';
+import ChatFormComponent from '../../components/ChatInputForm/ChatFormComponent';
 import axios from 'axios';
 import './SingleConvoPage.css'
 
@@ -18,10 +16,6 @@ const SingleConvoPage = () => {
   const [otherUserData, setOtherUserData] = useState(null);
   const [otherUserId, setOtherUserId] = useState(null);
 
-
-     
-  console.log(messages)
-
   const fetchMessages = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -33,7 +27,6 @@ const SingleConvoPage = () => {
       setMessages(response.data.messages)
       setConversation(response.data.conversation)
       setUsers(response.data.conversation.users)
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching messages:', error)
     }
@@ -64,23 +57,20 @@ const SingleConvoPage = () => {
           Authorization: `Token ${token}`,
         }
       })
-
     }
   };
   
-  useEffect(() => {
-    
+  useEffect(() => {    
     fetchMessages()
-    const socket = new WebSocket(`ws://localhost:8000/ws/chat/${conversationId}/`);  
     
+    const socket = new WebSocket(`ws://localhost:8000/ws/chat/${conversationId}/`);      
     socket.onopen = () => {
       console.log("Connected to WebSocket server");
     };
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
-      console.log(data)
-      console.log('Recieved message:', data.message)
+      console.log('Recieved message:', data)
       setMessages((prevMessages) => [
           ...prevMessages, 
           { sender: data.senderId, 
@@ -88,7 +78,6 @@ const SingleConvoPage = () => {
           },
       ]);
     };
-
     setWs(socket)
 
     return () => {
@@ -96,16 +85,14 @@ const SingleConvoPage = () => {
     }
   }, [])
 
-
   useEffect(() => {  
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        
+        const token = localStorage.getItem('token');        
         const response1 = await axios.get("http://localhost:8000/api/v1/users/profile", {
           headers: { 'Authorization': `Token ${token}` }
         });
-        console.log(response1.data)
+
         const user_id  = response1.data.id;
         const selectOtherUserId = (users, user_id) => users.find(id => id !== user_id);
         const otherUser_id = selectOtherUserId(users, user_id)
@@ -113,17 +100,12 @@ const SingleConvoPage = () => {
         const response2 = await axios.get(`http://localhost:8000/api/v1/users/user/${user_id}`, {
           headers: { 'Authorization': `Token ${token}` }
         });
-        setUserData(response2.data);
-        console.log(response2.data); 
-
-        
+        setUserData(response2.data);        
         setOtherUserId(otherUser_id)
-        console.log(otherUser_id);
 
         const response3 = await axios.get(`http://localhost:8000/api/v1/users/user/${otherUser_id}`, {
           headers: { 'Authorization': `Token ${token}` }
         });
-        console.log(response3.data)
         setOtherUserData(response3.data)
 
       } catch (error) {
@@ -134,16 +116,20 @@ const SingleConvoPage = () => {
   }, [messages, users])
 
   return (
-    <>
-      <div className="chat-container">
+    <div className='whole-page'>
+      <div className='chat-header'>
         <h1>Conversation with {otherUserData ? (`${otherUserData.first_name} ${otherUserData.last_name}`) : 'Loading...'}</h1>
+      </div>
+      <div className="chat-container">
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender === userData?.id ? 'user-message' : 'other-message'}`}>
-              <strong>
-                {msg.sender === userData?.id ? userData.first_name : (msg.sender === otherUserData?.id ? otherUserData.first_name : 'Unknown')}:
-              </strong> 
-              {msg.content}
+              <div className='message-content'>
+                <strong>
+                  {msg.sender === userData?.id ? null : (msg.sender === otherUserData?.id ? `${otherUserData.first_name}: ` : 'Unknown')}
+                </strong> 
+                {msg.content}
+              </div>
             </div>
           ))}
         </div>
@@ -153,52 +139,8 @@ const SingleConvoPage = () => {
           handleSubmit={handleSubmit}
         />
       </div>
-    </>
+    </div>
   )
 }
 
 export default SingleConvoPage;
-
-// if (isFirstMessage) {
-//   console.log(user)
-
-
-//   setIsFirstMessage(false)
-
-// } else {
-  
-//   const token = localStorage.getItem('token'); // You might also have user info in the state or context
-//   const messageData = { 
-//     message: messageInput,
-//     username: user.user,  // Pass the user ID or another identifying piece of data
-//     token: token      // Alternatively, pass the token if necessary for security purposes
-//   }
-
-//   ws.send(JSON.stringify(messageData));
-//   setMessages((prevMessages) => [
-//     ...prevMessages,
-//     { sender: "user", text: messageInput }
-//   ]);
-//   setMessageInput('')
-// }
-
-// return () => {
-//   if (socket) {
-//     socket.close();
-//   };
-// };
-
-// useEffect(() => {
-//   if (conversationId && ws) {
-//     const messageData = { message: messageInput };
-   
-//     ws.send(JSON.stringify(messageData));
-
-//     setMessages((prevMessages) => [
-//       ...prevMessages,
-//       { sender: "user", text: messageInput }
-//     ]);
-
-//     setMessageInput('');
-//   }
-// }, [isFirstMessageSent])

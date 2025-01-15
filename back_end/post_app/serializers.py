@@ -77,6 +77,18 @@ class AllPostSerializer(ModelSerializer):
         distance = round(obj.distance.km, 2)
         return distance
 
+class UserPublicPostSerializer(ModelSerializer):
+    image = ImageField(use_url=True)  # Ensure full URL is included
+    distance = SerializerMethodField()
+
+    class Meta:
+        model = UserPosts
+        fields = ['id', 'image', 'title', 'address', 'distance']
+
+    def get_distance(self, obj):
+        if hasattr(obj, 'distance'):
+            return round(obj.distance.km, 2)  # Convert distance to kilometers and round
+        return None
 
 
 '''Saved Post Serializers'''

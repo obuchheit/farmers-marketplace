@@ -1,5 +1,5 @@
 .garden-page {
-    padding: 8vh 0;
+    padding: 0;
 }
 .input-group {
     margin: 3vh 3vh !important;
@@ -19,10 +19,6 @@
 .search-button {
     background-color: #5e653e !important;
     border: none !important;
-}
-
-.card-container {
-    margin-top: 5vh;
 }
 
 

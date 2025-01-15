@@ -1,7 +1,8 @@
-import ChatFormComponent from "../../components/ChatFormComponent";
+import ChatFormComponent from "../../components/ChatInputForm/ChatFormComponent";
 import { useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
+import './NewMessagePage.css'
 
 const NewMessagePage = () => {
    
@@ -49,14 +50,18 @@ const NewMessagePage = () => {
 
 
   return (
-    <>
-      <h1>New Message Request for {userFullName}</h1>
-      <ChatFormComponent 
-        messageInput={messageInput}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}  
-      />
-    </>
+    <div className="new-message-page">
+      <div>
+        <h1>New Message Request for {userFullName}</h1>
+      </div>
+      <div className='chat-component'>
+        <ChatFormComponent 
+          messageInput={messageInput}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}  
+        />
+      </div>
+    </div>
   )
 }
 
