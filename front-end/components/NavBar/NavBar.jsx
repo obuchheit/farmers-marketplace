@@ -1,12 +1,12 @@
-import { Link, NavLink } from "react-router-dom";
-import { Dropdown, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Dropdown, Nav, Navbar } from "react-bootstrap";
 import { signOut, getProfilePicture } from "../../utilities";
 import './NavBar.css';
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const NavBar = ({ user, setUser }) => {
     const [profileImage, setProfileImage] = useState(null);
+    const location = useLocation();
 
     const logOut = async () => {
         setUser(await signOut(user));
@@ -19,30 +19,55 @@ const NavBar = ({ user, setUser }) => {
         getImage();
     }, []);
 
+    const isActive = (pathKeywords) => {
+        return pathKeywords.some((keyword) => location.pathname.includes(keyword));
+    };
+
     return (
         <Navbar expand="lg" fixed="top" className="px-5" id="custom-navbar">
-            <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                {/* Left-side Nav Links */}
-                <Nav className="nav-links me-auto">
-                    <Nav.Link as={Link} to="/user-post-portal">Your Posts</Nav.Link>
-                    <Nav.Link as={Link} to="/saved-posts">Saved Posts</Nav.Link>
-                    <Nav.Link as={Link} to="/garden">Gardening Tips</Nav.Link>
-                    <Nav.Link as={Link} to="/search-farms">Search Farms</Nav.Link> {/* Added link to Search Farms */}
-                    <Nav.Link as={Link} to="/chats">Chats</Nav.Link>
-                    <NavDropdown title="Groups" id="basic-nav-dropdown">
-                        <NavDropdown.Item as={Link} to="/find-groups">Find Groups</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/users-groups">
-                            Your Groups
-                        </NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-
-                {/* Right-side Nav Links */}
-                <Nav className="nav-right">
-                    {user ? (
-                        <>
+            <div className="navbar-container">
+                <div className="left">
+                    <Navbar.Brand as={Link} to="/">Farmers Marketplace</Navbar.Brand>
+                </div>
+                <div className="center">
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+                        <Nav className="nav-links">
+                            <Nav.Link 
+                                as={Link} 
+                                to="/user-post-portal" 
+                                className={isActive(["user-post-portal"]) ? "active-link" : ""}
+                            >
+                                Your Posts
+                            </Nav.Link>
+                            
+                            <Nav.Link 
+                                as={Link} 
+                                to="/search-farms" 
+                                className={isActive(["search-farms"]) ? "active-link" : ""}
+                            >
+                                Search Farms
+                            </Nav.Link>
+                            <Nav.Link 
+                                as={Link} 
+                                to="/chats" 
+                                className={isActive(["chats"]) ? "active-link" : ""}
+                            >
+                                Chats
+                            </Nav.Link>
+                            <Nav.Link 
+                                as={Link} 
+                                to="/users-groups" 
+                                className={isActive(["group", "groups"]) ? "active-link" : ""}
+                            >
+                                Groups
+                            </Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </div>
+                <div className="right">
+                    <Nav className="nav-right">
+                        {user ? (
                             <Dropdown align="end">
                                 <Dropdown.Toggle 
                                     id="profile-dropdown" 
@@ -58,16 +83,15 @@ const NavBar = ({ user, setUser }) => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={Link} to="/profile">View Profile</Dropdown.Item>
-                                    {/* <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item> */}
                                     <Dropdown.Item onClick={logOut}>Sign Out</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                        </>
-                    ) : (
-                        <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>
-                    )}
-                </Nav>
-            </Navbar.Collapse>
+                        ) : (
+                            <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>
+                        )}
+                    </Nav>
+                </div> 
+            </div>    
         </Navbar>
     );
 };
