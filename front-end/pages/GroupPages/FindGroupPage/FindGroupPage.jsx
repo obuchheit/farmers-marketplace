@@ -157,7 +157,7 @@ const FindGroupPage = () => {
       ) : error ? (
         <p className="error">{error}</p>
       ) : (
-        <div className="group-list">
+        <div className="card-container">
           {groups.map((group) => (
             <div
               key={group.id}
@@ -167,7 +167,6 @@ const FindGroupPage = () => {
               <img src={group.group_image} alt={group.name} className="group-image" />
               <div className="group-details">
                 <h2>{group.name}</h2>
-                <p>{group.description}</p>
               </div>
             </div>
           ))}
