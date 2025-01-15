@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./GroupPublicPage.css";
 
@@ -37,11 +37,12 @@ const GroupPublicPage = () => {
           { 'group': pk },
           {headers: { Authorization: `Token ${token}` },
         });
-      console.log(response)
       setJoinRequestStatus("Request sent successfully.");
+      alert('Request sent succesfully')
     } catch (err) {
       console.log(err)
       setJoinRequestStatus("Failed to send join request.");
+      alert('Failed to send join request.')
     }
   };
 
@@ -51,31 +52,37 @@ const GroupPublicPage = () => {
 
   return (
     <div className="group-public-page">
-      <header className="header">
-        <h1>{group.name}</h1>
-      </header>
-      <div className="group-detail">
-        <img
-          src={group.group_image || "default-group-image.jpg"}
-          alt={group.name}
-          className="group-image"
-        />
-        <div className="group-info">
-          <p><strong>Description:</strong> {group.description}</p>
-          <p><strong>Address:</strong> {group.address}</p>
-          <p><strong>Created By:</strong> {group.created_by.first_name} {group.created_by.last_name}</p>
-          <p><strong>Members:</strong> {group.members.length}</p>
-          <ul>
-            {group.members.map((member, index) => (
-              <li key={index}>{member.first_name} {member.last_name}</li>
-            ))}
-          </ul>
+        <div className="group-public-image" style={{ backgroundImage: `url(${group.group_image})` }}></div>
+        <div className="group-header-details"> 
+          <div className="group-info">
+            <div>
+              <h2>{group.name}</h2>
+              <p>{group.address}</p>
+              <p>{group.description}</p>
+            </div>
+          </div>
+        </div>
+        <div className="group-public-buttons">
+        <div className="member-dropdown">
+              <button className="dropdown-toggle">Members ({group.members.length})</button>
+              <div className="dropdown-menu">
+                {group.members.map((member) => (
+                <div key={member.id} className="member-item">
+                  <div className="group-member-profile">
+                    <Link to={`/public-profile-page/${member.id}`} style={{ textDecoration: 'none', color: "inherit"  }}>
+                      <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
+                      <span>{member.first_name} {member.last_name}</span>
+                    </Link>
+                  </div>
+                </div>
+                ))}
+              </div>
+            </div>
           <button className="join-group-button" onClick={handleJoinRequest}>
             Request to Join Group
           </button>
-          {joinRequestStatus && <p className="status-message">{joinRequestStatus}</p>}
+          
         </div>
-      </div>
     </div>
   );
 };

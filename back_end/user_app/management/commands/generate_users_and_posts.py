@@ -21,12 +21,12 @@ class Command(BaseCommand):
 
         # Post images and related titles/descriptions
         post_images = [
-            "blackberries.jpeg", "apples.jpg", "banana_peppers.jpeg", "cherries.jpeg",
-            "cucumber.jpeg", "default_post_image.jpg", "Eggs.jpeg", "farm_eggs.jpeg",
-            "golden.jpeg", "honey.jpeg", "jalap.jpeg", "Maters.jpeg", "okra.jpeg",
+            "blackberries.jpeg", "apples.jpg", "banana_peppers.jpeg", "cherries.jpeg ",
+            "cucumber.jpeg ", "default_post_image.jpg ", "Eggs.jpeg", "farm_eggs.jpeg",
+            "Golden_Potatoes.jpeg", "honey.jpeg", "Jalapenos.jpeg", "russet_potatoes.jpeg", "okra.jpeg",
             "oranges.jpeg", "pecans.jpeg", "potatoes.jpeg", "pumpkin.jpeg",
             "romas.jpeg", "spaghetti_squash.jpeg", "strawberries.jpeg",
-            "strawberry_jam.jpeg", "sweet_oranges.jpeg", "taters.jpeg", "watermelon.jpeg"
+            "strawberry_jam.jpeg", "sweet_oranges.jpeg", "Tomatoes.jpeg", "watermelon.jpeg", "Cherry_Tomatoes.jpeg", "Sweet_potatoes.jpeg", 
         ]
 
         def generate_post_data(image_name):

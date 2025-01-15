@@ -1,10 +1,9 @@
-# serializers.py
-
 from rest_framework import serializers
 from .models import Group, GroupMember, JoinRequest, Invitation
 from user_app.models import User
 from django.contrib.auth import get_user_model
 from user_app.serializers import UserProfilePublicSerializer
+
 #Serializer for a user's groups
 class GroupListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,22 +45,28 @@ class GroupDetailSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Group
         fields = ['id', 'name', 'description', 'group_image', 'address', 'location', 'created_by', 'created_at', 'members', 'role']
 
     def get_members(self, obj):
-        members = GroupMember.objects.filter(group=obj, is_approved=True)
-        return UserProfilePublicSerializer(members.values('user'), many=True).data
-    
+        """
+        Fetch all approved members for the group and serialize user details.
+        """
+        approved_members = GroupMember.objects.filter(group=obj, is_approved=True).select_related('user')
+        return UserProfilePublicSerializer([member.user for member in approved_members], many=True).data
+
     def get_role(self, obj):
+        """
+        Fetch the role of the requesting user in the group.
+        """
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             group_member = GroupMember.objects.filter(group=obj, user=request.user).first()
             if group_member:
                 return group_member.role  
-        return None  
+        return None
+
 
 
 
@@ -83,9 +88,18 @@ class GroupMemberSerializer(serializers.ModelSerializer):
 
 #Invitaiton Serializer
 class InvitationSerializer(serializers.ModelSerializer):
-    invited_by = serializers.ReadOnlyField(source='invited_by.email')
-    group_name = serializers.ReadOnlyField(source='group.name')
+    group_name = serializers.CharField(source="group.name", read_only=True)
+    invited_by_first_name = serializers.CharField(source="invited_by.first_name", read_only=True)
+    invited_by_last_name = serializers.CharField(source="invited_by.last_name", read_only=True)
+    invited_by_profile_picture = serializers.ImageField(source="invited_by.profile.picture", read_only=True)
 
     class Meta:
         model = Invitation
-        fields = ['id', 'group', 'invited_by', 'invitee', 'status', 'created_at', 'group_name']
+        fields = [
+            "id",
+            "group_name",
+            "invited_by_first_name",
+            "invited_by_last_name",
+            "invited_by_profile_picture",
+            "created_at",
+        ]

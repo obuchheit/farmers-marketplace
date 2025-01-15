@@ -14,6 +14,7 @@ from .views import (
     MarkNotificationAsReadView,
     UserGroupsView,
     GroupJoinRequestsView,
+    ListInvitationsView,
 )
 from post_app.views import AllGroupMemberUserPostsView
 
@@ -38,6 +39,8 @@ urlpatterns = [
     path('invite/', InviteMemberView.as_view(), name='invite_member'),##
     path('invite/<int:pk>/accept/', AcceptInvitationView.as_view(), name='accept_invitation'),
     path('invite/<int:pk>/reject/', RejectInvitationView.as_view(), name='reject_invitation'),
+    path('invitations/', ListInvitationsView.as_view(), name='list_invitations'),
+
 
     #Notification Views
     path('notifications/', NotificationListView.as_view(), name='notifications'),

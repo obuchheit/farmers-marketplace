@@ -5,7 +5,7 @@
     flex-wrap: wrap; 
     gap: 3vh; 
     justify-content: center; 
-    padding: 10vh 4vh 0 4vh;
+    padding: 120px 4vh 0 4vh;
 }
 
 /* Card styling */
@@ -78,7 +78,7 @@
 
 @media (max-width: 768px) {
     .card-container {
-        padding: 15vh 1vh 0 1vh;
+        padding: 100px 1vh 0 1vh;
     }
     .card-image {
         max-width: 100%;

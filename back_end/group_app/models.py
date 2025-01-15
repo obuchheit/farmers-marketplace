@@ -3,7 +3,6 @@ from user_app.models import User
 from django.conf import settings
 import requests
 from django.contrib.gis.geos import Point
-
 from django.contrib.gis.db import models as gis_models
 from marketplace_proj.utils import get_coordinates_from_address
 

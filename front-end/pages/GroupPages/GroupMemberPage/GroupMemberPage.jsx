@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Modal, Button, Form } from "react-bootstrap";
-import './GroupMemberPage.css';
+import { Modal, Form, Button } from "react-bootstrap";
+import "./GroupMemberPage.css";
 import HomePageCard from "../../../components/HomePageCard/HomePageCard";
 
 const GroupMemberPage = () => {
-  const { pk } = useParams(); 
-  const navigate = useNavigate(); 
+  const { pk } = useParams();
+  const navigate = useNavigate();
   const [groupDetails, setGroupDetails] = useState(null);
   const [groupPosts, setGroupPosts] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(true);
@@ -18,8 +18,7 @@ const GroupMemberPage = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [inviteError, setInviteError] = useState(null); 
-
+  const [inviteError, setInviteError] = useState(null);
 
   useEffect(() => {
     fetchGroupDetails();
@@ -31,6 +30,7 @@ const GroupMemberPage = () => {
       const response = await axios.get(`http://127.0.0.1:8000/api/v1/groups/${pk}/`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
       });
+      console.log(response.data)
       setGroupDetails(response.data);
       setLoadingDetails(false);
     } catch (err) {
@@ -94,7 +94,6 @@ const GroupMemberPage = () => {
       }
     }
   };
-  
 
   const handleAdminPortal = () => {
     navigate(`/groups/${pk}/admin-portal`);
@@ -104,6 +103,7 @@ const GroupMemberPage = () => {
     navigate(`/post/${postId}`);
   };
 
+
   return (
     <div className="group-member-page">
       {loadingDetails ? (
@@ -111,14 +111,47 @@ const GroupMemberPage = () => {
       ) : errorDetails ? (
         <p>{errorDetails}</p>
       ) : (
-        <div>
-          <h1>{groupDetails.name}</h1>
-          <p>{groupDetails.description}</p>
-          <Button onClick={handleInviteModalOpen}>Send Invite</Button>
-          {inviteStatus && <p>{inviteStatus}</p>}
-          {(groupDetails.role === "admin" || groupDetails.role === "creator") && (
-            <Button onClick={handleAdminPortal}>Admin Page</Button>
-          )}
+        <div className="group-header">
+          <div className="group-member-image" style={{ backgroundImage: `url(${groupDetails.group_image})` }}></div>
+          <div className="group-header-details"> 
+
+            <div className="group-info">
+              <div>
+                <h2>{groupDetails.name}</h2>
+                <p>{groupDetails.address}</p>
+                <p>{groupDetails.description}</p>
+              </div>
+            </div>
+          </div>
+          <div className="group-header-buttons">
+            <div className="member-dropdown">
+              <button className="dropdown-toggle">Members ({groupDetails.members.length})</button>
+              <div className="dropdown-menu">
+                {groupDetails.members.map((member) => (
+                <div key={member.id} className="member-item">
+                  <div className="group-member-profile">
+                    <Link to={`/public-profile-page/${member.id}`} style={{ textDecoration: 'none', color: "inherit"  }}>
+                      <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
+                      <span>{member.first_name} {member.last_name}</span>
+                    </Link>
+                  </div>
+                </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="group-actions">
+                {groupDetails.role === "admin" && (
+                  <button className="admin-button" onClick={handleAdminPortal}>
+                    View Requests
+                  </button>
+                )}
+                <button className="invite-button" onClick={handleInviteModalOpen}>
+                  Invite 
+                </button>
+            </div>
+          </div>
+          
         </div>
       )}
 
@@ -127,19 +160,18 @@ const GroupMemberPage = () => {
       ) : errorPosts ? (
         <p>{errorPosts}</p>
       ) : (
-        <div>
-          <h2>Group Posts</h2>
+        <div className="card-container">
           {groupPosts.length === 0 ? (
             <p>No posts in this group yet.</p>
           ) : (
-            groupPosts.map(post => (
+            groupPosts.map((post) => (
               <HomePageCard key={post.id} post={post} onClick={handlePostClick} />
             ))
           )}
         </div>
       )}
 
-      <Modal show={showInviteModal} onHide={handleInviteModalClose} centered>
+<Modal show={showInviteModal} onHide={handleInviteModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>

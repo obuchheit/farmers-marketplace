@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import "./UserGroupsPage.css";
@@ -8,14 +8,17 @@ import "./UserGroupsPage.css";
 const UserGroupsPage = () => {
   const [groups, setGroups] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
+  const [showInvitationsModal, setShowInvitationsModal] = useState(false);
   const navigate = useNavigate();
   const userToken = localStorage.getItem("token");
 
   useEffect(() => {
     fetchGroups();
     fetchNotifications();
+    fetchInvitations();
   }, []);
 
   const fetchGroups = async () => {
@@ -46,6 +49,39 @@ const UserGroupsPage = () => {
     }
   };
 
+  const fetchInvitations = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/v1/groups/invitations/", {
+        headers: { Authorization: `Token ${userToken}` },
+      });
+      console.log(response.data)
+      setInvitations(response.data);
+    } catch (err) {
+      console.error("Failed to fetch invitations.", err);
+    }
+  };
+  
+  const handleInvitationResponse = async (id, action) => {
+    try {
+      await axios.post(
+        `http://127.0.0.1:8000/api/v1/groups/invite/${id}/${action}/`,
+        {},
+        {
+          headers: { Authorization: `Token ${userToken}` },
+        }
+      );
+      setInvitations((prevInvitations) =>
+        prevInvitations.filter((invitation) => invitation.id !== id)
+      );
+    } catch (err) {
+      console.error(`Failed to ${action} invitation.`, err);
+    }
+  };
+
+  const toggleInvitationsModal = () => {
+    setShowInvitationsModal(!showInvitationsModal);
+  };
+
   const markNotificationAsRead = async (id) => {
     try {
       await axios.post(
@@ -65,8 +101,6 @@ const UserGroupsPage = () => {
       console.error("Failed to mark notification as read.", err);
     }
   };
-  
-
   
 
   const toggleNotificationsModal = () => {
@@ -92,27 +126,46 @@ const UserGroupsPage = () => {
     <div className="user-groups-page">
       <header className="header">
         <h1>Your Groups</h1>
-        <div className="notifications-icon-container" onClick={toggleNotificationsModal}>
-          <IoIosNotificationsOutline className="notifications-icon" />
-          {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+        <div className="ug-header-end">
+          <div className="notifications-icon-container" onClick={toggleNotificationsModal}>
+            <IoIosNotificationsOutline className="notif-icon" />
+            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+          </div>
+          <Link to={'/find-groups'}>
+            <button className="find-groups-button">Find Groups</button>
+          </Link>
+          {invitations.length > 0 && (
+            <button
+              className="view-invitations-button find-groups-button"
+              onClick={toggleInvitationsModal}
+            >
+              View Invitations
+            </button>
+          )}
         </div>
+
       </header>
 
-      <div className="group-list">
+      
         {groups.length === 0 ? (
-          <p>You are not a member of any groups yet.</p>
+          <div className="no-groups-text">
+            <p>You are not a member of any groups yet.</p>
+          </div>
         ) : (
-          groups.map((group) => (
+        <div className="card-container">
+          {groups.map((group) => (
+          
             <div key={group.id} className="group-card" onClick={() => handleNav(group.id)}>
               <img src={group.group_image} alt={group.name} className="group-image" />
               <div className="group-details">
                 <h2>{group.name}</h2>
-                <p>{group.description}</p>
               </div>
             </div>
-          ))
+          
+          ))}
+          </div>
         )}
-      </div>
+      
 
       <Modal
         show={showNotificationsModal}
@@ -147,6 +200,51 @@ const UserGroupsPage = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={toggleNotificationsModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showInvitationsModal}
+        onHide={toggleInvitationsModal}
+        className="invitations-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Invitations</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {invitations.length === 0 ? (
+            <p>No invitations.</p>
+          ) : (
+            invitations.map((invitation) => (
+              <div key={invitation.id} className="invitation-item">
+                <p>
+                  <strong>Group:</strong> {invitation.group_name}
+                </p>
+                <p>
+                  <strong>Invited by:</strong> {`${invitation.invited_by_first_name} ${invitation.invited_by_last_name}`}
+                </p>
+                <div className="invitation-actions">
+                  <button
+                    className="accept-button"
+                    onClick={() => handleInvitationResponse(invitation.id, "accept")}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="reject-button"
+                    onClick={() => handleInvitationResponse(invitation.id, "reject")}
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={toggleInvitationsModal}>
             Close
           </Button>
         </Modal.Footer>
