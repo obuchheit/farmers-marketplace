@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom";
+import './ChatPage.css'
 
 const ChatsPage = () => {
 
@@ -30,24 +31,29 @@ const ChatsPage = () => {
 
   return (
     <>
-      {/* <h1>Chats</h1> */}
       <div>
         {loading ? (
-          <h2>Loading chats...</h2>
+          <div>
+            <h2>Loading chats...</h2>
+          </div>
         ) : (
           <div>
             {chats.length > 0 ? (
               <div>
-                <h1>Your Chats</h1>
-                <ul>
-                  {chats.map((chat) => (
-                    <li key={chat.conversation_id} >
-                      <Link to={`/chats/${chat.conversation_id}`}>
-                        Chat with {chat.other_users[0].full_name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <div className="top-content">
+                  <h1>Your Chats</h1>
+                </div>
+                <div className="chat-list-display">
+                  <ul>
+                    {chats.map((chat) => (
+                      <div key={chat.conversation_id} className="chat-item-content">
+                        <Link to={`/chats/${chat.conversation_id}`} className="chat-link">
+                        <h3>{chat.other_users[0].full_name}</h3>
+                        </Link>
+                      </div>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ) : (
               <h1>No chats to display</h1>
