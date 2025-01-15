@@ -46,8 +46,9 @@
 
 .nav-right {
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 1rem;
+    margin-left: 7vh;
 }
 
 .dropdown-menu {
