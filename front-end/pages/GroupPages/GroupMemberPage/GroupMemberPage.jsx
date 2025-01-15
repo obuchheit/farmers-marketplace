@@ -101,14 +101,6 @@ const GroupMemberPage = () => {
     navigate(`/post/${postId}`);
   };
 
-  const handleStartConversation = () => {
-    if (post && post.user) {
-        const userFullName = `${post.user.first_name} ${post.user.last_name}`;
-        const otherUserId = post.user.id;
-        navigate(`/chats/new-message/${userFullName}/${otherUserId}`);
-    }
-
-};
 
   return (
     <div className="group-member-page">
@@ -118,7 +110,7 @@ const GroupMemberPage = () => {
         <p>{errorDetails}</p>
       ) : (
         <div className="group-header">
-          <div className="group-image" style={{ backgroundImage: `url(${groupDetails.group_image})` }}></div>
+          <div className="group-member-image" style={{ backgroundImage: `url(${groupDetails.group_image})` }}></div>
           <div className="group-header-details"> 
 
             <div className="group-info">
@@ -140,9 +132,6 @@ const GroupMemberPage = () => {
                       <img src={`http://127.0.0.1:8000${member.profile_picture}`} alt={`${member.first_name}'s profile`} className="member-avatar"/>
                       <span>{member.first_name} {member.last_name}</span>
                     </Link>
-                  </div>
-                  <div>
-                    <button className="message-button">Message</button>
                   </div>
                 </div>
                 ))}

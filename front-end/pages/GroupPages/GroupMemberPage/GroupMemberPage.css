@@ -10,24 +10,28 @@
     text-align: center;
     width: 100%;
     background-color: #dfdccc;
-    padding: 5vh 0 2vh;
+    padding: 0 0 2vh 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-bottom: #ccc 1px solid;
 }
 
-.group-image {
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 1rem;
-    border: 4px solid #fff;
-    object-fit: cover;
-}
+
 
 .group-header-details {
     display: flex;
     justify-content: space-around;
     width: 90%;
+}
+
+.group-member-image {
+    width: 80%;
+    height: 25vh;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 1rem;
+    object-fit: fill;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
 .group-info h2 {
@@ -61,7 +65,7 @@
 .admin-button,
 .invite-button {
     padding: 1vh 1.5vh;
-    background-color: #556b2f; /* Dark olive green */
+    background-color: #5E653E; /* Dark olive green */
     border: none;
     border-radius: 4px;
     color: #fff;
@@ -72,7 +76,7 @@
 
 .admin-button:hover,
 .invite-button:hover {
-    background-color: #6b8e23; /* Olive drab */
+    background-color: #5E653E; 
 }
 
 /* Member dropdown */
@@ -82,7 +86,7 @@
 }
 
 .dropdown-toggle {
-    background-color: #556b2f;
+    background-color: #5E653E;
     color: #fff;
     padding: 1vh 1.5vh;
     border: none;
@@ -128,14 +132,11 @@
     border-radius: 50%;
 }
 
-.message-button {
-    background-color: #8fbc8f;
-    color: #fff;
-    border: none;
-    padding: 0.3rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
+.group-message-icon {
+    font-size: 4vh;
+    margin-right: 2vh;
     cursor: pointer;
+
 }
 
 /* Invite modal */
