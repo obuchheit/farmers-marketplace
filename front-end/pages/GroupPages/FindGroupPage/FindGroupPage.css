@@ -160,6 +160,10 @@
   align-items: center;
   border-radius: 1vh;
 }
+
+.map-div p {
+  font-size: 1.75vh;
+}
 #map-div-image {
   height: 5vh;
   width: 5vh;

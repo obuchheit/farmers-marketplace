@@ -51,7 +51,12 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [distance, userLocation]); // Re-fetch posts when distance or location changes
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    fetchPosts(); // Fetch posts based on the current search query
+  };
 
   return (
     <div className="main-page">
@@ -59,8 +64,8 @@ const HomePage = () => {
         <div className="todays-posts">
           <h4>Today's Posts</h4>
         </div>
-        <form className="search-form" onSubmit={(e) => e.preventDefault()}>
-          <MdSearch className="search-icon" onClick={() => setIsSearchOpen(!isSearchOpen)} />
+        <form className="search-form" onSubmit={handleSearchSubmit}>
+          <MdSearch className="search-icon" />
           <input
             type="text"
             className={`search-bar ${isSearchOpen ? "open" : ""}`}

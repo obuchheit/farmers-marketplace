@@ -24,14 +24,15 @@
 }
 
 .group-member-image {
-    width: 80%;
-    height: 25vh;
+    width: 85%;
+    height: 30vh;
     background-size: cover;
     background-position: center;
     margin-bottom: 1rem;
-    object-fit: fill;
+    object-fit: cover;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
+
 }
 
 .group-info h2 {
