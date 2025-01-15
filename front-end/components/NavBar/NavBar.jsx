@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
+import { Dropdown, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { signOut, getProfilePicture } from "../../utilities";
 import './NavBar.css';
 import { useEffect, useState } from "react";
@@ -43,8 +43,25 @@ const NavBar = ({ user, setUser }) => {
                 <Nav className="nav-right">
                     {user ? (
                         <>
-                            <button variant="outline-danger" className="sign-out" onClick={logOut}>Sign Out</button>
-                            <Link to="/profile"><img id="profile-picture" src={profileImage} alt="Profile" /></Link>
+                            <Dropdown align="end">
+                                <Dropdown.Toggle 
+                                    id="profile-dropdown" 
+                                    className="profile-dropdown-toggle" 
+                                    variant="link" 
+                                    aria-haspopup="true"
+                                >
+                                    <img 
+                                        id="profile-picture" 
+                                        src={profileImage} 
+                                        alt="Profile" 
+                                    />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item as={Link} to="/profile">View Profile</Dropdown.Item>
+                                    {/* <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item> */}
+                                    <Dropdown.Item onClick={logOut}>Sign Out</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </>
                     ) : (
                         <Nav.Link as={Link} to="/signin">Sign In/Sign Up</Nav.Link>

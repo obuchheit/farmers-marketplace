@@ -124,10 +124,12 @@ const SingleConvoPage = () => {
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender === userData?.id ? 'user-message' : 'other-message'}`}>
-              <strong>
-                {msg.sender === userData?.id ? userData.first_name : (msg.sender === otherUserData?.id ? otherUserData.first_name : 'Unknown')}:
-              </strong> 
-              {msg.content}
+              <div className='message-content'>
+                <strong>
+                  {msg.sender === userData?.id ? null : (msg.sender === otherUserData?.id ? `${otherUserData.first_name}: ` : 'Unknown')}
+                </strong> 
+                {msg.content}
+              </div>
             </div>
           ))}
         </div>
