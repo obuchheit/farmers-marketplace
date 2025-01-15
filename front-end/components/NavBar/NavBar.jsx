@@ -40,6 +40,14 @@ const NavBar = ({ user, setUser }) => {
                             >
                                 Your Posts
                             </Nav.Link>
+
+                            <Nav.Link 
+                                as={Link} 
+                                to="/users-groups" 
+                                className={isActive(["group", "groups"]) ? "active-link" : ""}
+                            >
+                                Groups
+                            </Nav.Link>
                             
                             <Nav.Link 
                                 as={Link} 
@@ -54,13 +62,6 @@ const NavBar = ({ user, setUser }) => {
                                 className={isActive(["chats"]) ? "active-link" : ""}
                             >
                                 Chats
-                            </Nav.Link>
-                            <Nav.Link 
-                                as={Link} 
-                                to="/users-groups" 
-                                className={isActive(["group", "groups"]) ? "active-link" : ""}
-                            >
-                                Groups
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
