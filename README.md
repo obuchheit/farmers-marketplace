@@ -21,12 +21,12 @@ Farmers Marketplace is a solution for those that want buy, sell, or trade with l
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 ![PostGIS](https://img.shields.io/badge/PostGIS-4183C4?style=for-the-badge&logo=postgis&logoColor=white)
 
-## Dependancies
+## Dependencies
 Redis server 7.4.1
 PostgreSQL 17.2
 POSTGIS 3.5.1
 
-## Dependancy Installation Instructions.
+## Dependency Installation Instructions.
 
 ### Linux
 ```bash
