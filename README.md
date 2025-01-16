@@ -20,7 +20,7 @@ Redis server 7.4.1
 PostgreSQL 17.2
 POSTGIS 3.5.1
 
-## Development Installation Instructionl
+## Dependancy Installation Instructions.
 
 ### Linux
 ```bash
